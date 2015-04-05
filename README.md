@@ -2,7 +2,7 @@
 Automagically create a CMS with class names and data attributes.
 
 ## Goal
-The goal of this repository is to make a content management system that automatically scans HTML files, creates json data files, and then allows you to simply edit the text of your site through an admin without the need to know code.
+The goal of this repository is to make a content management system that automatically scans HTML files, creates json data files, and then allows you to simply edit the text of your site through an admin without the need to know code. Future goal would be to add data files to a document database like couchDB.
 
 ### Steps
 1. Create an HTML site and add the class "auto-edit" to heading tags, paragraph tags, span tags, or simply the whole div block.
