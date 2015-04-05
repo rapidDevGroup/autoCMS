@@ -1,8 +1,10 @@
 # autoCMS
 Automagically create a CMS with class names and data attributes.
 
+
 ## Goal
 The goal of this repository is to make a content management system that automatically scans HTML files, creates json data files, and then allows you to simply edit the text of your site through an admin without the need to know code. Future goal would be to add data files to a document database like couchDB.
+
 
 ### Steps
 1. Create an HTML site and add the class "auto-edit" to heading tags, paragraph tags, span tags, or simply the whole div block.
@@ -13,6 +15,7 @@ The goal of this repository is to make a content management system that automati
     * It will scan and look for edit tags and create a data file structure (JSON).
     * It will then bring you to a basic CMS to edit all your content.
     
+
 ## Tags Examples
 
 #### Text Tags
@@ -25,11 +28,20 @@ The goal of this repository is to make a content management system that automati
 <div class="auto-edit">...</p>
 ```
 
+
 #### Image Tags
 
 ```HTML
-<img src="..." class="auto-edit">
+<img src="..." class="auto-edit-img">
 ```
+Or for background images
+
+```HTML
+<div class="auto-edit-bg-img">...</div>
+```
+**NOTE:**
+The bg-img will add a style attribute with a background-image: url(img/url/imagename.jpg); and remove any other style attribute. Add a custom class for all your other background image attributes and do not use a style tag with this autoCRM class.
+
 
 #### Repeating Tags
 
@@ -52,11 +64,13 @@ This would be the same as the following with as many iterations as setup in the 
 </div>
 ```
 
+
 #### Navigation Text Tags
 
 ```HTML
     <li><a href="..." class="auto-nav" data-auto-description="home navigation">...</a>
 ```
+
 
 ### Data Attributes
 
