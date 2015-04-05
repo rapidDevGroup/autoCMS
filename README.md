@@ -69,7 +69,7 @@ This data tag can be used to add an additional description to a field, best used
 
 MIT License
 
-Copyright 2012 Kunal Anand http://kunalanand.com
+Copyright 2015 Rapid Dev Group Inc. http://rapiddevgroup.com
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
