@@ -8,20 +8,30 @@ ToroHook::add("404", function() {
 });
 
 Toro::serve(array(
-    '/admin/' 		        	=> 'InitSetup',
-    '/:alpha/' 	               	=> 'InitSetup'
+    '/admin/'                    => 'InitSetup',
+    '/:alpha/'                   => 'InitSetup'
 ));
 
 class InitSetup {
     function get($page = null) {
-        if (is_null($page)) {
-            echo "<!DOCKTYPE html>" .
-                "<html><header><title>website admin</title></header>" .
-                "<body>Please setup a login</body></html>";
-        } else if ($page === 'login') {
-            echo "<!DOCKTYPE html>" .
-                "<html><header><title>website admin</title></header>" .
-                "<body>Please login</body></html>";
+        if (is_null($page) && authNeeded()) {
+            include_once('admin-pages/init-setup.html');
+        } else {
+            include_once('admin-pages/login.html');
         }
     }
+    function post($page = null) {
+        if ($page == 'create-auth' && authNeeded()) {
+            print_r($_POST);
+
+
+        } else {
+            include_once('admin-pages/404.html');
+        }
+    }
+}
+
+function authNeeded() {
+    $json = json_decode(file_get_contents("data/access.json"), true);
+    return sizeof($json) === 0;
 }

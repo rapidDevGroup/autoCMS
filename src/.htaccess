@@ -1,6 +1,11 @@
 AddDefaultCharset UTF-8
 DirectoryIndex index.php
 
+<Files .htaccess>
+    order allow,deny
+    deny from all
+</Files>
+
 Options +FollowSymlinks
 RewriteBase /admin
 RewriteEngine On
