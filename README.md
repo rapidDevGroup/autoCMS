@@ -1,5 +1,5 @@
 # autoCMS
-Automagically create a CMS with class names and data attributes.
+Automagically create a CMS with class names and data attributes or based solely on html tags such as paragraph, headers, spans and more.
 
 
 ## Goal
