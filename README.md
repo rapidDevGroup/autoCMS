@@ -79,6 +79,13 @@ This would be the same as the following with as many iterations as setup in the 
 This data tag can be used to add an additional description to a field, best used to know which navigation link is which.
 
 
+## Special Thanks
+
+Thanks to toroPHP [https://github.com/anandkunal/ToroPHP](git repository here) for the wonderful small routing library.
+
+Also thanks to David Miller for the free bootstrap theme that can be found [http://startbootstrap.com/template-overviews/sb-admin-2/](here).
+
+
 ## License
 
 MIT License

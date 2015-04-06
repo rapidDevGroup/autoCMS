@@ -1,5 +1,14 @@
 AddDefaultCharset UTF-8
 DirectoryIndex index.php
 
-order allow,deny
-deny from all
+Options +FollowSymlinks
+RewriteBase /admin
+RewriteEngine On
+
+RewriteCond %{HTTP:Accept-Language} ^.*(de|es|fr|it|ja|ru|en).*$ [NC]
+RewriteRule ^(.*)$ - [env=prefer-language:%1]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond $1 !^(index\.php)
+RewriteRule ^(.*)$ index.php/$1 [L]
