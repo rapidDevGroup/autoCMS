@@ -28,24 +28,28 @@
                 <div class="col-md-4 col-md-offset-4">
                     <div class="login-panel panel panel-default">
                         <div class="panel-heading">
-                            <h3 class="panel-title">Please Sign In</h3>
+                            <h3 class="panel-title">Create Your First Login</h3>
                         </div>
                         <div class="panel-body">
-                            <form action="login/" method="post" role="form">
+                            <?php if (isset($_GET['error'])) { ?>
+                                <div class="alert alert-danger alert-dismissable">
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                    <?=$_GET['error']?>
+                                </div>
+                            <? } ?>
+                            <form action="create-auth/" method="post" role="form" onsubmit="return validateCreateAuth()">
                                 <fieldset>
                                     <div class="form-group">
-                                        <input class="form-control" placeholder="E-mail" name="user" type="text" autofocus>
+                                        <input class="form-control" placeholder="User Name" name="user" type="text" autofocus>
                                     </div>
                                     <div class="form-group">
                                         <input class="form-control" placeholder="Password" name="password" type="password" value="">
                                     </div>
-                                    <div class="checkbox">
-                                        <label>
-                                            <input name="remember" type="checkbox" value="Remember Me">Remember Me
-                                        </label>
+                                    <div class="form-group">
+                                        <input class="form-control" placeholder="Confirm Password" name="password2" type="password" value="">
                                     </div>
                                     <!-- Change this to a button or input when using this as a form -->
-                                    <button class="btn btn-lg btn-success btn-block">Login</button>
+                                    <button type="submit" class="btn btn-lg btn-success btn-block">Create</button>
                                 </fieldset>
                             </form>
                         </div>
@@ -61,5 +65,6 @@
         <script src="libs/metisMenu/dist/metisMenu.min.js"></script>
         <!-- Custom Theme JavaScript -->
         <script src="js/sb-admin-2.js"></script>
+        <script src="js/autocms.js"></script>
     </body>
 </html>
