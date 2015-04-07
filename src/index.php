@@ -13,6 +13,7 @@ ToroHook::add("404", function() {
 Toro::serve(array(
     '/admin/'                   => 'Init',
     '/login/'                   => 'Login',
+    '/logout/'                  => 'Logout',
     '/dash/'                    => 'Dash'
 ));
 
@@ -21,14 +22,14 @@ class Init {
         if (is_null($page) && authNeeded()) {
             include_once('admin-pages/init-setup.php');
         } else {
-            include_once('admin-pages/login.html');
+            include_once('admin-pages/login.php');
         }
     }
 }
 
 class Login {
     function get() {
-        include_once('admin-pages/login.html');
+        include_once('admin-pages/login.php');
     }
     function post() {
         if (authNeeded()) {
@@ -45,7 +46,7 @@ class Login {
                 fwrite($fp, '['.json_encode($userArray).']');
                 fclose($fp);
 
-                include_once('admin-pages/login.html');
+                include_once('admin-pages/login.php');
             } else {
                 // todo: better error messaging
                 include_once('admin-pages/init-setup.php?error=error');
@@ -56,10 +57,22 @@ class Login {
     }
 }
 
+class Logout {
+    function get() {
+
+        $_SESSION["user"] = '';
+        $_SESSION["password"] = '';
+        $_SESSION["role"] = '';
+
+        session_destroy();
+
+        include_once('admin-pages/login.php');
+    }
+}
+
 class Dash {
     function get() {
         if (checkPass() && !authNeeded()) {
-
             include_once('admin-pages/dash.php');
         } else {
             include_once('admin-pages/401.html');
@@ -71,10 +84,7 @@ class Dash {
             $_SESSION["password"] = $_POST['password'];
 
             include_once('admin-pages/dash.php');
-
         } else {
-            print authNeeded();
-
             include_once('admin-pages/401.html');
         }
     }
@@ -92,7 +102,8 @@ function checkPass($user = null, $pass = null) {
     $key =  search($json, 'user', $user)[0];
 
     // if (password_verify($pass, $key['password']))
-    if ($key['password'] == $pass) {
+    if ($key['password'] == $pass && $pass != '') {
+        $_SESSION["role"] = serialize($key['role']);
         return true;
     }
     return false;
