@@ -37,7 +37,7 @@
                                     <?=$_GET['error']?>
                                 </div>
                             <? } ?>
-                            <form action="create-auth/" method="post" role="form" onsubmit="return validateCreateAuth()">
+                            <form action="setup/create-auth/" method="post" role="form" onsubmit="return validateCreateAuth()">
                                 <fieldset>
                                     <div class="form-group">
                                         <input class="form-control" placeholder="User Name" name="user" type="text" autofocus>

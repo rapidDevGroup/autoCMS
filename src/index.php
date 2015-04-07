@@ -10,9 +10,8 @@ ToroHook::add("404", function() {
 
 Toro::serve(array(
     '/admin/'                   => 'InitSetup',
-    '/dash/'                    => 'AdminDash',
-
-    '/:alpha/'                  => 'InitSetup'
+    '/setup/:alpha/'            => 'InitSetup',
+    '/dash/'                    => 'AdminDash'
 ));
 
 class InitSetup {
@@ -68,5 +67,6 @@ function checkPass($user = null, $pass = null) {
     if (is_null($pass)) $pass = $_SESSION["password"];
     $json = json_decode(file_get_contents("data/access.json"), true);
     $key = array_search($user, $json);
+    $_SESSION["role"] = $json[$key];
     return password_verify($pass, $json[$key]);
 }
