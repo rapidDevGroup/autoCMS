@@ -8,13 +8,13 @@
         <meta name="author" content="">
         <title>autoCMS</title>
         <!-- Bootstrap Core CSS -->
-        <link href="libs/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/admin/libs/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
         <!-- MetisMenu CSS -->
-        <link href="libs/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
+        <link href="/admin/libs/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
         <!-- Custom CSS -->
-        <link href="css/sb-admin-2.css" rel="stylesheet">
+        <link href="/admin/css/sb-admin-2.css" rel="stylesheet">
         <!-- Custom Fonts -->
-        <link href="libs/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href="/admin/libs/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -37,7 +37,7 @@
                                     <?=$_GET['error']?>
                                 </div>
                             <? } ?>
-                            <form action="setup/create-auth/" method="post" role="form" onsubmit="return validateCreateAuth()">
+                            <form action="/admin/login/" method="post" role="form" onsubmit="return validateCreateAuth()">
                                 <fieldset>
                                     <div class="form-group">
                                         <input class="form-control" placeholder="User Name" name="user" type="text" autofocus>
@@ -58,13 +58,13 @@
             </div>
         </div>
         <!-- jQuery -->
-        <script src="libs/jquery/dist/jquery.min.js"></script>
+        <script src="/admin/libs/jquery/dist/jquery.min.js"></script>
         <!-- Bootstrap Core JavaScript -->
-        <script src="libs/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="/admin/libs/bootstrap/dist/js/bootstrap.min.js"></script>
         <!-- Metis Menu Plugin JavaScript -->
-        <script src="libs/metisMenu/dist/metisMenu.min.js"></script>
+        <script src="/admin/libs/metisMenu/dist/metisMenu.min.js"></script>
         <!-- Custom Theme JavaScript -->
-        <script src="js/sb-admin-2.js"></script>
-        <script src="js/autocms.js"></script>
+        <script src="/admin/js/sb-admin-2.js"></script>
+        <script src="/admin/js/autocms.js"></script>
     </body>
 </html>
