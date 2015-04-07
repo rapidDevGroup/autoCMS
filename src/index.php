@@ -52,7 +52,7 @@ class Login {
                 include_once('admin-pages/init-setup.php?error=error');
             }
         } else {
-            include_once('admin-pages/404.html');
+            include_once('admin-pages/404.php');
         }
     }
 }
@@ -75,7 +75,7 @@ class Dash {
         if (checkPass() && !authNeeded()) {
             include_once('admin-pages/dash.php');
         } else {
-            include_once('admin-pages/401.html');
+            include_once('admin-pages/401.php');
         }
     }
     function post() {
@@ -85,7 +85,7 @@ class Dash {
 
             include_once('admin-pages/dash.php');
         } else {
-            include_once('admin-pages/401.html');
+            include_once('admin-pages/401.php');
         }
     }
 }
