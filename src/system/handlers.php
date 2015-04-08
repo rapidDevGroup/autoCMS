@@ -82,3 +82,15 @@ class Dash {
         }
     }
 }
+
+class Page {
+    function get($page = null) {
+        if (is_null($page) && checkPass() && !authNeeded()) {
+            include_once('admin-pages/dash.php');
+        } else if (checkPass() && !authNeeded()) {
+            include_once('admin-pages/page.php');
+        } else {
+            include_once('admin-pages/401.html');
+        }
+    }
+}

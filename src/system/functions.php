@@ -58,8 +58,17 @@ function renameFiles($files) {
     }
 }
 
+function getPageList() {
+    if (!file_exists("data/autocms-pages.json")) return [];
+    $json = json_decode(file_get_contents("data/autocms-pages.json"), true);
+    return $json;
+}
+
 function buildDataFilesByTags($files) {
+    $pageArr = Array();
+
     foreach ($files as $file) {
+        $pageArr[] = str_replace(Array('.html', '.htm'), '', $file);
 
         // create datafile to store stuff
         $dataFile = str_replace(Array('.html', '.htm'), '.json', $file);
@@ -97,7 +106,7 @@ function buildDataFilesByTags($files) {
     }
 
     $fp = fopen('data/autocms-pages.json', 'w');
-    fwrite($fp, json_encode($files));
+    fwrite($fp, json_encode($pageArr));
     fclose($fp);
 
 }

@@ -22,5 +22,6 @@ Toro::serve(array(
     '/login/'                   => 'Login',
     '/logout/'                  => 'Logout',
     '/dash/'                    => 'Dash',
-    '/dash/:string'             => 'Dash'
+    '/dash/:string'             => 'Dash',
+    '/page/:alpha'              => 'Page'
 ));

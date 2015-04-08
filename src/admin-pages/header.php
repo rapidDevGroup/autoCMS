@@ -1,3 +1,7 @@
+<?php
+$pages = getPageList();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -67,38 +71,19 @@
                             <li>
                                 <a href="/admin/dash/"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                             </li>
-                            <!--li>
-                                <a href="#"><i class="fa fa-wrench fa-fw"></i> UI Elements<span class="fa arrow"></span></a>
-                                <ul class="nav nav-second-level">
-                                    <li>
-                                        <a href="panels-wells.html">Panels and Wells</a>
-                                    </li>
-                                    <li>
-                                        <a href="buttons.html">Buttons</a>
-                                    </li>
-                                    <li>
-                                        <a href="notifications.html">Notifications</a>
-                                    </li>
-                                    <li>
-                                        <a href="typography.html">Typography</a>
-                                    </li>
-                                    <li>
-                                        <a href="icons.html"> Icons</a>
-                                    </li>
-                                    <li>
-                                        <a href="grid.html">Grid</a>
-                                    </li>
-                                </ul>
-                            </li-->
-                            <li>
-                                <a href="#"><i class="fa fa-files-o fa-fw"></i> Content Pages<span class="fa arrow"></span></a>
-                                <ul class="nav nav-second-level">
-                                    <li>
-                                        <a href="/admin/dash/">Pages are not scanned in yet!</a>
-                                    </li>
-                                </ul>
-                                <!-- /.nav-second-level -->
-                            </li>
+                            <?php if (count($pages) > 0) {?>
+                                <li>
+                                    <a href="#"><i class="fa fa-files-o fa-fw"></i> Content Pages<span class="fa arrow"></span></a>
+                                    <ul class="nav nav-second-level">
+                                        <?php foreach($pages as $pageName) { ?>
+                                            <li>
+                                                <a href="/admin/page/<?=$pageName?>/"><?=$pageName?></a>
+                                            </li>
+                                        <?php } ?>
+                                    </ul>
+                                    <!-- /.nav-second-level -->
+                                </li>
+                            <?php } ?>
                         </ul>
                     </div>
                     <!-- /.sidebar-collapse -->
