@@ -67,6 +67,7 @@ class Dash {
     function post($action = null) {
         if ($action == 'process' && checkPass() && !authNeeded()) {
 
+            buildDataFiles($_POST['files']);
             renameFiles($_POST['files']);
 
             include_once('admin-pages/process.php');

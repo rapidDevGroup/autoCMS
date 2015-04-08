@@ -85,6 +85,7 @@ Thanks to toroPHP https://github.com/anandkunal/ToroPHP for the wonderful small 
 
 Also thanks to David Miller for the free bootstrap theme that can be found here http://startbootstrap.com/template-overviews/sb-admin-2/
 
+http://sourceforge.net/projects/simplehtmldom/
 
 ## License
 

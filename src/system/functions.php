@@ -49,11 +49,26 @@ function endsWith ($string, $test) {
 }
 
 function renameFiles($files) {
-    print_r($files);
     foreach ($files as $file) {
-        print $file;
         $newName = str_replace(Array('.html', '.htm'), '.php', $file);
-        print $newName;
-        rename('../' . $file, '../' . $newName);
+        //rename('../' . $file, '../' . $newName);
+    }
+}
+
+function buildDataFiles($files) {
+    foreach ($files as $file) {
+
+        $fileData = file_get_contents('../' . $file, true);
+
+        $html = str_get_html($fileData);
+        foreach($html->find('.auto-edit') as $edit) {
+            echo $edit->innertext . '<br>';
+        }
+
+        //$dataFile = str_replace(Array('.html', '.htm'), '.json', $file);
+
+        //$fp = fopen('data/' . $dataFile, 'w');
+        //fwrite($fp, $data);
+        //fclose($fp);
     }
 }
