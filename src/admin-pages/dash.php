@@ -32,7 +32,7 @@ $files = scanFiles('.html');
                 </div>
             </div>
         <?php } ?>
-        <div class="col-lg-4">
+        <!--div class="col-lg-4">
             <div class="panel panel-yellow">
                 <div class="panel-heading">
                     Files Missing Content Management
@@ -44,7 +44,6 @@ $files = scanFiles('.html');
                     Panel Footer
                 </div>
             </div>
-            <!-- /.col-lg-4 -->
         </div>
         <div class="col-lg-4">
             <div class="panel panel-green">
@@ -58,8 +57,7 @@ $files = scanFiles('.html');
                     Panel Footer
                 </div>
             </div>
-            <!-- /.col-lg-4 -->
-        </div>
+        </div-->
     </div>
     <!-- /.row -->
 

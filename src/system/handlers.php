@@ -28,7 +28,7 @@ class Login {
                 $userArray = Array('user' => $_POST['user'], 'password' => $_POST['password'], 'role' => Array('admin'));
                 //$userArray = Array('user' => $_POST['user'], 'password' => password_hash($_POST['password'], PASSWORD_DEFAULT), 'role' => Array('admin'));
 
-                $fp = fopen('data/access.json', 'w');
+                $fp = fopen('data/autocms-access.json', 'w');
                 fwrite($fp, '['.json_encode($userArray).']');
                 fclose($fp);
 
@@ -67,7 +67,7 @@ class Dash {
     function post($action = null) {
         if ($action == 'process' && checkPass() && !authNeeded()) {
 
-            buildDataFiles($_POST['files']);
+            buildDataFilesByTags($_POST['files']);
             renameFiles($_POST['files']);
 
             include_once('admin-pages/process.php');

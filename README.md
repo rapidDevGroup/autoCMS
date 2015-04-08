@@ -68,13 +68,13 @@ This would be the same as the following with as many iterations as setup in the 
 #### Navigation Text Tags
 
 ```HTML
-    <li><a href="..." class="auto-nav" data-auto-description="home navigation">...</a>
+    <li><a href="..." class="auto-nav" autocms="home navigation">...</a>
 ```
 
 
 ### Data Attributes
 
-##### data-auto-description
+##### autocms
 
 This data tag can be used to add an additional description to a field, best used to know which navigation link is which.
 

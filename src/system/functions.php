@@ -10,14 +10,17 @@ function scanFiles($endsWith) {
 }
 
 function authNeeded() {
-    $json = json_decode(file_get_contents("data/access.json"), true);
+    if (!file_exists("data/autocms-access.json")) return true;
+    $json = json_decode(file_get_contents("data/autocms-access.json"), true);
     return sizeof($json) === 0;
 }
 
 function checkPass($user = null, $pass = null) {
+    if (!file_exists("data/autocms-access.json")) return false;
+
     if (is_null($user)) $user = $_SESSION["user"];
     if (is_null($pass)) $pass = $_SESSION["password"];
-    $json = json_decode(file_get_contents("data/access.json"), true);
+    $json = json_decode(file_get_contents("data/autocms-access.json"), true);
     $key =  search($json, 'user', $user)[0];
 
     // if (password_verify($pass, $key['password']))
@@ -51,24 +54,50 @@ function endsWith ($string, $test) {
 function renameFiles($files) {
     foreach ($files as $file) {
         $newName = str_replace(Array('.html', '.htm'), '.php', $file);
-        //rename('../' . $file, '../' . $newName);
+        rename('../' . $file, '../' . $newName);
     }
 }
 
-function buildDataFiles($files) {
+function buildDataFilesByTags($files) {
     foreach ($files as $file) {
 
+        // create datafile to store stuff
+        $dataFile = str_replace(Array('.html', '.htm'), '.json', $file);
+        $data = Array();
+
+        // start collecting fields to add to data
         $fileData = file_get_contents('../' . $file, true);
 
         $html = str_get_html($fileData);
-        foreach($html->find('.auto-edit') as $edit) {
-            echo $edit->innertext . '<br>';
+
+        foreach($html->find('title') as $pageTitle) {
+            $data['title'] = Array('text' => $pageTitle->innertext, 'description' => 'Browser Title');
+            $pageTitle->innertext = "<?=get('$dataFile', 'title')?>";
         }
 
-        //$dataFile = str_replace(Array('.html', '.htm'), '.json', $file);
+        foreach($html->find('.auto-edit') as $edit) {
+            $textID = uniqid();
+            $desc = '';
+            if (isset($edit->autocms)) $desc = $edit->autocms;
+            $data[$textID] = Array('text' => $edit->innertext, 'description' => $desc);
+            $edit->innertext = "<?=get('$dataFile', '$textID')?>";
+        }
 
-        //$fp = fopen('data/' . $dataFile, 'w');
-        //fwrite($fp, $data);
-        //fclose($fp);
+        // write data file
+        $fp = fopen('data/page-' . $dataFile, 'w');
+        fwrite($fp, json_encode($data));
+        fclose($fp);
+
+        $fileTopper = '<?php require_once("admin/system/get.php") ?>';
+
+        // write html file
+        $fp = fopen('../' . $file, 'w');
+        fwrite($fp, $fileTopper . $html);
+        fclose($fp);
     }
+
+    $fp = fopen('data/autocms-pages.json', 'w');
+    fwrite($fp, json_encode($files));
+    fclose($fp);
+
 }
