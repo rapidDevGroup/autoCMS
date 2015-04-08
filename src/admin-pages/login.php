@@ -13,6 +13,7 @@
         <link href="/admin/libs/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
         <!-- Custom CSS -->
         <link href="/admin/css/sb-admin-2.css" rel="stylesheet">
+        <link href="/admin/css/autocms.css" rel="stylesheet">
         <!-- Custom Fonts -->
         <link href="/admin/libs/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->

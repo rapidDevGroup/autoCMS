@@ -1,0 +1,12 @@
+.btn.active.focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn:active:focus, .btn:focus {
+    outline: none !important;
+}
+.modal-content {
+    background-color: #f5f5f5;
+}
+.modal-body {
+    background-color: #fff;
+}
+.modal-body .checkbox {
+    margin-left:25px;
+}

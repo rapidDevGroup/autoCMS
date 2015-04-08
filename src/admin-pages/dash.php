@@ -13,24 +13,27 @@ $files = scanFiles('.html');
     </div>
 
     <div class="row">
-        <div class="col-lg-4">
-            <div class="panel panel-red">
-                <div class="panel-heading">
-                    Unprocessed Files
-                </div>
-                <div class="panel-body">
-                    <ul>
-                        <?php foreach($files as $file) { ?>
-                            <li><?=$file?></li>
-                        <?php } ?>
-                    </ul>
-                </div>
-                <div class="panel-footer">
-                    <?=count($files)?> Listed Files
+        <?php if (count($files) > 0) { ?>
+            <div class="col-lg-4">
+                <div class="panel panel-red">
+                    <div class="panel-heading">
+                        Unprocessed Files
+                    </div>
+                    <div class="panel-body">
+                        <ul>
+                            <?php foreach($files as $file) { ?>
+                                <li><?=$file?></li>
+                            <?php } ?>
+                        </ul>
+                    </div>
+                    <div class="panel-footer">
+                        <button class="btn btn-danger btn-sm pull-right" data-toggle="modal" data-target="#fixUnprocessed">Fix This</button>
+                        <?=count($files)?> Listed Files
+                        <div class="clearfix"></div>
+                    </div>
                 </div>
             </div>
-            <!-- /.col-lg-4 -->
-        </div>
+        <?php } ?>
         <div class="col-lg-4">
             <div class="panel panel-yellow">
                 <div class="panel-heading">
@@ -61,6 +64,30 @@ $files = scanFiles('.html');
         </div>
     </div>
     <!-- /.row -->
+
+    <div class="modal fade" id="fixUnprocessed" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Select Files to Process</h4>
+                </div>
+                <form class="form-horizontal">
+                    <div class="modal-body">
+                        <?php foreach($files as $file) { ?>
+                            <div class="checkbox">
+                                <label><input type="checkbox" checked="checked"> <?=$file?></label>
+                            </div>
+                        <?php } ?>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Process Files</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 <?php
 
 include_once('footer.php');
