@@ -93,4 +93,16 @@ class Page {
             include_once('admin-pages/401.html');
         }
     }
+    function post($page = null) {
+        if (is_null($page)) {
+            include_once('admin-pages/404.html');
+        } else if (!is_null($page) && checkPass() && !authNeeded()) {
+
+            print_r($_POST);
+
+            include_once('admin-pages/page.php');
+        } else {
+            include_once('admin-pages/401.html');
+        }
+    }
 }

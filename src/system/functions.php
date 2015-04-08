@@ -65,7 +65,11 @@ function getPageList() {
 }
 
 function buildDataFilesByTags($files) {
-    $pageArr = Array();
+    if (!file_exists("data/autocms-pages.json")) {
+        $pageArr = Array();
+    } else {
+        $pageArr = json_decode(file_get_contents("data/autocms-pages.json"), true);
+    }
 
     foreach ($files as $file) {
         $pageArr[] = str_replace(Array('.html', '.htm'), '', $file);
@@ -80,7 +84,7 @@ function buildDataFilesByTags($files) {
         $html = str_get_html($fileData);
 
         foreach($html->find('title') as $pageTitle) {
-            $data['title'] = Array('text' => $pageTitle->innertext, 'description' => 'Browser Title');
+            $data['title'] = Array('text' => $pageTitle->innertext, 'description' => 'Browser Title', 'type' => 'text');
             $pageTitle->innertext = "<?=get('$dataFile', 'title')?>";
         }
 
@@ -88,7 +92,7 @@ function buildDataFilesByTags($files) {
             $textID = uniqid();
             $desc = '';
             if (isset($edit->autocms)) $desc = $edit->autocms;
-            $data[$textID] = Array('text' => $edit->innertext, 'description' => $desc);
+            $data[$textID] = Array('text' => $edit->innertext, 'description' => $desc, 'type' => 'html');
             $edit->innertext = "<?=get('$dataFile', '$textID')?>";
         }
 
@@ -108,5 +112,11 @@ function buildDataFilesByTags($files) {
     $fp = fopen('data/autocms-pages.json', 'w');
     fwrite($fp, json_encode($pageArr));
     fclose($fp);
+}
 
+function getPageData($file) {
+    $dataFile = 'data/page-' . $file . '.json';
+    $json = json_decode(file_get_contents($dataFile), true);
+
+    return $json;
 }
