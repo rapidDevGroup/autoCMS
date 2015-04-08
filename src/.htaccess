@@ -17,3 +17,7 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond $1 !^(index\.php)
 RewriteRule ^(.*)$ index.php/$1 [L]
+
+ErrorDocument 401 /admin/admin-pages/401.html
+ErrorDocument 404 /admin/admin-pages/404.html
+ErrorDocument 403 /admin/admin-pages/404.html
