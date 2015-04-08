@@ -64,8 +64,14 @@ class Dash {
             include_once('admin-pages/401.html');
         }
     }
-    function post() {
-        if (checkPass($_POST['user'], $_POST['password']) && !authNeeded()) {
+    function post($action = null) {
+        if ($action == 'process' && checkPass() && !authNeeded()) {
+
+            renameFiles($_POST['files']);
+
+            include_once('admin-pages/process.php');
+
+        } else if (is_null($action) && checkPass($_POST['user'], $_POST['password']) && !authNeeded()) {
             $_SESSION["user"] = $_POST['user'];
             $_SESSION["password"] = $_POST['password'];
 

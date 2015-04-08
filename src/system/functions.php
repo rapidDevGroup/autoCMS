@@ -47,3 +47,13 @@ function endsWith ($string, $test) {
     if ($testLen > $strLen) return false;
     return substr_compare($string, $test, $strLen - $testLen, $testLen) === 0;
 }
+
+function renameFiles($files) {
+    print_r($files);
+    foreach ($files as $file) {
+        print $file;
+        $newName = str_replace(Array('.html', '.htm'), '.php', $file);
+        print $newName;
+        rename('../' . $file, '../' . $newName);
+    }
+}

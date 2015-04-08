@@ -1,10 +1,8 @@
 <?php
-
 include_once('header.php');
-
 $files = scanFiles('.html');
-
 ?>
+
     <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header">Dashboard</h1>
@@ -72,24 +70,23 @@ $files = scanFiles('.html');
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="myModalLabel">Select Files to Process</h4>
                 </div>
-                <form class="form-horizontal">
+                <form action="/admin/dash/process/" method="post" class="form-horizontal">
                     <div class="modal-body">
                         <?php foreach($files as $file) { ?>
                             <div class="checkbox">
-                                <label><input type="checkbox" checked="checked"> <?=$file?></label>
+                                <label><input type="checkbox" checked="checked" name="files[]" value="<?=$file?>"> <?=$file?></label>
                             </div>
                         <?php } ?>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Process Files</button>
+                        <button type="submit" class="btn btn-primary">Process Files</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+
 <?php
-
 include_once('footer.php');
-
 ?>
