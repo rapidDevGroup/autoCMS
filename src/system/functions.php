@@ -120,3 +120,16 @@ function getPageData($file) {
 
     return $json;
 }
+
+function updatePage($file, $data) {
+    $dataFile = 'data/page-' . $file . '.json';
+    $json = json_decode(file_get_contents($dataFile), true);
+
+    foreach ($data as $key => $datum) {
+        $json[$key]['text'] = trim($datum);
+    }
+
+    $fp = fopen($dataFile, 'w');
+    fwrite($fp, json_encode($json));
+    fclose($fp);
+}

@@ -2,8 +2,9 @@ tinymce.init({
     selector: "textarea",
     menubar : false,
     plugins: "textcolor",
-    height: 200,
+    height: 150,
     statusbar: false,
+    forced_root_block : "",
     toolbar: ["styleselect | fontsizeselect", "undo redo | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | table | forecolor backcolor"]
 });
 

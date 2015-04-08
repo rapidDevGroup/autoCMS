@@ -98,7 +98,7 @@ class Page {
             include_once('admin-pages/404.html');
         } else if (!is_null($page) && checkPass() && !authNeeded()) {
 
-            print_r($_POST);
+            updatePage($page, $_POST);
 
             include_once('admin-pages/page.php');
         } else {
