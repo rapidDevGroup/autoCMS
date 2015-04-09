@@ -22,11 +22,15 @@ $data = getPageData($page);
                         <label for="<?=$key?>" class="col-lg-2 col-sm-2 control-label"><a href=""><?=$desc?></a></label>
                         <?php if ($datum['type'] == 'html') { ?>
                             <div class="col-lg-8 col-sm-10">
-                                <textarea name="<?=$key?>" class="form-control"><?=$datum['text']?></textarea>
+                                <textarea name="<?=$key?>" class="form-control"><?=$datum['html']?></textarea>
                             </div>
                         <?php } else if ($datum['type'] == 'text') { ?>
                             <div class="col-lg-8 col-sm-10">
                                 <input name="<?=$key?>" class="form-control" value="<?=$datum['text']?>">
+                            </div>
+                        <?php } else if ($datum['type'] == 'image') { ?>
+                            <div class="col-lg-8 col-sm-10">
+                                <input name="<?=$key?>" class="form-control" value="<?=$datum['image']?>">
                             </div>
                         <?php } ?>
                     </div>

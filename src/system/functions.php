@@ -88,12 +88,21 @@ function buildDataFilesByTags($files) {
             $pageTitle->innertext = "<?=get('$dataFile', 'title')?>";
         }
 
-        foreach($html->find('.auto-edit') as $edit) {
-            $textID = uniqid();
+        foreach($html->find('.auto-edit, .auto-edit-img, .auto-edit-bg-img') as $edit) {
+            $fieldID = uniqid();
             $desc = '';
-            if (isset($edit->autocms)) $desc = $edit->autocms;
-            $data[$textID] = Array('text' => $edit->innertext, 'description' => $desc, 'type' => 'html');
-            $edit->innertext = "<?=get('$dataFile', '$textID')?>";
+            if (strpos($edit->class, 'auto-edit-img') !== false) {
+                // todo: download existing image to images folder and insert new src
+                if (isset($edit->autocms)) $desc = $edit->autocms;
+                $data[$fieldID] = Array('image' => $edit->src, 'description' => $desc, 'type' => 'image');
+                $edit->src = "<?=get('$dataFile', '$fieldID')?>";
+            } else if (strpos($edit->class, 'auto-edit-bg-img') !== false) {
+
+            } else if (strpos($edit->class, 'auto-edit') !== false) {
+                if (isset($edit->autocms)) $desc = $edit->autocms;
+                $data[$fieldID] = Array('html' => $edit->innertext, 'description' => $desc, 'type' => 'html');
+                $edit->innertext = "<?=get('$dataFile', '$fieldID')?>";
+            }
         }
 
         // write data file
@@ -126,7 +135,7 @@ function updatePage($file, $data) {
     $json = json_decode(file_get_contents($dataFile), true);
 
     foreach ($data as $key => $datum) {
-        $json[$key]['text'] = trim($datum);
+        $json[$key][$json[$key]['type']] = trim($datum);
     }
 
     $fp = fopen($dataFile, 'w');
