@@ -88,6 +88,13 @@ function buildDataFilesByTags($files) {
             $pageTitle->innertext = "<?=get('$dataFile', 'title')?>";
         }
 
+        foreach($html->find('meta') as $pageMeta) {
+            if ($pageMeta->name == 'keywords' || $pageMeta->name == 'description' || $pageMeta->name == 'author') {
+                $data[$pageMeta->name] = Array('text' => $pageMeta->content, 'description' => $pageMeta->name, 'type' => 'text');
+                $pageMeta->content = "<?=get('$dataFile', 'title')?>";
+            }
+        }
+
         foreach($html->find('.auto-edit, .auto-edit-img, .auto-edit-bg-img') as $edit) {
             $fieldID = uniqid();
             $desc = '';
