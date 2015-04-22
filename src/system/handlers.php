@@ -25,8 +25,7 @@ class Login {
                 $_SESSION["user"] = $_POST['user'];
                 $_SESSION["password"] = $_POST['password'];
 
-                $userArray = Array('user' => $_POST['user'], 'password' => $_POST['password'], 'role' => Array('admin'));
-                //$userArray = Array('user' => $_POST['user'], 'password' => password_hash($_POST['password'], PASSWORD_DEFAULT), 'role' => Array('admin'));
+                $userArray = Array('user' => $_POST['user'], 'password' => password_hash($_POST['password'], PASSWORD_DEFAULT), 'role' => Array('admin'));
 
                 $fp = fopen('data/autocms-access.json', 'w');
                 fwrite($fp, '['.json_encode($userArray).']');

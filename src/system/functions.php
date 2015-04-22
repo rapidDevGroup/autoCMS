@@ -23,8 +23,7 @@ function checkPass($user = null, $pass = null) {
     $json = json_decode(file_get_contents("data/autocms-access.json"), true);
     $key =  search($json, 'user', $user)[0];
 
-    // if (password_verify($pass, $key['password']))
-    if ($key['password'] == $pass && $pass != '') {
+    if (password_verify($pass, $key['password'])) {
         $_SESSION["role"] = serialize($key['role']);
         return true;
     }
@@ -44,7 +43,7 @@ function search($array, $key, $value) {
     return $results;
 }
 
-function endsWith ($string, $test) {
+function endsWith($string, $test) {
     $strLen = strlen($string);
     $testLen = strlen($test);
     if ($testLen > $strLen) return false;
@@ -84,7 +83,7 @@ function buildDataFilesByTags($files) {
         $html = str_get_html($fileData);
 
         foreach($html->find('title') as $pageTitle) {
-            $data['title'] = Array('text' => $pageTitle->innertext, 'description' => 'Browser Title', 'type' => 'text');
+            $data['title'] = Array('text' => $pageTitle->innertext, 'description' => 'title', 'type' => 'text');
             $pageTitle->innertext = "<?=get('$dataFile', 'title')?>";
         }
 
@@ -99,10 +98,34 @@ function buildDataFilesByTags($files) {
             $fieldID = uniqid();
             $desc = '';
             if (strpos($edit->class, 'auto-edit-img') !== false) {
-                // todo: download existing image to images folder and insert new src
                 if (isset($edit->autocms)) $desc = $edit->autocms;
-                $data[$fieldID] = Array('image' => $edit->src, 'description' => $desc, 'type' => 'image');
-                $edit->src = "<?=get('$dataFile', '$fieldID')?>";
+
+                $source = $edit->src;
+                if (substr($edit->src, 0, 1) == "/") $source = $_SERVER['DOCUMENT_ROOT'] . $edit->src;
+
+                $fileExt = pathinfo(parse_url($edit->src,PHP_URL_PATH),PATHINFO_EXTENSION);
+
+                if ($fileExt === '') {
+                    $detect = exif_imagetype($source);
+                    if ($detect == IMAGETYPE_GIF) {
+                        $fileExt = 'gif';
+                    } else if ($detect == IMAGETYPE_JPEG) {
+                        $fileExt = 'jpg';
+                    } else if ($detect == IMAGETYPE_PNG) {
+                        $fileExt = 'jpg';
+                    } else {
+                        $fileExt = 'error';
+                    }
+                }
+
+                if ($fileExt != 'error') {
+                    $imgFileName = '/admin/images/' . uniqid() . '.' . $fileExt;
+
+                    copy($source, $_SERVER['DOCUMENT_ROOT'] . $imgFileName);
+
+                    $data[$fieldID] = Array('image' => $imgFileName, 'description' => $desc, 'type' => 'image');
+                    $edit->src = "<?=get('$dataFile', '$fieldID')?>";
+                }
             } else if (strpos($edit->class, 'auto-edit-bg-img') !== false) {
 
             } else if (strpos($edit->class, 'auto-edit') !== false) {
