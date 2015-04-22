@@ -17,7 +17,7 @@ $data = getPageData($page);
                     <div class="form-group">
                         <?php $desc = $datum['description'];
                         if ($desc == '') {
-                            $desc = 'Add Description';
+                            $desc = 'add description';
                         } ?>
                         <label for="<?=$key?>" class="col-lg-2 col-sm-2 control-label"><a href=""><?=$desc?></a></label>
                         <?php if ($datum['type'] == 'html') { ?>
@@ -29,8 +29,11 @@ $data = getPageData($page);
                                 <input name="<?=$key?>" class="form-control" value="<?=$datum['text']?>">
                             </div>
                         <?php } else if ($datum['type'] == 'image') { ?>
-                            <div class="col-lg-8 col-sm-10">
-                                <input name="<?=$key?>" class="form-control" value="<?=$datum['image']?>">
+                            <div class="col-lg-6 col-sm-8">
+                                <img class="img-responsive img-thumbnail" src="<?=$datum['image']?>">
+                            </div>
+                            <div class="col-lg-6 col-sm-8">
+
                             </div>
                         <?php } ?>
                     </div>
