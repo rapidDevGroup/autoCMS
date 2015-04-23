@@ -29,18 +29,20 @@ $data = getPageData($page);
                                 <input name="<?=$key?>" class="form-control" value="<?=$datum['text']?>">
                             </div>
                         <?php } else if ($datum['type'] == 'image') { ?>
-                            <div class="col-lg-6 col-sm-8">
+                            <div class="col-lg-5 col-sm-7">
                                 <img class="img-responsive img-thumbnail" src="<?=$datum['image']?>">
                             </div>
-                            <div class="col-lg-6 col-sm-8">
-
+                            <div class="col-lg-3 col-sm-3">
+                                <button type="button" class="btn btn-default btn-block">Upload New Image</button>
+                                <button type="button" class="btn btn-danger btn-block">Delete Image</button>
                             </div>
                         <?php } ?>
                     </div>
                 <?php } ?>
+                <hr>
                 <div class="form-group">
-                    <div class="col-lg-offset-2 col-lg-8 col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn btn-primary pull-right">Save</button>
+                    <div class="col-lg-offset-7 col-lg-3 col-sm-offset-7 col-sm-3">
+                        <button type="submit" class="btn btn-primary btn-block pull-right">Save Page</button>
                     </div>
                 </div>
             </form>

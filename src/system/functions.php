@@ -123,7 +123,7 @@ function buildDataFilesByTags($files) {
 
                     copy($source, $_SERVER['DOCUMENT_ROOT'] . $imgFileName);
 
-                    $data[$fieldID] = Array('image' => $imgFileName, 'description' => $desc, 'type' => 'image');
+                    $data[$fieldID] = Array('image' => $imgFileName, 'description' => $desc, 'type' => 'image', 'alt-text' => $desc);
                     $edit->src = "<?=get('$dataFile', '$fieldID')?>";
                 }
             } else if (strpos($edit->class, 'auto-edit-bg-img') !== false) {
