@@ -1,5 +1,5 @@
 # autoCMS
-Automagically create a CMS with class names and data attributes.
+Automagically create a CMS using class names and data attributes in plain HTML/JavaScript/CSS site. PHP experience isn't needed.
 
 
 ### Steps
