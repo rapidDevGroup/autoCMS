@@ -1,14 +1,10 @@
 # autoCMS
-Automagically create a CMS with class names and data attributes or based solely on html tags such as paragraph, headers, spans and more.
-
-
-## Goal
-The goal of this repository is to make a content management system that automatically scans HTML files, creates json data files, and then allows you to simply edit the text of your site through an admin without the need to know code. Future goal would be to add data files to a document database like couchDB.
+Automagically create a CMS with class names and data attributes.
 
 
 ### Steps
 1. Create an HTML site and add the class "auto-edit" to heading tags, paragraph tags, span tags, or simply the whole div block.
-2. Copy the .htaccess and index.php files into an admin folder.
+2. Copy the src folder into an /admin/ off the root of your site
 3. Visit http://yoursite/admin/
 4. It will ask you to create a password, then scan your html files and ask you which ones to add to the CMS.
 5. autoCMS will rename files to .php (scan for links and rename those as well) and add the appropriate php tags.
@@ -70,13 +66,15 @@ This would be the same as the following with as many iterations as setup in the 
 ```HTML
     <li><a href="..." class="auto-nav" autocms="home navigation">...</a>
 ```
-
+**NOTE:**
+* All auto-nav tags need a description
+* All navigation links that link to the same page must have the same description
 
 ### Data Attributes
 
 ##### autocms
 
-This data tag can be used to add an additional description to a field, best used to know which navigation link is which.
+This data tag can be used to add an additional description to a field, also used to know which navigation link is which.
 
 
 ## Special Thanks
