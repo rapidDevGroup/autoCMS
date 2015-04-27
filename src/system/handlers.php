@@ -105,3 +105,18 @@ class Page {
         }
     }
 }
+
+class Description {
+    function post_xhr($page = null) {
+        if (is_null($page)) {
+            echo json_encode(StatusReturn::E400('400 Missing Required Data!'), JSON_NUMERIC_CHECK);
+        } else if (checkPass() && !authNeeded()) {
+
+            saveDescription($page, $_POST['pk'], $_POST['value']);
+
+            echo json_encode(StatusReturn::S200('Description Saved!'), JSON_NUMERIC_CHECK);
+        } else {
+            echo json_encode(StatusReturn::E401('401 Not Authorized!'), JSON_NUMERIC_CHECK);
+        }
+    }
+}

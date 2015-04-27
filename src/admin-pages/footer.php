@@ -10,6 +10,7 @@
         <!-- Custom Theme JavaScript -->
         <script src="/admin/libs/tinymce/tinymce.min.js"></script>
         <script src="/admin/libs/tinymce/jquery.tinymce.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
         <script src="/admin/js/sb-admin-2.js"></script>
         <script src="/admin/js/autocms.js"></script>
 

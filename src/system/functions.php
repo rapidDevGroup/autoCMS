@@ -178,3 +178,14 @@ function updatePage($file, $data) {
     fwrite($fp, json_encode($json));
     fclose($fp);
 }
+
+function saveDescription($file, $editKey, $editDesc) {
+    $dataFile = 'data/page-' . $file . '.json';
+    $json = json_decode(file_get_contents($dataFile), true);
+
+    $json[$editKey]['description'] = $editDesc;
+
+    $fp = fopen($dataFile, 'w');
+    fwrite($fp, json_encode($json));
+    fclose($fp);
+}

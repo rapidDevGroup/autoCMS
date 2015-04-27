@@ -13,3 +13,9 @@
 .panel-footer {
     line-height: 30px;
 }
+
+/* fix for form within form */
+.form-horizontal .editableform .form-group {
+    margin-left: 0;
+    margin-right: 0;
+}

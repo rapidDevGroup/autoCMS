@@ -19,7 +19,7 @@ $data = getPageData($page);
                         if ($desc == '') {
                             $desc = 'add description';
                         } ?>
-                        <label for="<?=$key?>" class="col-lg-2 col-sm-2 control-label"><a href=""><?=$desc?></a></label>
+                        <label for="<?=$key?>" class="col-lg-2 col-sm-2 control-label"><a id="desc-<?=$key?>" class="desc-edit" data-type="text" data-pk="<?=$key?>" data-url="/admin/page/<?=$page?>/desc/" data-title="edit description"><?=$desc?></a></label>
                         <?php if ($datum['type'] == 'html') { ?>
                             <div class="col-lg-8 col-sm-10">
                                 <textarea name="<?=$key?>" class="form-control"><?=$datum['html']?></textarea>

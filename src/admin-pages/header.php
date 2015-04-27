@@ -20,6 +20,7 @@ $pages = getPageList();
         <link href="/admin/css/autocms.css" rel="stylesheet">
         <!-- Custom Fonts -->
         <link href="/admin/libs/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
