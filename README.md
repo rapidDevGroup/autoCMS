@@ -1,6 +1,8 @@
 # autoCMS
 Automagically create a CMS using class names and data attributes in plain HTML/JavaScript/CSS site. PHP experience isn't needed.
 
+## Who Uses This
+This is for people who do not wish to use a complicated site management system like WordPress, Drupal, Joomla, or any other complicated system. This is for people who design simple HTML/Javascript/CSS sites and want to easily add a Content Management System without any hassle or learning a server side language and database system.
 
 ### Steps
 1. Create an HTML site and add the class "auto-edit" to heading tags, paragraph tags, span tags, or simply the whole div block.
