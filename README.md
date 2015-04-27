@@ -1,21 +1,21 @@
 # autoCMS
-Automatically create a CMS (Content Management System) using class names and data attributes in plain HTML/JavaScript/CSS site. PHP experience isn't needed, however, PHP is needed on the target server. Apache server is also needed.
+Automatically create a CMS (Content Management System) using class names and data attributes in plain HTML/JavaScript/CSS site. PHP experience isn't needed, however, PHP is needed on the target server. Apache server with Mod Rewrite is also needed.
 
 ## Who Uses This
 This is for people who do not wish to use a complicated site management system like WordPress, Drupal, Joomla, or any other complicated system. This is for people who design simple HTML/Javascript/CSS sites and want to easily add a Content Management System without any hassle or learning a server side language and database system.
 
+#### Please note: the master branch is in development!
+
+
 ### Steps
 1. Create an HTML site and add the class "auto-edit" to heading tags, paragraph tags, span tags, or simply the whole div block.
 2. Copy the admin folder into the root of your site
-3. Visit http://yoursite.com/admin/
-4. It will ask you to create a password, then scan your html files and ask you which ones to add to the CMS.
-5. autoCMS will rename files to .php (scan for links and rename those as well) and add the appropriate php tags.
+3. Make sure that the /admin/data/ and /admin/images/ folders are writable
+4. Visit http://yoursite.com/admin/
+5. It will ask you to create a password, then scan your html files and ask you which ones to add to the CMS.
+6. autoCMS will rename files to .php (scan for links and rename those as well) and add the appropriate php tags.
     * It will scan and look for edit tags and create a data file structure (JSON).
     * It will then bring you to a basic CMS to edit all your content.
-    
-
-# Please note: the master branch is in development!
-
 
 ## Tags Examples
 
