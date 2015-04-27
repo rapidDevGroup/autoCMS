@@ -10,7 +10,7 @@ This is for people who do not wish to use a complicated site management system l
 ### Steps
 1. Create an HTML site and add the class "auto-edit" to heading tags, paragraph tags, span tags, or simply the whole div block.
 2. Copy the admin folder into the root of your site
-3. Make sure that the /admin/data/ and /admin/images/ folders are writable
+3. Make sure that the admin folder and sub-folders are writable
 4. Visit http://yoursite.com/admin/
 5. It will ask you to create a password, then scan your html files and ask you which ones to add to the CMS.
 6. autoCMS will rename files to .php (scan for links and rename those as well) and add the appropriate php tags.
@@ -53,7 +53,7 @@ Or for background images **(Coming Soon)**
 ```
 **NOTE:**
 * The bg-img will add a style attribute with a background-image: url(img/url/imagename.jpg); and remove any other style attribute. Add a custom class for all your other background image attributes and do not use a style tag with this autoCRM class.
-* Image alt text will also be available to edit.
+* Image alt text will also be available to edit on non-background images.
 
 
 #### Repeating Tags **(Coming Soon)**

@@ -69,9 +69,8 @@ $pages = getPageList();
                 <div class="navbar-default sidebar" role="navigation">
                     <div class="sidebar-nav navbar-collapse">
                         <ul class="nav" id="side-menu">
-                            <li>
-                                <a href="/admin/dash/"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
-                            </li>
+                            <li><a href="/admin/dash/"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a></li>
+                            <?php if (hasNav()) {?><li><a href="/admin/nav/"><i class="fa fa-bars fa-fw"></i> Navigation</a></li><?php } ?>
                             <?php if (count($pages) > 0) {?>
                                 <li>
                                     <a href="#"><i class="fa fa-files-o fa-fw"></i> Content Pages<span class="fa arrow"></span></a>

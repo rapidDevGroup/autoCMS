@@ -51,7 +51,9 @@ function endsWith($string, $test) {
 }
 
 function renameFiles($files) {
+    if (!file_exists ($_SERVER['DOCUMENT_ROOT'] . '/admin/originals/')) mkdir($_SERVER['DOCUMENT_ROOT'] . '/admin/originals/', 0755);
     foreach ($files as $file) {
+        copy('../' . $file, './originals/' . $file);
         $newName = str_replace(Array('.html', '.htm'), '.php', $file);
         rename('../' . $file, '../' . $newName);
     }
@@ -61,6 +63,11 @@ function getPageList() {
     if (!file_exists("data/autocms-pages.json")) return [];
     $json = json_decode(file_get_contents("data/autocms-pages.json"), true);
     return $json;
+}
+
+function hasNav() {
+    if (!file_exists("data/autocms-nav.json")) return false;
+    return true;
 }
 
 function buildDataFilesByTags($files) {
@@ -133,7 +140,7 @@ function buildDataFilesByTags($files) {
                     $edit->alt = "<?=get('$dataFile', '$altFieldID')?>";
                 }
             } else if (strpos($edit->class, 'auto-edit-bg-img') !== false) {
-
+                // TODO
             } else if (strpos($edit->class, 'auto-edit') !== false) {
                 if (isset($edit->autocms)) $desc = $edit->autocms;
                 $data[$fieldID] = Array('html' => $edit->innertext, 'description' => $desc, 'type' => 'html');
@@ -187,5 +194,37 @@ function saveDescription($file, $editKey, $editDesc) {
 
     $fp = fopen($dataFile, 'w');
     fwrite($fp, json_encode($json));
+    fclose($fp);
+}
+
+function getAllNavigationData($files) {
+    $dataFile = 'data/pages-autocms-nav.json';
+
+    if (!file_exists($dataFile)) {
+        $navArr = Array();
+    } else {
+        $navArr = json_decode(file_get_contents($dataFile), true);
+    }
+
+    foreach ($files as $file) {
+        $fileData = file_get_contents('../' . $file, true);
+
+        $html = str_get_html($fileData);
+
+        foreach($html->find('.autocms-nav') as $navigation) {
+            if (isset($navigation->autocms)) {
+                $fieldID = uniqid();
+                $desc = $navigation->autocms;
+
+                /*
+                $data['title'] = Array('text' => $pageTitle->innertext, 'description' => 'title', 'type' => 'text');
+                $pageTitle->innertext = "<?=get('$dataFile', 'title')?>";
+                */
+            }
+        }
+    }
+
+    $fp = fopen($dataFile, 'w');
+    fwrite($fp, json_encode($navArr));
     fclose($fp);
 }

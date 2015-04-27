@@ -10,10 +10,8 @@ tinymce.init({
 
 $('.desc-edit').editable();
 
-console.log('loaded');
-
 function validateCreateAuth() {
-    // TODO: validate tht the password matches... other rules if needed
+    // TODO: validate the the password matches... other rules if needed
 
     return true;
 }
