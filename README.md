@@ -14,6 +14,9 @@ This is for people who do not wish to use a complicated site management system l
     * It will then bring you to a basic CMS to edit all your content.
     
 
+# Please note: the master branch is in development!
+
+
 ## Tags Examples
 
 #### Text Tags
