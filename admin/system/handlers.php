@@ -107,6 +107,26 @@ class Page {
     }
 }
 
+class Nav {
+    function get() {
+        if (checkPass() && !authNeeded()) {
+            include_once('admin-pages/nav.php');
+        } else {
+            include_once('admin-pages/401.html');
+        }
+    }
+    function post() {
+        if (checkPass() && !authNeeded()) {
+
+            updateNav($_POST);
+
+            include_once('admin-pages/nav.php');
+        } else {
+            include_once('admin-pages/401.html');
+        }
+    }
+}
+
 class Description {
     function post_xhr($page = null) {
         if (is_null($page)) {

@@ -81,7 +81,7 @@ function buildDataFilesByTags($files) {
         $pageArr[] = str_replace(Array('.html', '.htm'), '', $file);
 
         // create datafile to store stuff
-        $dataFile = str_replace(Array('.html', '.htm'), '.json', $file);
+        $dataFile = 'page-' . str_replace(Array('.html', '.htm'), '.json', $file);
         $data = Array();
 
         // start collecting fields to add to data
@@ -149,7 +149,7 @@ function buildDataFilesByTags($files) {
         }
 
         // write data file
-        $fp = fopen('data/page-' . $dataFile, 'w');
+        $fp = fopen('data/' . $dataFile, 'w');
         fwrite($fp, json_encode($data));
         fclose($fp);
 
@@ -173,8 +173,28 @@ function getPageData($file) {
     return $json;
 }
 
+function getNavData() {
+    $dataFile = 'data/autocms-nav.json';
+    $json = json_decode(file_get_contents($dataFile), true);
+
+    return $json;
+}
+
 function updatePage($file, $data) {
     $dataFile = 'data/page-' . $file . '.json';
+    $json = json_decode(file_get_contents($dataFile), true);
+
+    foreach ($data as $key => $datum) {
+        $json[$key][$json[$key]['type']] = trim($datum);
+    }
+
+    $fp = fopen($dataFile, 'w');
+    fwrite($fp, json_encode($json));
+    fclose($fp);
+}
+
+function updateNav($data) {
+    $dataFile = 'data/autocms-nav.json';
     $json = json_decode(file_get_contents($dataFile), true);
 
     foreach ($data as $key => $datum) {
@@ -198,12 +218,12 @@ function saveDescription($file, $editKey, $editDesc) {
 }
 
 function getAllNavigationData($files) {
-    $dataFile = 'data/pages-autocms-nav.json';
+    $dataFile = 'autocms-nav.json';
 
     if (!file_exists($dataFile)) {
         $navArr = Array();
     } else {
-        $navArr = json_decode(file_get_contents($dataFile), true);
+        $navArr = json_decode(file_get_contents('data/' . $dataFile), true);
     }
 
     foreach ($files as $file) {
@@ -211,20 +231,23 @@ function getAllNavigationData($files) {
 
         $html = str_get_html($fileData);
 
-        foreach($html->find('.autocms-nav') as $navigation) {
+        foreach($html->find('.auto-nav') as $navigation) {
             if (isset($navigation->autocms)) {
-                $fieldID = uniqid();
-                $desc = $navigation->autocms;
+                $desc = preg_replace("/[^a-z^A-Z^0-9_-]/", "", $navigation->autocms);
 
-                /*
-                $data['title'] = Array('text' => $pageTitle->innertext, 'description' => 'title', 'type' => 'text');
-                $pageTitle->innertext = "<?=get('$dataFile', 'title')?>";
-                */
+                $navArr[$desc] = Array('text' => $navigation->innertext, 'description' => $navigation->autocms, 'type' => 'text');
+                $navigation->innertext = "<?=get('$dataFile', '$desc')?>";
+                $navigation->href = str_replace(Array('.html', '.htm'), '/', $navigation->href);
             }
         }
+
+        // write html file
+        $fp = fopen('../' . $file, 'w');
+        fwrite($fp, $html);
+        fclose($fp);
     }
 
-    $fp = fopen($dataFile, 'w');
+    $fp = fopen('data/' . $dataFile, 'w');
     fwrite($fp, json_encode($navArr));
     fclose($fp);
 }
