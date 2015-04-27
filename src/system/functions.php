@@ -127,10 +127,10 @@ function buildDataFilesByTags($files) {
                     $edit->src = "<?=get('$dataFile', '$fieldID')?>";
 
                     $altText = $edit->alt;
-                    $fieldID = uniqid();
+                    $altFieldID = uniqid();
                     
-                    $data[$fieldID] = Array('alt' => $altText, 'description' => 'image alt text', 'type' => 'text');
-                    $edit->alt = "<?=get('$dataFile', '$fieldID')?>";
+                    $data[$altFieldID] = Array('alt' => $altText, 'description' => 'image alt text', 'type' => 'text', 'parent' => $fieldID);
+                    $edit->alt = "<?=get('$dataFile', '$altFieldID')?>";
                 }
             } else if (strpos($edit->class, 'auto-edit-bg-img') !== false) {
 
