@@ -30,7 +30,7 @@ Automagically create a CMS using class names and data attributes in plain HTML/J
 ```HTML
 <img src="..." class="auto-edit-img" alt="...">
 ```
-Or for background images
+Or for background images **(Coming Soon)**
 
 ```HTML
 <div class="auto-edit-bg-img">...</div>
@@ -39,12 +39,12 @@ Or for background images
 * The bg-img will add a style attribute with a background-image: url(img/url/imagename.jpg); and remove any other style attribute. Add a custom class for all your other background image attributes and do not use a style tag with this autoCRM class.
 * Image alt text will also be available to edit.
 
-#### Repeating Tags
+#### Repeating Tags **(Coming Soon)**
 
 ```HTML
 <div class="auto-repeat">
     <p class="auto-edit">...</p>
-    <img src="..." class="auto-edit">
+    <img src="..." class="auto-edit-img">
 </div>
 ```
 
@@ -53,15 +53,15 @@ This would be the same as the following with as many iterations as setup in the 
 ```HTML
 <div>
     <p class="auto-edit">...</p>
-    <img src="..." class="auto-edit">
+    <img src="..." class="auto-edit-img">
     <p class="auto-edit">...</p>
-    <img src="..." class="auto-edit">
+    <img src="..." class="auto-edit-img">
     ...
 </div>
 ```
 
 
-#### Navigation Text Tags
+#### Navigation Text Tags **(Coming Soon)**
 
 ```HTML
     <li><a href="..." class="auto-nav" autocms="home navigation">...</a>

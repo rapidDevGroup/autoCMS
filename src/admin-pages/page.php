@@ -34,7 +34,6 @@ $data = getPageData($page);
                             </div>
                             <div class="col-lg-3 col-sm-3">
                                 <button type="button" class="btn btn-default btn-block">Upload New Image</button>
-                                <button type="button" class="btn btn-danger btn-block">Delete Image</button>
                             </div>
                         <?php } ?>
                     </div>
