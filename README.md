@@ -17,7 +17,18 @@ This is for people who do not wish to use a complicated site management system l
     * It will scan and look for edit tags and create a data file structure (JSON).
     * It will then bring you to a basic CMS to edit all your content.
 
+
 ## Tags Examples
+
+#### Navigation Text Tags **(Coming Soon)**
+
+```HTML
+    <li><a href="..." class="auto-nav" autocms="home navigation">...</a>
+```
+**NOTE:**
+* All auto-nav tags need a description
+* All navigation links that link to the same page must have the same description
+
 
 #### Text Tags
 
@@ -44,6 +55,7 @@ Or for background images **(Coming Soon)**
 * The bg-img will add a style attribute with a background-image: url(img/url/imagename.jpg); and remove any other style attribute. Add a custom class for all your other background image attributes and do not use a style tag with this autoCRM class.
 * Image alt text will also be available to edit.
 
+
 #### Repeating Tags **(Coming Soon)**
 
 ```HTML
@@ -66,14 +78,9 @@ This would be the same as the following with as many iterations as setup in the 
 ```
 
 
-#### Navigation Text Tags **(Coming Soon)**
+#### Blog/News Tags **(Coming Soon)**
 
-```HTML
-    <li><a href="..." class="auto-nav" autocms="home navigation">...</a>
-```
-**NOTE:**
-* All auto-nav tags need a description
-* All navigation links that link to the same page must have the same description
+
 
 ### Data Attributes
 
