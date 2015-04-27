@@ -4,8 +4,8 @@ Automagically create a CMS using class names and data attributes in plain HTML/J
 
 ### Steps
 1. Create an HTML site and add the class "auto-edit" to heading tags, paragraph tags, span tags, or simply the whole div block.
-2. Copy the src folder into an /admin/ off the root of your site
-3. Visit http://yoursite/admin/
+2. Copy the admin folder into the root of your site
+3. Visit http://yoursite.com/admin/
 4. It will ask you to create a password, then scan your html files and ask you which ones to add to the CMS.
 5. autoCMS will rename files to .php (scan for links and rename those as well) and add the appropriate php tags.
     * It will scan and look for edit tags and create a data file structure (JSON).
