@@ -46,13 +46,12 @@ This is for people who do not wish to use a complicated site management system l
 ```HTML
 <img src="..." class="auto-edit-img" alt="...">
 ```
-Or for background images **(Coming Soon)**
+Or for background images
 
 ```HTML
 <div class="auto-edit-bg-img">...</div>
 ```
 **NOTE:**
-* The bg-img will add a style attribute with a background-image: url(img/url/imagename.jpg); and remove any other style attribute. Add a custom class for all your other background image attributes and do not use a style tag with this autoCRM class.
 * Image alt text will also be available to edit on non-background images.
 
 

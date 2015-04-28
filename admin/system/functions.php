@@ -138,13 +138,47 @@ function buildDataFilesByTags($files) {
                     
                     $data[$altFieldID] = Array('alt' => $altText, 'description' => 'image alt text', 'type' => 'text', 'parent' => $fieldID);
                     $edit->alt = "<?=get('$dataFile', '$altFieldID')?>";
+
+                    $edit->class = str_replace('auto-edit-img', '', $edit->class);
                 }
             } else if (strpos($edit->class, 'auto-edit-bg-img') !== false) {
-                // TODO
+                if (isset($edit->autocms)) $desc = $edit->autocms;
+
+                $source = $edit->style;
+                preg_match('~\bbackground(-image)?\s*:(.*?)\(\s*(\'|")?(?<image>.*?)\3?\s*\)~i', $source, $matches);
+                $source = $matches[4];
+                if (substr($edit->src, 0, 1) == "/") $source = $_SERVER['DOCUMENT_ROOT'] . $edit->src;
+
+                $fileExt = pathinfo(parse_url($edit->src,PHP_URL_PATH),PATHINFO_EXTENSION);
+
+                if ($fileExt === '') {
+                    $detect = exif_imagetype($source);
+                    if ($detect == IMAGETYPE_GIF) {
+                        $fileExt = 'gif';
+                    } else if ($detect == IMAGETYPE_JPEG) {
+                        $fileExt = 'jpg';
+                    } else if ($detect == IMAGETYPE_PNG) {
+                        $fileExt = 'jpg';
+                    } else {
+                        $fileExt = 'error';
+                    }
+                }
+
+                if ($fileExt != 'error') {
+                    $imgFileName = '/admin/images/' . uniqid() . '.' . $fileExt;
+
+                    copy($source, $_SERVER['DOCUMENT_ROOT'] . $imgFileName);
+
+                    $data[$fieldID] = Array('image' => $imgFileName, 'description' => $desc, 'type' => 'image');
+                    $edit->style = str_replace($matches[0], '', $edit->style) . "background-image: url('<?=get('$dataFile', '$fieldID')?>');";
+
+                    $edit->class = str_replace('auto-edit-bg-img', '', $edit->class);
+                }
             } else if (strpos($edit->class, 'auto-edit') !== false) {
                 if (isset($edit->autocms)) $desc = $edit->autocms;
                 $data[$fieldID] = Array('html' => $edit->innertext, 'description' => $desc, 'type' => 'html');
                 $edit->innertext = "<?=get('$dataFile', '$fieldID')?>";
+                $edit->class = str_replace('auto-edit', '', $edit->class);
             }
         }
 
