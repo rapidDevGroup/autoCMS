@@ -5,9 +5,8 @@ $files = scanFiles('.html');
 
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Dashboard</h1>
+            <h2 class="page-header">Dashboard</h2>
         </div>
-        <!-- /.col-lg-12 -->
     </div>
 
     <div class="row">
@@ -59,7 +58,6 @@ $files = scanFiles('.html');
             </div>
         </div-->
     </div>
-    <!-- /.row -->
 
     <div class="modal fade" id="fixUnprocessed" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">

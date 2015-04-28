@@ -48,13 +48,14 @@ This is for people who do not wish to use a complicated site management system l
 ```HTML
 <img src="..." class="auto-edit-img" alt="...">
 ```
+
+**NOTE:** Image alt text will also be available to edit on non-background images.
+
 Or for background images
 
 ```HTML
-<div class="auto-edit-bg-img">...</div>
+<div class="auto-edit-bg-img" style="background-image: url(path/to/original/image);">...</div>
 ```
-**NOTE:**
-* Image alt text will also be available to edit on non-background images.
 
 
 #### Repeating Tags **(Coming Soon)**
@@ -79,9 +80,9 @@ This would be the same as the following with as many iterations as setup in the 
 ```
 
 
-### Special HTML Attributes
+## Special HTML Attributes
 
-##### autocms Attribute
+#### autocms Attribute
 
 This data tag can be used to add an additional description to a field, also used to know which navigation link is which.
 
