@@ -5,7 +5,7 @@ $data = getPageData($page);
 
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Content editing for <?=$page?></h1>
+            <h2 class="page-header">Content editing for <?=$page?></h2>
         </div>
         <!-- /.col-lg-12 -->
     </div>
