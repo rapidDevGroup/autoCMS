@@ -79,15 +79,29 @@ This would be the same as the following with as many iterations as setup in the 
 ```
 
 
-#### Blog/News Tags **(Coming Soon)**
-
-
-
 ### Data Attributes
 
 ##### autocms
 
 This data tag can be used to add an additional description to a field, also used to know which navigation link is which.
+
+
+## Coming Soon and Planed Future Updates
+
+##### Blog/News Feed Tags **(Coming Soon)**
+no progress yet
+
+##### Adding RSS Feed **(Coming Soon)**
+no progress yet
+
+##### Multi-Language **(Future Plan)**
+no progress yet
+
+##### Inline Editing **(Future Plan)**
+no progress yet
+
+##### User Privilege Settings **(Future Plan)**
+no progress yet
 
 
 ## License
