@@ -69,6 +69,7 @@ class Dash {
             getAllNavigationData($_POST['files']);
             buildDataFilesByTags($_POST['files']);
             renameFiles($_POST['files']);
+            copyApacheConfig();
 
             include_once('admin-pages/process.php');
 

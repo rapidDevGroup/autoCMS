@@ -271,7 +271,7 @@ function getAllNavigationData($files) {
 
                 $navArr[$desc] = Array('text' => $navigation->innertext, 'description' => $navigation->autocms, 'type' => 'text');
                 $navigation->innertext = "<?=get('$dataFile', '$desc')?>";
-                $navigation->href = str_replace(Array('.html', '.htm'), '/', $navigation->href);
+                $navigation->href = str_replace(Array('.html', '.htm'), '/', '/' . $navigation->href);
             }
         }
 
@@ -284,4 +284,8 @@ function getAllNavigationData($files) {
     $fp = fopen('data/' . $dataFile, 'w');
     fwrite($fp, json_encode($navArr));
     fclose($fp);
+}
+
+function copyApacheConfig() {
+    copy('./temp/.htaccess', '../.htaccess');
 }
