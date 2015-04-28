@@ -25,7 +25,7 @@ This is for people who do not wish to use a complicated site management system l
 #### Navigation Text Tags
 
 ```HTML
-    <li><a href="..." class="auto-nav" autocms="home navigation">...</a></li>
+<a href="..." class="auto-nav" autocms="home navigation">...</a>
 ```
 **NOTE:**
 * All auto-nav tags need as an autocms description attribute
@@ -41,6 +41,7 @@ This is for people who do not wish to use a complicated site management system l
 
 <div class="auto-edit">...</p>
 ```
+**TIP:** Best practice is to use div tags so multiple paragraphs can be added and style tags be seen in the CMS.
 
 
 #### Image Tags
@@ -87,8 +88,9 @@ This would be the same as the following with as many iterations as setup in the 
 This data tag can be used to add an additional description to a field, also used to know which navigation link is which.
 
 ```HTML
-    <div class="auto-edit" autocms="section about firetrucks">... firetruck ...</div>
+<div class="auto-edit" autocms="section about firetrucks">... firetruck ...</div>
 ```
+**TIP:** These descriptions can be edited with the CMS. Good to keep track of whats what.
 
 
 ## Coming Soon and Planed Future Updates
