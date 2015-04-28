@@ -207,7 +207,7 @@ function updateNav($data) {
 }
 
 function saveDescription($file, $editKey, $editDesc) {
-    $dataFile = 'data/page-' . $file . '.json';
+    $dataFile = 'data/' . $file . '.json';
     $json = json_decode(file_get_contents($dataFile), true);
 
     $json[$editKey]['description'] = $editDesc;
