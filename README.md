@@ -1,5 +1,5 @@
 # autoCMS
-Automatically create a CMS (Content Management System) using class names and data attributes in plain HTML/JavaScript/CSS site. PHP experience isn't needed, however, PHP is needed on the target server. Apache server with Mod Rewrite is also needed.
+Automatically create a CMS (Content Management System) using class names and a special attribute in plain HTML/JavaScript/CSS site. PHP experience isn't needed, however, PHP is needed on the target server. Apache server with Mod Rewrite is also needed.
 
 ## Who Should Use This
 This is for people who do not wish to use a complicated site management system like WordPress, Drupal, Joomla, or any other complicated system. This is for people who design simple HTML/Javascript/CSS sites and want to easily add a Content Management System without any hassle or learning a server side language and database system.
@@ -25,7 +25,7 @@ This is for people who do not wish to use a complicated site management system l
 #### Navigation Text Tags
 
 ```HTML
-    <li><a href="..." class="auto-nav" autocms="home navigation">...</a>
+    <li><a href="..." class="auto-nav" autocms="home navigation">...</a></li>
 ```
 **NOTE:**
 * All auto-nav tags need as an autocms description attribute
@@ -79,11 +79,15 @@ This would be the same as the following with as many iterations as setup in the 
 ```
 
 
-### Data Attributes
+### Special HTML Attributes
 
-##### autocms
+##### autocms Attribute
 
 This data tag can be used to add an additional description to a field, also used to know which navigation link is which.
+
+```HTML
+    <div class="auto-edit" autocms="section about firetrucks">... firetruck ...</div>
+```
 
 
 ## Coming Soon and Planed Future Updates
