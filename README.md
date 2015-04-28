@@ -20,7 +20,7 @@ This is for people who do not wish to use a complicated site management system l
 
 ## Tags Examples
 
-#### Navigation Text Tags **(Coming Soon)**
+#### Navigation Text Tags
 
 ```HTML
     <li><a href="..." class="auto-nav" autocms="home navigation">...</a>
