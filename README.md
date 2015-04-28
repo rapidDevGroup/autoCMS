@@ -1,7 +1,7 @@
 # autoCMS
 Automatically create a CMS (Content Management System) using class names and data attributes in plain HTML/JavaScript/CSS site. PHP experience isn't needed, however, PHP is needed on the target server. Apache server with Mod Rewrite is also needed.
 
-## Who Should Uses This
+## Who Should Use This
 This is for people who do not wish to use a complicated site management system like WordPress, Drupal, Joomla, or any other complicated system. This is for people who design simple HTML/Javascript/CSS sites and want to easily add a Content Management System without any hassle or learning a server side language and database system.
 
 #### Please note: the master branch is in development!
