@@ -5,6 +5,8 @@ tinymce.init({
     height: 150,
     statusbar: false,
     forced_root_block : "",
+    mode : "textareas",
+    theme : "advanced",
     toolbar: ["styleselect | fontsizeselect", "undo redo | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | table | forecolor backcolor"]
 });
 
