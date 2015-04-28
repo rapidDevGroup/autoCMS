@@ -20,6 +20,8 @@ This is for people who do not wish to use a complicated site management system l
 
 ## Tags Examples
 
+**NOTE:** Do not use these tags for styling as they will be removed.
+
 #### Navigation Text Tags
 
 ```HTML
