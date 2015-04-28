@@ -26,8 +26,8 @@ This is for people who do not wish to use a complicated site management system l
     <li><a href="..." class="auto-nav" autocms="home navigation">...</a>
 ```
 **NOTE:**
-* All auto-nav tags need a description
-* All navigation links that link to the same page must have the same description
+* All auto-nav tags need as an autocms description attribute
+* All navigation links that link to the same page and have the same text must have the same description
 
 
 #### Text Tags
