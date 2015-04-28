@@ -7,7 +7,7 @@
         <!-- Metis Menu Plugin JavaScript -->
         <script src="//cdnjs.cloudflare.com/ajax/libs/metisMenu/2.0.0/metisMenu.min.js"></script>
         <!-- Others -->
-        <script src="//tinymce.cachefly.net/4.1/tinymce.min.js"></script>
+        <script src="//js.nicedit.com/nicEdit-latest.js" type="text/javascript"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
         <script src="/admin/js/autocms.js"></script>
     </body>

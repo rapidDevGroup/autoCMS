@@ -140,6 +140,7 @@ function buildDataFilesByTags($files) {
                     $edit->alt = "<?=get('$dataFile', '$altFieldID')?>";
 
                     $edit->class = str_replace('auto-edit-img', '', $edit->class);
+                    $edit->autocms = null;
                 }
             } else if (strpos($edit->class, 'auto-edit-bg-img') !== false) {
                 if (isset($edit->autocms)) $desc = $edit->autocms;
@@ -173,12 +174,14 @@ function buildDataFilesByTags($files) {
                     $edit->style = str_replace($matches[0], '', $edit->style) . "background-image: url('<?=get('$dataFile', '$fieldID')?>');";
 
                     $edit->class = str_replace('auto-edit-bg-img', '', $edit->class);
+                    $edit->autocms = null;
                 }
             } else if (strpos($edit->class, 'auto-edit') !== false) {
                 if (isset($edit->autocms)) $desc = $edit->autocms;
                 $data[$fieldID] = Array('html' => $edit->innertext, 'description' => $desc, 'type' => 'html');
                 $edit->innertext = "<?=get('$dataFile', '$fieldID')?>";
                 $edit->class = str_replace('auto-edit', '', $edit->class);
+                $edit->autocms = null;
             }
         }
 

@@ -30,17 +30,7 @@ $(function() {
         element.addClass('active');
     }
 
-
-    tinymce.init({
-        selector: "textarea",
-        menubar : false,
-        plugins: "textcolor",
-        height: 150,
-        statusbar: false,
-        forced_root_block : "",
-        mode : "textareas",
-        toolbar: ["styleselect | fontsizeselect", "undo redo | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | table | forecolor backcolor"]
-    });
+    bkLib.onDomLoaded(function() { nicEditors.allTextAreas() });
 
     $('.desc-edit').editable();
 
