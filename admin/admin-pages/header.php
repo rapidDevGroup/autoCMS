@@ -12,14 +12,14 @@ $pages = getPageList();
         <meta name="author" content="">
         <title>autoCMS</title>
         <!-- Bootstrap Core CSS -->
-        <link href="/admin/libs/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
         <!-- MetisMenu CSS -->
-        <link href="/admin/libs/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
+        <link href="//cdnjs.cloudflare.com/ajax/libs/metisMenu/2.0.0/metisMenu.min.css" rel="stylesheet">
         <!-- Custom CSS -->
         <link href="/admin/css/sb-admin-2.css" rel="stylesheet">
         <link href="/admin/css/autocms.css" rel="stylesheet">
         <!-- Custom Fonts -->
-        <link href="/admin/libs/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
         <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
