@@ -38,9 +38,9 @@ $(function() {
 
     $('.desc-edit').editable();
 
-    var $uploadBtns = $('.upload-button');
-    if ($uploadBtns.exists()) {
-        $uploadBtns.click(function(e){
+    var $uploadButtons = $('.upload-button');
+    if ($uploadButtons.exists()) {
+        $uploadButtons.click(function(e){
             $('#' + $(this).data('trigger')).trigger('click');
         });
     }

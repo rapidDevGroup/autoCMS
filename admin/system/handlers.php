@@ -102,6 +102,7 @@ class Page {
             //print_r($_FILES);
 
             updatePage($page, $_POST);
+            uploadFiles($page);
 
             include_once('admin-pages/page.php');
         } else {

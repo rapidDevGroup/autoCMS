@@ -293,29 +293,43 @@ function copyApacheConfig() {
     copy('./temp/.htaccess', '../.htaccess');
 }
 
-function uploadFile() {
-    $sourceName = $_FILES['uploadedfile']['name'];
+function uploadFiles($page) {
+    foreach ($_FILES as $key => $data) {
+        if ($_FILES[$key]['error'] == 0) {
+            $sourceName = $_FILES[$key]['name'];
 
-    $fileExt = pathinfo($sourceName,PATHINFO_EXTENSION);
-    if ($fileExt === '') {
-        $detect = exif_imagetype($sourceName);
-        if ($detect == IMAGETYPE_GIF) {
-            $fileExt = 'gif';
-        } else if ($detect == IMAGETYPE_JPEG) {
-            $fileExt = 'jpg';
-        } else if ($detect == IMAGETYPE_PNG) {
-            $fileExt = 'jpg';
-        } else {
-            $fileExt = 'error';
+            $fileExt = pathinfo($sourceName, PATHINFO_EXTENSION);
+            if ($fileExt === '') {
+                $detect = exif_imagetype($sourceName);
+                if ($detect == IMAGETYPE_GIF) {
+                    $fileExt = 'gif';
+                } else if ($detect == IMAGETYPE_JPEG) {
+                    $fileExt = 'jpg';
+                } else if ($detect == IMAGETYPE_PNG) {
+                    $fileExt = 'jpg';
+                } else {
+                    $fileExt = 'error';
+                }
+            }
+
+            if ($fileExt != 'error') {
+                $imgFileName = '/admin/images/' . uniqid() . '.' . $fileExt;
+                move_uploaded_file($_FILES[$key]['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . $imgFileName);
+
+                $dataFile = 'data/page-' . $page . '.json';
+                $json = json_decode(file_get_contents($dataFile), true);
+
+                foreach ($json as $jsonKey => $datum) {
+                    if ($key == $jsonKey && $json[$key]['type'] == 'image') {
+                        unlink($_SERVER['DOCUMENT_ROOT'] . $json[$key][$json[$key]['type']]);
+                        $json[$key]['image'] = $imgFileName;
+                    }
+                }
+
+                $fp = fopen($dataFile, 'w');
+                fwrite($fp, json_encode($json));
+                fclose($fp);
+            }
         }
     }
-
-    if ($fileExt != 'error') {
-        $imgFileName = '/admin/images/hello-' . uniqid() . '.' . $fileExt;
-
-        if (move_uploaded_file($_FILES['uploadedfile']['tmp_name'], $imgFileName)) {
-            return true;
-        }
-    }
-    return false;
 }

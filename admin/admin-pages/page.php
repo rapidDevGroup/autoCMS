@@ -29,19 +29,19 @@ $data = getPageData($page);
                                 <input name="<?=$key?>" class="form-control" value="<?=$datum['text']?>">
                             </div>
                         <?php } else if ($datum['type'] == 'image') { ?>
-                            <div class="col-lg-5 col-sm-7">
+                            <div class="col-lg-6 col-sm-7">
                                 <img id="<?=$key?>-image" class="img-responsive img-thumbnail" src="<?=$datum['image']?>">
                             </div>
-                            <div class="col-lg-3 col-sm-3">
-                                <input type="file" name="<?=$key?>-file" id="<?=$key?>-file" style="display: none;" onchange="readURL(this, '<?=$key?>');">
-                                <button type="button" class="btn btn-default btn-block upload-button" data-trigger="<?=$key?>-file">Upload New Image</button>
+                            <div class="col-lg-2 col-sm-3">
+                                <input type="file" name="<?=$key?>" id="<?=$key?>" style="display: none;" onchange="readURL(this, '<?=$key?>');">
+                                <button type="button" class="btn btn-default btn-block upload-button" data-trigger="<?=$key?>">Upload Image</button>
                             </div>
                         <?php } ?>
                     </div>
                 <?php } ?>
                 <hr>
                 <div class="form-group">
-                    <div class="col-lg-offset-7 col-lg-3 col-sm-offset-9 col-sm-3">
+                    <div class="col-lg-offset-8 col-lg-2 col-sm-offset-9 col-sm-3">
                         <button type="submit" class="btn btn-primary btn-block pull-right">Save Page</button>
                     </div>
                 </div>
