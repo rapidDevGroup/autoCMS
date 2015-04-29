@@ -106,9 +106,12 @@ function buildDataFilesByTags($files) {
             $desc = '';
             if (strpos($edit->class, 'auto-repeat') !== false) {
 
+                if (isset($edit->autocms)) $desc = $edit->autocms;
+                $data[$fieldID] = Array('repeat' => Array(), 'description' => $desc, 'type' => 'repeat');
+
                 foreach($edit->find('.auto-edit, .auto-edit-img, .auto-edit-bg-img') as $repeat) {
 
-                    $fieldID = uniqid();
+                    $repeatFieldID = uniqid();
                     if (strpos($repeat->class, 'auto-edit-img') !== false) {
                         if (isset($repeat->autocms)) $desc = $repeat->autocms;
 
@@ -123,13 +126,13 @@ function buildDataFilesByTags($files) {
 
                             copy($source, $_SERVER['DOCUMENT_ROOT'] . $imgFileName);
 
-                            $data[$fieldID] = Array('image' => $imgFileName, 'description' => $desc, 'type' => 'image');
-                            $repeat->src = "<?=get('$dataFile', '$fieldID')?>";
+                            $data[$fieldID]['repeat'][$repeatFieldID] = Array('image' => $imgFileName, 'description' => $desc, 'type' => 'image');
+                            $repeat->src = "<?=get('$dataFile', '$repeatFieldID')?>";
 
                             $altText = $repeat->alt;
                             $altFieldID = uniqid();
 
-                            $data[$altFieldID] = Array('alt' => $altText, 'description' => 'image alt text', 'type' => 'text', 'parent' => $fieldID);
+                            $data[$fieldID]['repeat'][$altFieldID] = Array('alt' => $altText, 'description' => 'image alt text', 'type' => 'text', 'parent' => $repeatFieldID);
                             $repeat->alt = "<?=get('$dataFile', '$altFieldID')?>";
 
                             $repeat->class = str_replace('auto-edit-img', '', $repeat->class);
@@ -151,16 +154,16 @@ function buildDataFilesByTags($files) {
 
                             copy($source, $_SERVER['DOCUMENT_ROOT'] . $imgFileName);
 
-                            $data[$fieldID] = Array('image' => $imgFileName, 'description' => $desc, 'type' => 'image');
-                            $repeat->style = str_replace($matches[0], '', $repeat->style) . "background-image: url('<?=get('$dataFile', '$fieldID')?>');";
+                            $data[$fieldID]['repeat'][$repeatFieldID] = Array('image' => $imgFileName, 'description' => $desc, 'type' => 'image');
+                            $repeat->style = str_replace($matches[0], '', $repeat->style) . "background-image: url('<?=get('$dataFile', '$repeatFieldID')?>');";
 
                             $repeat->class = str_replace('auto-edit-bg-img', '', $repeat->class);
                             $repeat->autocms = null;
                         }
                     } else if (strpos($repeat->class, 'auto-edit') !== false) {
                         if (isset($repeat->autocms)) $desc = $repeat->autocms;
-                        $data[$fieldID] = Array('html' => $repeat->innertext, 'description' => $desc, 'type' => 'html');
-                        $repeat->innertext = "<?=get('$dataFile', '$fieldID')?>";
+                        $data[$fieldID]['repeat'][$repeatFieldID] = Array('html' => $repeat->innertext, 'description' => $desc, 'type' => 'html');
+                        $repeat->innertext = "<?=get('$dataFile', '$repeatFieldID')?>";
                         $repeat->class = str_replace('auto-edit', '', $repeat->class);
                         $repeat->autocms = null;
                     }
@@ -297,11 +300,15 @@ function updateNav($data) {
     fclose($fp);
 }
 
-function saveDescription($file, $editKey, $editDesc) {
+function saveDescription($file, $editKey, $editDesc, $secondKey = null) {
     $dataFile = 'data/' . $file . '.json';
     $json = json_decode(file_get_contents($dataFile), true);
 
-    $json[$editKey]['description'] = $editDesc;
+    if (!is_null($secondKey)) {
+        $json[$editKey]['repeat'][$secondKey]['description'] = $editDesc;
+    } else {
+        $json[$editKey]['description'] = $editDesc;
+    }
 
     $fp = fopen($dataFile, 'w');
     fwrite($fp, json_encode($json));

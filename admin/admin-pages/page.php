@@ -36,6 +36,9 @@ $data = getPageData($page);
                                 <input type="file" name="<?=$key?>" id="<?=$key?>" style="display: none;" onchange="readURL(this, '<?=$key?>');">
                                 <button type="button" class="btn btn-default btn-block upload-button" data-trigger="<?=$key?>">Upload Image</button>
                             </div>
+                        <?php } else if ($datum['type'] == 'repeat') { ?>
+
+                            
                         <?php } ?>
                     </div>
                 <?php } ?>

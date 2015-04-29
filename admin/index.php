@@ -25,5 +25,6 @@ Toro::serve(array(
     '/nav/'                     => 'Nav',
     '/dash/:string'             => 'Dash',
     '/page/:alpha'              => 'Page',
-    '/page/:alpha/desc/'        => 'Description'
+    '/page/:alpha/desc/'        => 'Description',
+    '/page/:alpha/desc/:key/'   => 'Description'
 ));
