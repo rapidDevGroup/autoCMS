@@ -34,7 +34,6 @@ $data = getPageData($page);
                             </div>
                             <div class="col-lg-3 col-sm-3">
                                 <input type="file" name="<?=$key?>-file" id="<?=$key?>-file" style="display: none;" onchange="readURL(this, '<?=$key?>');">
-                                <input type="hidden" name="key" value="<?=$key?>">
                                 <button type="button" class="btn btn-default btn-block upload-button" data-trigger="<?=$key?>-file">Upload New Image</button>
                             </div>
                         <?php } ?>
@@ -42,7 +41,7 @@ $data = getPageData($page);
                 <?php } ?>
                 <hr>
                 <div class="form-group">
-                    <div class="col-lg-offset-7 col-lg-3 col-sm-offset-7 col-sm-3">
+                    <div class="col-lg-offset-7 col-lg-3 col-sm-offset-9 col-sm-3">
                         <button type="submit" class="btn btn-primary btn-block pull-right">Save Page</button>
                     </div>
                 </div>

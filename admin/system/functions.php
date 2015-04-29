@@ -222,7 +222,7 @@ function updatePage($file, $data) {
     $json = json_decode(file_get_contents($dataFile), true);
 
     foreach ($data as $key => $datum) {
-        $json[$key][$json[$key]['type']] = trim($datum);
+        if ($key != 'key') $json[$key][$json[$key]['type']] = trim($datum);
     }
 
     $fp = fopen($dataFile, 'w');
