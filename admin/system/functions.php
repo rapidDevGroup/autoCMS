@@ -292,3 +292,30 @@ function getAllNavigationData($files) {
 function copyApacheConfig() {
     copy('./temp/.htaccess', '../.htaccess');
 }
+
+function uploadFile() {
+    $sourceName = $_FILES['uploadedfile']['name'];
+
+    $fileExt = pathinfo($sourceName,PATHINFO_EXTENSION);
+    if ($fileExt === '') {
+        $detect = exif_imagetype($sourceName);
+        if ($detect == IMAGETYPE_GIF) {
+            $fileExt = 'gif';
+        } else if ($detect == IMAGETYPE_JPEG) {
+            $fileExt = 'jpg';
+        } else if ($detect == IMAGETYPE_PNG) {
+            $fileExt = 'jpg';
+        } else {
+            $fileExt = 'error';
+        }
+    }
+
+    if ($fileExt != 'error') {
+        $imgFileName = '/admin/images/hello-' . uniqid() . '.' . $fileExt;
+
+        if (move_uploaded_file($_FILES['uploadedfile']['tmp_name'], $imgFileName)) {
+            return true;
+        }
+    }
+    return false;
+}

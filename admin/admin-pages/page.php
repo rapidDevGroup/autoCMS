@@ -12,7 +12,7 @@ $data = getPageData($page);
 
     <div class="row">
         <div class="col-lg-12">
-            <form action="/admin/page/<?=$page?>/" method="post" class="form-horizontal">
+            <form action="/admin/page/<?=$page?>/" method="post" class="form-horizontal" enctype="multipart/form-data">
                 <?php foreach($data as $key => $datum) { ?>
                     <div class="form-group">
                         <?php $desc = $datum['description'];
@@ -30,10 +30,12 @@ $data = getPageData($page);
                             </div>
                         <?php } else if ($datum['type'] == 'image') { ?>
                             <div class="col-lg-5 col-sm-7">
-                                <img class="img-responsive img-thumbnail" src="<?=$datum['image']?>">
+                                <img id="<?=$key?>-image" class="img-responsive img-thumbnail" src="<?=$datum['image']?>">
                             </div>
                             <div class="col-lg-3 col-sm-3">
-                                <button type="button" class="btn btn-default btn-block">Upload New Image</button>
+                                <input type="file" name="<?=$key?>-file" id="<?=$key?>-file" style="display: none;" onchange="readURL(this, '<?=$key?>');">
+                                <input type="hidden" name="key" value="<?=$key?>">
+                                <button type="button" class="btn btn-default btn-block upload-button" data-trigger="<?=$key?>-file">Upload New Image</button>
                             </div>
                         <?php } ?>
                     </div>

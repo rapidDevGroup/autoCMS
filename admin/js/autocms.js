@@ -1,4 +1,8 @@
 $(function() {
+    /* create exists function */
+    jQuery.fn.exists = function(){return this.length>0;}
+
+
     $('#side-menu').metisMenu();
 
     //Loads the correct sidebar on window load,
@@ -34,10 +38,32 @@ $(function() {
 
     $('.desc-edit').editable();
 
-    function validateCreateAuth() {
-        // TODO: validate the the password matches... other rules if needed
-
-        return true;
+    var $uploadBtns = $('.upload-button');
+    if ($uploadBtns.exists()) {
+        $uploadBtns.click(function(e){
+            $('#' + $(this).data('trigger')).trigger('click');
+        });
     }
-
 });
+
+function validateCreateAuth() {
+    // TODO: validate the the password matches... other rules if needed
+
+    return true;
+}
+
+function readURL(input, imgID) {
+    if (input.files && input.files[0]) {
+        $.each(input.files, function(key, element) {
+            // if supported type
+            var ext = input.files[key].name.split('.').pop().toLowerCase();
+            if($.inArray(ext, ['gif','png','jpg','jpeg']) != -1) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#' + imgID + '-image').attr('src', e.target.result);
+                };
+                reader.readAsDataURL(input.files[key]);
+            }
+        });
+    }
+}
