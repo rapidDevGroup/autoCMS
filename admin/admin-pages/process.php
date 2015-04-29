@@ -4,7 +4,7 @@ include_once('header.php');
 
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Processing Files Done</h1>
+            <h2 class="page-header">Processing Files Done</h2>
         </div>
         <!-- /.col-lg-12 -->
     </div>

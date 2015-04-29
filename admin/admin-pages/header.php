@@ -67,7 +67,7 @@ $pages = getPageList();
                                     <ul class="nav nav-second-level">
                                         <?php foreach($pages as $pageName) { ?>
                                             <li>
-                                                <a href="/admin/page/<?=$pageName?>/"><?=$pageName?></a>
+                                                <a href="/admin/page/<?=$pageName?>/"><i class="fa fa-file-text-o"></i> <?=$pageName?></a>
                                             </li>
                                         <?php } ?>
                                     </ul>
