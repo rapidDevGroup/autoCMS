@@ -101,29 +101,79 @@ function buildDataFilesByTags($files) {
             }
         }
 
-        foreach($html->find('.auto-edit, .auto-edit-img, .auto-edit-bg-img') as $edit) {
+        foreach($html->find('.auto-edit, .auto-edit-img, .auto-edit-bg-img, .auto-repeat') as $edit) {
             $fieldID = uniqid();
             $desc = '';
-            if (strpos($edit->class, 'auto-edit-img') !== false) {
+            if (strpos($edit->class, 'auto-repeat') !== false) {
+
+                foreach($edit->find('.auto-edit, .auto-edit-img, .auto-edit-bg-img') as $repeat) {
+
+                    $fieldID = uniqid();
+                    if (strpos($repeat->class, 'auto-edit-img') !== false) {
+                        if (isset($repeat->autocms)) $desc = $repeat->autocms;
+
+                        $source = $repeat->src;
+                        if (substr($repeat->src, 0, 1) == "/") $source = $_SERVER['DOCUMENT_ROOT'] . $repeat->src;
+
+                        $fileExt = pathinfo(parse_url($repeat->src, PHP_URL_PATH), PATHINFO_EXTENSION);
+                        $fileExt = getImageType($fileExt, $source);
+
+                        if ($fileExt != 'error') {
+                            $imgFileName = '/admin/images/' . uniqid() . '.' . $fileExt;
+
+                            copy($source, $_SERVER['DOCUMENT_ROOT'] . $imgFileName);
+
+                            $data[$fieldID] = Array('image' => $imgFileName, 'description' => $desc, 'type' => 'image');
+                            $repeat->src = "<?=get('$dataFile', '$fieldID')?>";
+
+                            $altText = $repeat->alt;
+                            $altFieldID = uniqid();
+
+                            $data[$altFieldID] = Array('alt' => $altText, 'description' => 'image alt text', 'type' => 'text', 'parent' => $fieldID);
+                            $repeat->alt = "<?=get('$dataFile', '$altFieldID')?>";
+
+                            $repeat->class = str_replace('auto-edit-img', '', $repeat->class);
+                            $repeat->autocms = null;
+                        }
+                    } else if (strpos($repeat->class, 'auto-edit-bg-img') !== false) {
+                        if (isset($repeat->autocms)) $desc = $edit->autocms;
+
+                        $source = $repeat->style;
+                        preg_match('~\bbackground(-image)?\s*:(.*?)\(\s*(\'|")?(?<image>.*?)\3?\s*\)~i', $source, $matches);
+                        $source = $matches[4];
+                        if (substr($repeat->src, 0, 1) == "/") $source = $_SERVER['DOCUMENT_ROOT'] . $repeat->src;
+
+                        $fileExt = pathinfo(parse_url($repeat->src, PHP_URL_PATH), PATHINFO_EXTENSION);
+                        $fileExt = getImageType($fileExt, $source);
+
+                        if ($fileExt != 'error') {
+                            $imgFileName = '/admin/images/' . uniqid() . '.' . $fileExt;
+
+                            copy($source, $_SERVER['DOCUMENT_ROOT'] . $imgFileName);
+
+                            $data[$fieldID] = Array('image' => $imgFileName, 'description' => $desc, 'type' => 'image');
+                            $repeat->style = str_replace($matches[0], '', $repeat->style) . "background-image: url('<?=get('$dataFile', '$fieldID')?>');";
+
+                            $repeat->class = str_replace('auto-edit-bg-img', '', $repeat->class);
+                            $repeat->autocms = null;
+                        }
+                    } else if (strpos($repeat->class, 'auto-edit') !== false) {
+                        if (isset($repeat->autocms)) $desc = $repeat->autocms;
+                        $data[$fieldID] = Array('html' => $repeat->innertext, 'description' => $desc, 'type' => 'html');
+                        $repeat->innertext = "<?=get('$dataFile', '$fieldID')?>";
+                        $repeat->class = str_replace('auto-edit', '', $repeat->class);
+                        $repeat->autocms = null;
+                    }
+                }
+
+            } else if (strpos($edit->class, 'auto-edit-img') !== false) {
                 if (isset($edit->autocms)) $desc = $edit->autocms;
 
                 $source = $edit->src;
                 if (substr($edit->src, 0, 1) == "/") $source = $_SERVER['DOCUMENT_ROOT'] . $edit->src;
 
                 $fileExt = pathinfo(parse_url($edit->src,PHP_URL_PATH),PATHINFO_EXTENSION);
-
-                if ($fileExt === '') {
-                    $detect = exif_imagetype($source);
-                    if ($detect == IMAGETYPE_GIF) {
-                        $fileExt = 'gif';
-                    } else if ($detect == IMAGETYPE_JPEG) {
-                        $fileExt = 'jpg';
-                    } else if ($detect == IMAGETYPE_PNG) {
-                        $fileExt = 'jpg';
-                    } else {
-                        $fileExt = 'error';
-                    }
-                }
+                $fileExt = getImageType($fileExt, $source);
 
                 if ($fileExt != 'error') {
                     $imgFileName = '/admin/images/' . uniqid() . '.' . $fileExt;
@@ -151,19 +201,7 @@ function buildDataFilesByTags($files) {
                 if (substr($edit->src, 0, 1) == "/") $source = $_SERVER['DOCUMENT_ROOT'] . $edit->src;
 
                 $fileExt = pathinfo(parse_url($edit->src,PHP_URL_PATH),PATHINFO_EXTENSION);
-
-                if ($fileExt === '') {
-                    $detect = exif_imagetype($source);
-                    if ($detect == IMAGETYPE_GIF) {
-                        $fileExt = 'gif';
-                    } else if ($detect == IMAGETYPE_JPEG) {
-                        $fileExt = 'jpg';
-                    } else if ($detect == IMAGETYPE_PNG) {
-                        $fileExt = 'jpg';
-                    } else {
-                        $fileExt = 'error';
-                    }
-                }
+                $fileExt = getImageType($fileExt, $source);
 
                 if ($fileExt != 'error') {
                     $imgFileName = '/admin/images/' . uniqid() . '.' . $fileExt;
@@ -201,6 +239,22 @@ function buildDataFilesByTags($files) {
     $fp = fopen('data/autocms-pages.json', 'w');
     fwrite($fp, json_encode($pageArr));
     fclose($fp);
+}
+
+function getImageType($fileExt, $source) {
+    if ($fileExt === '') {
+        $detect = exif_imagetype($source);
+        if ($detect == IMAGETYPE_GIF) {
+            $fileExt = 'gif';
+        } else if ($detect == IMAGETYPE_JPEG) {
+            $fileExt = 'jpg';
+        } else if ($detect == IMAGETYPE_PNG) {
+            $fileExt = 'jpg';
+        } else {
+            $fileExt = 'error';
+        }
+    }
+    return $fileExt;
 }
 
 function getPageData($file) {

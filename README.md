@@ -90,7 +90,7 @@ This data tag can be used to add an additional description to a field, also used
 ```HTML
 <div class="auto-edit" autocms="section about firetrucks">... firetruck ...</div>
 ```
-**TIP:** These descriptions can be edited with the CMS. Good to keep track of whats what.
+**TIP:** These descriptions can be edited with the CMS. Good to keep track of what's what.
 
 
 ## Coming Soon and Planed Future Updates
