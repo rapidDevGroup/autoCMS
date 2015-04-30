@@ -115,12 +115,16 @@ This data tag can be used to add an additional description to a field, also used
 **TIP:** These descriptions can be edited with the CMS. Good to keep track of what's what.
 
 
-## Coming Soon and Planed Future Updates
+## Coming Soon and Planned Future Updates
 
 * Adding RSS Feed
 * Multi-Language
+* Blog Drafts
+* Check for Safe Files
 * Inline Editing
-* User Privilege Settings **(Future Plan)**
+* User Privilege Settings
+* Multiple auto-repeat on a Page 
+* Add couchDB Option
 
 
 ## License
