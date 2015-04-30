@@ -71,7 +71,7 @@ class Dash {
             renameFiles($_POST['files']);
             copyApacheConfig();
 
-            include_once('admin-pages/process.php');
+            include_once('admin-pages/dash.php');
 
         } else if (is_null($action) && checkPass($_POST['user'], $_POST['password']) && !authNeeded()) {
             $_SESSION["user"] = $_POST['user'];

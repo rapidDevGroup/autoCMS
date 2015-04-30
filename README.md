@@ -63,22 +63,25 @@ Or for background images
 
 ```HTML
 <div class="auto-repeat">
-    <p class="auto-edit">...</p>
-    <img src="..." class="auto-edit-img">
+    <p class="auto-edit" autocms="...">...</p>
+    <img src="..." class="auto-edit-img" autocms="...">
 </div>
 ```
 
-This would be the same as the following with as many iterations as setup in the CMS
+This would be the same as the following with one addition repeat added by autoCMS
 
 ```HTML
 <div>
-    <p class="auto-edit">...</p>
-    <img src="..." class="auto-edit-img">
-    <p class="auto-edit">...</p>
-    <img src="..." class="auto-edit-img">
-    ...
+    <p class="auto-edit" autocms="...">...</p>
+    <img src="..." class="auto-edit-img" autocms="...">
+</div>
+<div>
+    <p class="auto-edit" autocms="...">...</p>
+    <img src="..." class="auto-edit-img" autocms="...">
 </div>
 ```
+**TIP:** We recommend using the attribute autocms to add a description.
+**NOTE:** Repeated content must be added by autoCMS, adding multiple copies in HTML will be interpreted as one repeat block.
 
 
 ## Special HTML Attributes

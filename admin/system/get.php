@@ -9,3 +9,10 @@ function get($file, $id, $secondary = null) {
     }
     return $json[$id][$json[$id]['type']];
 }
+
+function repeatCount($file, $id) {
+    $dataFile = 'admin/data/' . $file;
+    $json = json_decode(file_get_contents($dataFile), true);
+
+    return $json[$id]['count'];
+}
