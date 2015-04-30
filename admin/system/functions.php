@@ -109,10 +109,10 @@ function buildDataFilesByTags($files) {
                 if (isset($edit->autocms)) $desc = $edit->autocms;
                 $data[$fieldID] = Array('repeat' => Array(), 'description' => $desc, 'type' => 'repeat');
                 $count = 0;
+                $data[$fieldID]['repeat'][$count] = Array();
 
                 foreach($html->find('.auto-repeat .auto-edit, .auto-repeat .auto-edit-img, .auto-repeat .auto-edit-bg-img') as $repeat) {
-
-                    $data[$fieldID]['repeat'][$count] = Array();
+                    $desc = '';
 
                     $repeatFieldID = uniqid();
                     if (strpos($repeat->class, 'auto-edit-img') !== false) {

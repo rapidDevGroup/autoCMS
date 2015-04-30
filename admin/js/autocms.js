@@ -44,6 +44,19 @@ $(function() {
             $('#' + $(this).data('trigger')).trigger('click');
         });
     }
+
+    var $carousel = $('.carousel');
+    $carousel.on('slide.bs.carousel', function () {
+        $(this).find('.carousel-inner').css('overflow', 'hidden');
+        //$(this).find('textarea').width('100%');
+    });
+
+    $carousel.on('slid.bs.carousel', function () {
+        $(this).find('.carousel-inner').css('overflow', 'visible');
+        $(this).find('textarea').width('100%');
+        $('.nicEdit-panelContain').parent().width('100%');
+        $('.nicEdit-panelContain').parent().next().width('100%');
+    });
 });
 
 function validateCreateAuth() {
