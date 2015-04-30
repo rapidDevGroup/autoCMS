@@ -83,10 +83,12 @@ This would be the same as the following with one addition repeat added by autoCM
     <img src="..." class="auto-edit-img" autocms="...">
 </div>
 ```
-**TIP:** We recommend using the attribute autocms to add a description.
 **NOTE:** 
 * Repeated content must be added by autoCMS, adding multiple copies in HTML will be interpreted as one repeat block.
 * Can only have one repeat tag per page.
+
+**TIP:** We recommend using the attribute autocms to add a description.
+
 
 #### Blog/News Feed Tags **(Coming Soon)**
 
