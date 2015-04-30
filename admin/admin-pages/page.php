@@ -20,15 +20,15 @@ $data = getPageData($page);
                             <a id="desc-<?=$key?>" class="desc-edit" data-type="text" data-pk="<?=$key?>" data-url="/admin/page/<?=$page?>/desc/" data-title="edit description"><?=$desc?></a>
                         </label>
                         <?php if ($datum['type'] == 'html') { ?>
-                            <div class="col-lg-8 col-sm-10">
+                            <div class="col-lg-9 col-sm-10">
                                 <textarea name="<?=$key?>" class="form-control editor"><?=$datum['html']?></textarea>
                             </div>
                         <?php } else if ($datum['type'] == 'text') { ?>
-                            <div class="col-lg-8 col-sm-10">
+                            <div class="col-lg-9 col-sm-10">
                                 <input name="<?=$key?>" class="form-control" value="<?=$datum['text']?>">
                             </div>
                         <?php } else if ($datum['type'] == 'image') { ?>
-                            <div class="col-lg-6 col-sm-7">
+                            <div class="col-lg-7 col-sm-7">
                                 <img id="<?=$key?>-image" class="img-responsive img-thumbnail" src="<?=$datum['image']?>">
                             </div>
                             <div class="col-lg-2 col-sm-3">
@@ -36,7 +36,7 @@ $data = getPageData($page);
                                 <button type="button" class="btn btn-default btn-block upload-button" data-trigger="<?=$key?>">Upload Image</button>
                             </div>
                         <?php } else if ($datum['type'] == 'repeat') { ?>
-                            <div class="col-lg-8 col-sm-10">
+                            <div class="col-lg-9 col-sm-10">
 
                                 <div class="rounded-border">
 
@@ -59,10 +59,10 @@ $data = getPageData($page);
                                                                     <input name="<?=$repeatKey?>-<?=$x?>-<?=$repeatItemKey?>" class="form-control" value="<?=$repeatDatum['text']?>">
                                                                 <?php } else if ($repeatDatum['type'] == 'image') { ?>
                                                                     <div class="row">
-                                                                        <div class="col-lg-9 col-sm-9">
+                                                                        <div class="col-lg-9 col-sm-8">
                                                                             <img id="<?=$repeatKey?>-<?=$x?>-<?=$repeatItemKey?>-image" class="img-responsive img-thumbnail" src="<?=$repeatDatum['image']?>">
                                                                         </div>
-                                                                        <div class="col-lg-3 col-sm-3">
+                                                                        <div class="col-lg-3 col-sm-4">
                                                                             <input type="file" name="<?=$repeatKey?>-<?=$x?>-<?=$repeatItemKey?>" id="<?=$repeatKey?>-<?=$x?>-<?=$repeatItemKey?>" style="display: none;" onchange="readURL(this, '<?=$repeatKey?>-<?=$x?>-<?=$repeatItemKey?>');">
                                                                             <button type="button" class="btn btn-default btn-block upload-button" data-trigger="<?=$repeatKey?>-<?=$x?>-<?=$repeatItemKey?>">Upload Image</button>
                                                                         </div>
@@ -92,7 +92,7 @@ $data = getPageData($page);
                 <?php } ?>
                 <hr>
                 <div class="form-group">
-                    <div class="col-lg-offset-8 col-lg-2 col-sm-offset-9 col-sm-3">
+                    <div class="col-lg-offset-9 col-lg-2 col-sm-offset-9 col-sm-3">
                         <button type="submit" class="btn btn-primary btn-block pull-right">Save Page</button>
                     </div>
                 </div>
