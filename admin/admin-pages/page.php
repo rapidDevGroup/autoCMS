@@ -21,7 +21,7 @@ $data = getPageData($page);
                         </label>
                         <?php if ($datum['type'] == 'html') { ?>
                             <div class="col-lg-8 col-sm-10">
-                                <textarea name="<?=$key?>" class="form-control"><?=$datum['html']?></textarea>
+                                <textarea name="<?=$key?>" class="form-control" style="height:200px;"><?=$datum['html']?></textarea>
                             </div>
                         <?php } else if ($datum['type'] == 'text') { ?>
                             <div class="col-lg-8 col-sm-10">

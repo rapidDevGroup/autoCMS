@@ -117,17 +117,10 @@ This data tag can be used to add an additional description to a field, also used
 
 ## Coming Soon and Planed Future Updates
 
-##### Adding RSS Feed **(Coming Soon)**
-no progress yet
-
-##### Multi-Language **(Future Plan)**
-no progress yet
-
-##### Inline Editing **(Future Plan)**
-no progress yet
-
-##### User Privilege Settings **(Future Plan)**
-no progress yet
+* Adding RSS Feed
+* Multi-Language
+* Inline Editing
+* User Privilege Settings **(Future Plan)**
 
 
 ## License
