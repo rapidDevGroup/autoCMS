@@ -66,7 +66,7 @@ Or for background images
 
 ```HTML
 <div class="auto-repeat">
-    <p class="auto-edit" autocms="...">...</p>
+    <div class="auto-edit" autocms="...">...</div>
     <img src="..." class="auto-edit-img" autocms="...">
 </div>
 ```
@@ -75,11 +75,11 @@ This would be the same as the following with one addition repeat added by autoCM
 
 ```HTML
 <div>
-    <p class="auto-edit" autocms="...">...</p>
+    <div class="auto-edit" autocms="...">...</div>
     <img src="..." class="auto-edit-img" autocms="...">
 </div>
 <div>
-    <p class="auto-edit" autocms="...">...</p>
+    <div class="auto-edit" autocms="...">...</div>
     <img src="..." class="auto-edit-img" autocms="...">
 </div>
 ```
