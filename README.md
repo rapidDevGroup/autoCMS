@@ -1,8 +1,10 @@
 # autoCMS
 Automatically create a CMS (Content Management System) using class names and a special attribute in plain HTML/JavaScript/CSS site. PHP experience isn't needed, however, PHP is needed on the target server. Apache server with Mod Rewrite is also needed.
 
+
 ## Who Should Use This
 This is for people who do not wish to use a complicated site management system like WordPress, Drupal, Joomla, or any other complicated system. This is for people who design simple HTML/Javascript/CSS sites and want to easily add a Content Management System without any hassle or learning a server side language and database system.
+
 
 #### Please note: the master branch is in development!
 
@@ -60,7 +62,7 @@ Or for background images
 ```
 
 
-#### Repeating Tags **(Coming Soon)**
+#### Repeating Tags **(Almost Done)**
 
 ```HTML
 <div class="auto-repeat">
@@ -82,11 +84,21 @@ This would be the same as the following with one addition repeat added by autoCM
 </div>
 ```
 **TIP:** We recommend using the attribute autocms to add a description.
-**NOTE:** Repeated content must be added by autoCMS, adding multiple copies in HTML will be interpreted as one repeat block.
+**NOTE:** 
+* Repeated content must be added by autoCMS, adding multiple copies in HTML will be interpreted as one repeat block.
+* Can only have one repeat tag per page.
 
+#### Blog/News Feed Tags **(Coming Soon)**
 
-##### Blog/News Feed Tags **(Coming Soon)**
-no progress yet
+This works like auto-repeat but has special blog tags. Use this to list all your blog posts on a page.
+```HTML
+<div class="auto-blog">
+    <div class="auto-blog-title">...</div>
+    <img src="..." class="auto-blog-img">
+    <div class="auto-blog-short">...</div>
+    <a class="auto-blog-link">Read More</a>
+</div>
+```
 
 
 ## Special HTML Attributes
