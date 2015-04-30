@@ -107,9 +107,12 @@ function buildDataFilesByTags($files) {
             if (strpos($edit->class, 'auto-repeat') !== false) {
 
                 if (isset($edit->autocms)) $desc = $edit->autocms;
-                $data[$fieldID] = Array('repeat' => Array(), 'description' => $desc, 'type' => 'repeat', 'count' => 1);
+                $data[$fieldID] = Array('repeat' => Array(), 'description' => $desc, 'type' => 'repeat');
+                $count = 0;
 
                 foreach($html->find('.auto-repeat .auto-edit, .auto-repeat .auto-edit-img, .auto-repeat .auto-edit-bg-img') as $repeat) {
+
+                    $data[$fieldID]['repeat'][$count] = Array();
 
                     $repeatFieldID = uniqid();
                     if (strpos($repeat->class, 'auto-edit-img') !== false) {
@@ -126,14 +129,14 @@ function buildDataFilesByTags($files) {
 
                             copy($source, $_SERVER['DOCUMENT_ROOT'] . $imgFileName);
 
-                            $data[$fieldID]['repeat'][$repeatFieldID] = Array('image' => $imgFileName, 'description' => $desc, 'type' => 'image', 'original' => true);
-                            $repeat->src = "<?=get('$dataFile', '$fieldID', '$repeatFieldID')?>";
+                            $data[$fieldID]['repeat'][$count][$repeatFieldID] = Array('image' => $imgFileName, 'description' => $desc, 'type' => 'image');
+                            $repeat->src = "<?=get('$dataFile', '$fieldID', ".'$x'.", '$repeatFieldID')?>";
 
                             $altText = $repeat->alt;
                             $altFieldID = uniqid();
 
-                            $data[$fieldID]['repeat'][$altFieldID] = Array('alt' => $altText, 'description' => 'image alt text', 'type' => 'text', 'parent' => $repeatFieldID, 'original' => true);
-                            $repeat->alt = "<?=get('$dataFile', '$fieldID', '$altFieldID')?>";
+                            $data[$fieldID]['repeat'][$count][$altFieldID] = Array('alt' => $altText, 'description' => 'image alt text', 'type' => 'text', 'parent' => $repeatFieldID);
+                            $repeat->alt = "<?=get('$dataFile', '$fieldID', ".'$x'.", '$altFieldID')?>";
 
                             $repeat->class = str_replace('auto-edit-img', '', $repeat->class);
                             $repeat->autocms = null;
@@ -154,16 +157,16 @@ function buildDataFilesByTags($files) {
 
                             copy($source, $_SERVER['DOCUMENT_ROOT'] . $imgFileName);
 
-                            $data[$fieldID]['repeat'][$repeatFieldID] = Array('image' => $imgFileName, 'description' => $desc, 'type' => 'image', 'original' => true);
-                            $repeat->style = str_replace($matches[0], '', $repeat->style) . "background-image: url('<?=get('$dataFile', '$fieldID', '$repeatFieldID')?>');";
+                            $data[$fieldID]['repeat'][$count][$repeatFieldID] = Array('image' => $imgFileName, 'description' => $desc, 'type' => 'image');
+                            $repeat->style = str_replace($matches[0], '', $repeat->style) . "background-image: url('<?=get('$dataFile', '$fieldID', ".'$x'.", '$repeatFieldID')?>');";
 
                             $repeat->class = str_replace('auto-edit-bg-img', '', $repeat->class);
                             $repeat->autocms = null;
                         }
                     } else if (strpos($repeat->class, 'auto-edit') !== false) {
                         if (isset($repeat->autocms)) $desc = $repeat->autocms;
-                        $data[$fieldID]['repeat'][$repeatFieldID] = Array('html' => trim($repeat->innertext), 'description' => $desc, 'type' => 'html', 'original' => true);
-                        $repeat->innertext = "<?=get('$dataFile', '$fieldID', '$repeatFieldID')?>";
+                        $data[$fieldID]['repeat'][$count][$repeatFieldID] = Array('html' => trim($repeat->innertext), 'description' => $desc, 'type' => 'html');
+                        $repeat->innertext = "<?=get('$dataFile', '$fieldID', ".'$x'.", '$repeatFieldID')?>";
                         $repeat->class = str_replace('auto-edit', '', $repeat->class);
                         $repeat->autocms = null;
                     }
