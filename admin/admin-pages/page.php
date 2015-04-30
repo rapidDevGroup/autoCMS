@@ -71,6 +71,7 @@ $data = getPageData($page);
             </form>
         </div>
     </div>
+    <br><br>
 
 <?php
 include_once('footer.php');

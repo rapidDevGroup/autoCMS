@@ -120,10 +120,12 @@ This data tag can be used to add an additional description to a field, also used
 * Adding RSS Feed
 * Multi-Language
 * Blog Drafts
+* History Log
 * Check for Safe Files
 * Inline Editing
 * User Privilege Settings
-* Multiple auto-repeat on a Page 
+* Multiple auto-repeat on a Page
+* Commenting System
 * Add couchDB Option
 
 
