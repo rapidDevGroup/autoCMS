@@ -19,7 +19,18 @@
     margin-left: 0;
     margin-right: 0;
 }
-
+.rounded-border {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    background-color: #f8f8f8;
+}
+.cke_chrome {
+    border: 1px solid #ccc !important;
+    border-radius: 4px;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+}
 
 
 

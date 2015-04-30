@@ -34,7 +34,12 @@ $(function() {
         element.addClass('active');
     }
 
-    bkLib.onDomLoaded(function() { nicEditors.allTextAreas() });
+    $('textarea.editor').ckeditor( {
+        linkShowAdvancedTab: false,
+        removePlugins: 'elementspath',
+        resize_enabled: false,
+        toolbar: [['Styles','Format','Font','FontSize'],['Bold','Italic','Underline','Strike','Subscript','Superscript','-','RemoveFormat' ],['NumberedList','BulletedList','-','Outdent','Indent','-','Blockquote','CreateDiv', '-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','BidiLtr','BidiRtl' ],['Link','Unlink'],['Undo','Redo'],['Maximize','ShowBlocks'],['Source']]
+    });
 
     $('.desc-edit').editable();
 
@@ -46,17 +51,26 @@ $(function() {
     }
 
     var $carousel = $('.carousel');
-    $carousel.on('slide.bs.carousel', function () {
-        $(this).find('.carousel-inner').css('overflow', 'hidden');
-        //$(this).find('textarea').width('100%');
-    });
 
-    $carousel.on('slid.bs.carousel', function () {
-        $(this).find('.carousel-inner').css('overflow', 'visible');
-        $(this).find('textarea').width('100%');
-        $('.nicEdit-panelContain').parent().width('100%');
-        $('.nicEdit-panelContain').parent().next().width('100%');
-    });
+    if ($carousel.exists()) {
+        $carousel.on('slide.bs.carousel', function () {
+            $(this).find('.carousel-inner').css('overflow', 'hidden');
+            //$(this).find('textarea').width('100%');
+            //$('.nicEdit-panelContain').parent().width('100%');
+            //$('.nicEdit-panelContain').parent().next().width('100%');
+        });
+
+        $carousel.on('slid.bs.carousel', function () {
+            $(this).find('.carousel-inner').css('overflow', 'visible');
+            //$('.nicEdit-panelContain').parent().width('100%');
+            //$('.nicEdit-panelContain').parent().next().width('100%');
+        });
+
+        $carousel.on('slide.bs.carousel', function (e) {
+            var nextH = $(e.relatedTarget).height();
+            $(this).find('.active.item').parent().animate({height: nextH}, 800);
+        });
+    }
 });
 
 function validateCreateAuth() {

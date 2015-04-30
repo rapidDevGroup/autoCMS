@@ -21,7 +21,7 @@ $data = getPageData($page);
                         </label>
                         <?php if ($datum['type'] == 'html') { ?>
                             <div class="col-lg-8 col-sm-10">
-                                <textarea name="<?=$key?>" class="form-control" style="height:200px;"><?=$datum['html']?></textarea>
+                                <textarea name="<?=$key?>" class="form-control editor"><?=$datum['html']?></textarea>
                             </div>
                         <?php } else if ($datum['type'] == 'text') { ?>
                             <div class="col-lg-8 col-sm-10">
@@ -37,52 +37,55 @@ $data = getPageData($page);
                             </div>
                         <?php } else if ($datum['type'] == 'repeat') { ?>
                             <div class="col-lg-8 col-sm-10">
-                                <hr>
 
-                                <div id="carousel-repeat-<?=$key?>" class="carousel slide" data-ride="carousel" data-interval="false">
+                                <div class="rounded-border">
 
-                                    <!-- Wrapper for slides -->
-                                    <div class="carousel-inner" role="listbox" style="overflow: visible;">
-                                        <?php $x = 0; foreach($datum['repeat'] as $repeatData) { ?>
-                                            <div class="item <?php if ($x == 0) { ?>active<?php } ?>">
-                                                <?php foreach($repeatData as $repeatKey => $repeatDatum) { ?>
-                                                    <div class="panel panel-default">
-                                                        <?php $desc = $repeatDatum['description']; ?>
-                                                        <div class="panel-heading">
-                                                            <a id="desc-<?=$repeatKey?>" class="desc-edit" data-type="text" data-pk="<?=$repeatKey?>" data-url="/admin/page/<?=$page?>/desc/" data-title="edit description"><?=$desc?></a>
-                                                        </div>
-                                                        <div class="panel-body">
-                                                            <?php if ($repeatDatum['type'] == 'html') { ?>
-                                                                <textarea name="<?=$repeatKey?>" class="form-control" style="height:150px;"><?=$repeatDatum['html']?></textarea>
-                                                            <?php } else if ($repeatDatum['type'] == 'text') { ?>
-                                                                <input name="<?=$repeatKey?>" class="form-control" value="<?=$repeatDatum['text']?>">
-                                                            <?php } else if ($repeatDatum['type'] == 'image') { ?>
-                                                                <div class="row">
-                                                                    <div class="col-lg-9 col-sm-9">
-                                                                        <img id="<?=$repeatKey?>-image" class="img-responsive img-thumbnail" src="<?=$repeatDatum['image']?>">
+                                    <div id="carousel-repeat-<?=$key?>" class="carousel slide" data-ride="carousel" data-interval="false">
+
+                                        <!-- Wrapper for slides -->
+                                        <div class="carousel-inner" role="listbox" style="overflow: visible;">
+                                            <?php $x = 0; foreach($datum['repeat'] as $repeatKey => $repeatData) { ?>
+                                                <div class="item <?php if ($x == 0) { ?>active<?php } ?>">
+                                                    <?php foreach($repeatData as $repeatItemKey => $repeatDatum) { ?>
+                                                        <div class="form-group">
+                                                            <?php $desc = $repeatDatum['description']; ?>
+                                                            <label class="col-lg-2 col-sm-2 control-label">
+                                                                <a id="desc-<?=$repeatKey?>-<?=$x?>-<?=$repeatItemKey?>" class="desc-edit" data-type="text" data-pk="<?=$repeatKey?>-<?=$x?>-<?=$repeatItemKey?>" data-url="/admin/page/<?=$page?>/desc/" data-title="edit description"><?=$desc?></a>
+                                                            </label>
+                                                            <div class="col-lg-10 col-sm-10">
+                                                                <?php if ($repeatDatum['type'] == 'html') { ?>
+                                                                    <textarea name="<?=$repeatKey?>-<?=$x?>-<?=$repeatItemKey?>" class="form-control editor"><?=$repeatDatum['html']?></textarea>
+                                                                <?php } else if ($repeatDatum['type'] == 'text') { ?>
+                                                                    <input name="<?=$repeatKey?>-<?=$x?>-<?=$repeatItemKey?>" class="form-control" value="<?=$repeatDatum['text']?>">
+                                                                <?php } else if ($repeatDatum['type'] == 'image') { ?>
+                                                                    <div class="row">
+                                                                        <div class="col-lg-9 col-sm-9">
+                                                                            <img id="<?=$repeatKey?>-<?=$x?>-<?=$repeatItemKey?>-image" class="img-responsive img-thumbnail" src="<?=$repeatDatum['image']?>">
+                                                                        </div>
+                                                                        <div class="col-lg-3 col-sm-3">
+                                                                            <input type="file" name="<?=$repeatKey?>-<?=$x?>-<?=$repeatItemKey?>" id="<?=$repeatKey?>-<?=$x?>-<?=$repeatItemKey?>" style="display: none;" onchange="readURL(this, '<?=$repeatKey?>-<?=$x?>-<?=$repeatItemKey?>');">
+                                                                            <button type="button" class="btn btn-default btn-block upload-button" data-trigger="<?=$repeatKey?>-<?=$x?>-<?=$repeatItemKey?>">Upload Image</button>
+                                                                        </div>
                                                                     </div>
-                                                                    <div class="col-lg-3 col-sm-3">
-                                                                        <input type="file" name="<?=$repeatKey?>" id="<?=$repeatKey?>" style="display: none;" onchange="readURL(this, '<?=$repeatKey?>');">
-                                                                        <button type="button" class="btn btn-default btn-block upload-button" data-trigger="<?=$repeatKey?>">Upload Image</button>
-                                                                    </div>
-                                                                </div>
-                                                            <?php } ?>
+                                                                <?php } ?>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                <?php } ?>
-                                            </div>
-                                        <?php $x++; } ?>
+                                                    <?php } ?>
+                                                </div>
+                                            <?php $x++; } ?>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <nav>
                                     <ul class="pagination pagination-sm">
+                                        <li><a href="#">Copy First</a></li>
                                         <?php for ($x = 0; $x < count($datum['repeat']); $x++) { ?>
                                             <li data-target="#carousel-repeat-<?=$key?>" data-slide-to="<?=$x?>"><a href="#"><?=$x+1?></a></li>
                                         <?php } ?>
                                     </ul>
                                 </nav>
-                                <hr>
+
                             </div>
                         <?php } ?>
                     </div>
