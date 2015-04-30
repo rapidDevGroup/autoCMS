@@ -12,7 +12,7 @@ This is for people who do not wish to use a complicated site management system l
 2. Copy the admin folder into the root of your site
 3. Make sure that the admin folder and sub-folders are writable
 4. Visit http://yoursite.com/admin/
-5. It will ask you to create a password, then scan your html files and ask you which ones to add to the CMS.
+5. It will ask you to create a password, then scan your html files and ask you to process them and add to the CMS.
 6. autoCMS will rename files to .php (scan for links and rename those as well) and add the appropriate php tags.
     * It will scan and look for edit tags and create a data file structure (JSON).
     * It will then bring you to a basic CMS to edit all your content.
@@ -30,6 +30,7 @@ This is for people who do not wish to use a complicated site management system l
 **NOTE:**
 * All auto-nav tags needs an autocms description attribute
 * All navigation links that link to the same page and have the same text must have the same description
+* All internal site links require this tag
 
 
 #### Text Tags
@@ -84,6 +85,10 @@ This would be the same as the following with one addition repeat added by autoCM
 **NOTE:** Repeated content must be added by autoCMS, adding multiple copies in HTML will be interpreted as one repeat block.
 
 
+##### Blog/News Feed Tags **(Coming Soon)**
+no progress yet
+
+
 ## Special HTML Attributes
 
 #### autocms Attribute
@@ -97,9 +102,6 @@ This data tag can be used to add an additional description to a field, also used
 
 
 ## Coming Soon and Planed Future Updates
-
-##### Blog/News Feed Tags **(Coming Soon)**
-no progress yet
 
 ##### Adding RSS Feed **(Coming Soon)**
 no progress yet
