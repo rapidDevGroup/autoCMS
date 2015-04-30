@@ -15,10 +15,7 @@ $data = getPageData($page);
             <form action="/admin/page/<?=$page?>/" method="post" class="form-horizontal" enctype="multipart/form-data">
                 <?php foreach($data as $key => $datum) { ?>
                     <div class="form-group">
-                        <?php $desc = $datum['description'];
-                        if ($desc == '') {
-                            $desc = 'add description';
-                        } ?>
+                        <?php $desc = $datum['description']; ?>
                         <label for="<?=$key?>" class="col-lg-2 col-sm-2 control-label">
                             <a id="desc-<?=$key?>" class="desc-edit" data-type="text" data-pk="<?=$key?>" data-url="/admin/page/<?=$page?>/desc/" data-title="edit description"><?=$desc?></a>
                         </label>
@@ -39,7 +36,7 @@ $data = getPageData($page);
                                 <button type="button" class="btn btn-default btn-block upload-button" data-trigger="<?=$key?>">Upload Image</button>
                             </div>
                         <?php } else if ($datum['type'] == 'repeat') { ?>
-                            
+
                         <?php } ?>
                     </div>
                 <?php } ?>

@@ -9,7 +9,7 @@ This is for people who do not wish to use a complicated site management system l
 #### Please note: the master branch is in development!
 
 
-### Steps
+## Install Steps
 1. Create an HTML site and add the class "auto-edit" to heading tags, paragraph tags, span tags, or simply the whole div block.
 2. Copy the admin folder into the root of your site
 3. Make sure that the admin folder and sub-folders are writable
