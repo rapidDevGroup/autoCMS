@@ -76,6 +76,12 @@ $(function() {
         return true;
     });
 
+    var $pag = $('.pagination li');
+    $pag.click(function(){
+        $pag.removeClass('active');
+        $(this).addClass('active');
+    });
+
 });
 
 function validateCreateAuth() {

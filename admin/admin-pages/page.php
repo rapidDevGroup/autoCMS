@@ -74,6 +74,7 @@ $data = getPageData($page);
                                                 </div>
                                             <?php $x++; } ?>
                                         </div>
+
                                     </div>
                                 </div>
 
@@ -81,7 +82,7 @@ $data = getPageData($page);
                                     <ul class="pagination pagination-sm">
                                         <li><a href="#" class="dirtyOK">Copy First</a></li>
                                         <?php for ($x = 0; $x < count($datum['repeat']); $x++) { ?>
-                                            <li data-target="#carousel-repeat-<?=$key?>" data-slide-to="<?=$x?>"><a href="#" class="dirtyOK"><?=$x+1?></a></li>
+                                            <li data-target="#carousel-repeat-<?=$key?>" data-slide-to="<?=$x?>" class="<?php if ($x == 0) { ?>active<?php } ?>"><a href="#" class="dirtyOK"><?=$x+1?></a></li>
                                         <?php } ?>
                                     </ul>
                                 </nav>
