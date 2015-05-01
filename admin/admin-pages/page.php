@@ -44,27 +44,27 @@ $data = getPageData($page);
 
                                         <!-- Wrapper for slides -->
                                         <div class="carousel-inner" role="listbox" style="overflow: visible;">
-                                            <?php $x = 0; foreach($datum['repeat'] as $repeatKey => $repeatData) { ?>
+                                            <?php $x = 0; foreach($datum['repeat'] as $repeatData) { ?>
                                                 <div class="item <?php if ($x == 0) { ?>active<?php } ?>">
                                                     <?php foreach($repeatData as $repeatItemKey => $repeatDatum) { ?>
                                                         <div class="form-group">
                                                             <?php $desc = $repeatDatum['description']; ?>
                                                             <label class="col-lg-2 col-sm-2 control-label">
-                                                                <a id="desc-<?=$repeatKey?>-<?=$x?>-<?=$repeatItemKey?>" class="desc-edit" data-type="text" data-pk="<?=$repeatKey?>-<?=$x?>-<?=$repeatItemKey?>" data-url="/admin/page/<?=$page?>/desc/" data-title="edit description"><?=$desc?></a>
+                                                                <a id="desc-<?=$key?>-<?=$x?>-<?=$repeatItemKey?>" class="desc-edit" data-type="text" data-pk="<?=$key?>-<?=$x?>-<?=$repeatItemKey?>" data-url="/admin/page/<?=$page?>/desc/" data-title="edit description"><?=$desc?></a>
                                                             </label>
                                                             <div class="col-lg-10 col-sm-10">
                                                                 <?php if ($repeatDatum['type'] == 'html') { ?>
-                                                                    <textarea name="<?=$repeatKey?>-<?=$x?>-<?=$repeatItemKey?>" class="form-control editor"><?=$repeatDatum['html']?></textarea>
+                                                                    <textarea name="<?=$key?>-<?=$x?>-<?=$repeatItemKey?>" class="form-control editor"><?=$repeatDatum['html']?></textarea>
                                                                 <?php } else if ($repeatDatum['type'] == 'text') { ?>
-                                                                    <input name="<?=$repeatKey?>-<?=$x?>-<?=$repeatItemKey?>" class="form-control" value="<?=$repeatDatum['text']?>">
+                                                                    <input name="<?=$key?>-<?=$x?>-<?=$repeatItemKey?>" class="form-control" value="<?=$repeatDatum['text']?>">
                                                                 <?php } else if ($repeatDatum['type'] == 'image') { ?>
                                                                     <div class="row">
                                                                         <div class="col-lg-9 col-sm-8">
-                                                                            <img id="<?=$repeatKey?>-<?=$x?>-<?=$repeatItemKey?>-image" class="img-responsive img-thumbnail" src="<?=$repeatDatum['image']?>">
+                                                                            <img id="<?=$key?>-<?=$x?>-<?=$repeatItemKey?>-image" class="img-responsive img-thumbnail" src="<?=$repeatDatum['image']?>">
                                                                         </div>
                                                                         <div class="col-lg-3 col-sm-4">
-                                                                            <input type="file" name="<?=$repeatKey?>-<?=$x?>-<?=$repeatItemKey?>" id="<?=$repeatKey?>-<?=$x?>-<?=$repeatItemKey?>" style="display: none;" onchange="readURL(this, '<?=$repeatKey?>-<?=$x?>-<?=$repeatItemKey?>');">
-                                                                            <button type="button" class="btn btn-default btn-block upload-button" data-trigger="<?=$repeatKey?>-<?=$x?>-<?=$repeatItemKey?>">Upload Image</button>
+                                                                            <input type="file" name="<?=$key?>-<?=$x?>-<?=$repeatItemKey?>" id="<?=$key?>-<?=$x?>-<?=$repeatItemKey?>" style="display: none;" onchange="readURL(this, '<?=$key?>-<?=$x?>-<?=$repeatItemKey?>');">
+                                                                            <button type="button" class="btn btn-default btn-block upload-button" data-trigger="<?=$key?>-<?=$x?>-<?=$repeatItemKey?>">Upload Image</button>
                                                                         </div>
                                                                     </div>
                                                                 <?php } ?>

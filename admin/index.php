@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-define("VERSION", "0.2.0");
+define("VERSION", "0.2.4");
 
 require_once('system/Toro.php');
 require_once('system/statusreturn.php');

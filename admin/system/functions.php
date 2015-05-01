@@ -286,7 +286,14 @@ function updatePage($file, $data) {
     $json = json_decode(file_get_contents($dataFile), true);
 
     foreach ($data as $key => $datum) {
-        if ($key != 'key' && isset($json[$key])) $json[$key][$json[$key]['type']] = trim($datum);
+        if ($key != 'key' && isset($json[$key])) {
+            $json[$key][$json[$key]['type']] = trim($datum);
+        } else {
+            list($repeatKey, $iteration, $itemKey) = explode("-", $key);
+            if (isset($json[$repeatKey]['repeat'][$iteration][$itemKey])) {
+                $json[$repeatKey]['repeat'][$iteration][$itemKey][$json[$repeatKey]['repeat'][$iteration][$itemKey]['type']] = trim($datum);
+            }
+        }
     }
 
     $fp = fopen($dataFile, 'w');
@@ -388,9 +395,14 @@ function uploadFiles($page) {
                 $json = json_decode(file_get_contents($dataFile), true);
 
                 foreach ($json as $jsonKey => $datum) {
-                    if ($key == $jsonKey && $json[$key]['type'] == 'image') {
+                    if ($key == $jsonKey && $json[$key]['type'] == 'image' && isset($json[$key])) {
                         unlink($_SERVER['DOCUMENT_ROOT'] . $json[$key][$json[$key]['type']]);
                         $json[$key]['image'] = $imgFileName;
+                    } else {
+                        list($repeatKey, $iteration, $itemKey) = explode("-", $key);
+                        if (isset($json[$repeatKey]['repeat'][$iteration][$itemKey]) && $json[$repeatKey]['repeat'][$iteration][$itemKey]['type'] == 'image') {
+                            $json[$repeatKey]['repeat'][$iteration][$itemKey]['image'] = $imgFileName;
+                        }
                     }
                 }
 
