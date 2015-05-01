@@ -31,14 +31,26 @@
     -webkit-box-shadow: none !important;
     box-shadow: none !important;
 }
+.navbar-default {
+    background-color: #f8f8f8;
+    border-color: #ccc;
+}
+hr {
+    border-top: 1px solid #ccc;
+}
+.img-thumbnail {
+    border: 1px solid #ccc;
+}
+.page-header {
+    border-bottom: 1px solid #ccc;
+}
+.pagination>li>a, .pagination>li>span {
+    border: 1px solid #ccc;
+}
 
 
 
-/*!
- * Start Bootstrap - SB Admin 2 Bootstrap Admin Theme (http://startbootstrap.com)
- * Code licensed under the Apache License v2.0.
- * For details, see http://www.apache.org/licenses/LICENSE-2.0.
- */
+
 
 body {
     background-color: #f8f8f8;
@@ -61,7 +73,7 @@ body {
         margin: 0 0 0 250px;
         padding: 0 30px;
         padding-top: 50px;
-        border-left: 1px solid #e7e7e7;
+        border-left: 1px solid #ccc;
     }
 }
 
@@ -133,7 +145,7 @@ body {
 }
 
 .sidebar ul li {
-    border-bottom: 1px solid #e7e7e7;
+    border-bottom: 1px solid #ccc;
 }
 
 .sidebar ul li a.active {
@@ -325,7 +337,7 @@ table.dataTable thead .sorting:after {
 .show-grid [class^=col-] {
     padding-top: 10px;
     padding-bottom: 10px;
-    border: 1px solid #ddd;
+    border: 1px solid #ccc;
     background-color: #eee!important;
 }
 
