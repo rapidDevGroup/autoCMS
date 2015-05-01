@@ -17,7 +17,7 @@ $data = getPageData($page);
                     <div class="form-group">
                         <?php $desc = $datum['description']; ?>
                         <label for="<?=$key?>" class="col-lg-2 col-sm-2 control-label">
-                            <a id="desc-<?=$key?>" class="desc-edit" data-type="text" data-pk="<?=$key?>" data-url="/admin/page/<?=$page?>/desc/" data-title="edit description"><?=$desc?></a>
+                            <a id="desc-<?=$key?>" class="desc-edit dirtyOK" data-type="text" data-pk="<?=$key?>" data-url="/admin/page/<?=$page?>/desc/" data-title="edit description"><?=$desc?></a>
                         </label>
                         <?php if ($datum['type'] == 'html') { ?>
                             <div class="col-lg-9 col-sm-10">
@@ -50,7 +50,7 @@ $data = getPageData($page);
                                                         <div class="form-group">
                                                             <?php $desc = $repeatDatum['description']; ?>
                                                             <label class="col-lg-2 col-sm-2 control-label">
-                                                                <a id="desc-<?=$key?>-<?=$x?>-<?=$repeatItemKey?>" class="desc-edit" data-type="text" data-pk="<?=$key?>-<?=$x?>-<?=$repeatItemKey?>" data-url="/admin/page/<?=$page?>/desc/" data-title="edit description"><?=$desc?></a>
+                                                                <a id="desc-<?=$key?>-<?=$x?>-<?=$repeatItemKey?>" class="desc-edit dirtyOK" data-type="text" data-pk="<?=$key?>-<?=$x?>-<?=$repeatItemKey?>" data-url="/admin/page/<?=$page?>/desc/" data-title="edit description"><?=$desc?></a>
                                                             </label>
                                                             <div class="col-lg-10 col-sm-10">
                                                                 <?php if ($repeatDatum['type'] == 'html') { ?>
@@ -64,7 +64,7 @@ $data = getPageData($page);
                                                                         </div>
                                                                         <div class="col-lg-3 col-sm-4">
                                                                             <input type="file" name="<?=$key?>-<?=$x?>-<?=$repeatItemKey?>" id="<?=$key?>-<?=$x?>-<?=$repeatItemKey?>" style="display: none;" onchange="readURL(this, '<?=$key?>-<?=$x?>-<?=$repeatItemKey?>');">
-                                                                            <button type="button" class="btn btn-default btn-block upload-button" data-trigger="<?=$key?>-<?=$x?>-<?=$repeatItemKey?>">Upload Image</button>
+                                                                            <button type="button" class="btn btn-default btn-block upload-button dirtyOK" data-trigger="<?=$key?>-<?=$x?>-<?=$repeatItemKey?>">Upload Image</button>
                                                                         </div>
                                                                     </div>
                                                                 <?php } ?>
@@ -79,9 +79,9 @@ $data = getPageData($page);
 
                                 <nav>
                                     <ul class="pagination pagination-sm">
-                                        <li><a href="#">Copy First</a></li>
+                                        <li><a href="#" class="dirtyOK">Copy First</a></li>
                                         <?php for ($x = 0; $x < count($datum['repeat']); $x++) { ?>
-                                            <li data-target="#carousel-repeat-<?=$key?>" data-slide-to="<?=$x?>"><a href="#"><?=$x+1?></a></li>
+                                            <li data-target="#carousel-repeat-<?=$key?>" data-slide-to="<?=$x?>"><a href="#" class="dirtyOK"><?=$x+1?></a></li>
                                         <?php } ?>
                                     </ul>
                                 </nav>
@@ -93,7 +93,7 @@ $data = getPageData($page);
                 <hr>
                 <div class="form-group">
                     <div class="col-lg-offset-9 col-lg-2 col-sm-offset-9 col-sm-3">
-                        <button type="submit" class="btn btn-primary btn-block pull-right">Save Page</button>
+                        <button type="submit" class="btn btn-primary btn-block pull-right dirtyOK">Save Page</button>
                     </div>
                 </div>
             </form>

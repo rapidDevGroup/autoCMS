@@ -58,6 +58,24 @@ $(function() {
             $(this).find('.active.item').parent().animate({height: nextH}, 800);
         });
     }
+
+    var isDirty = false;
+    $(':input').change(function(){
+        isDirty = true;
+    });
+    for (var i in CKEDITOR.instances) {
+        CKEDITOR.instances[i].on('change', function() {
+            isDirty = true;
+        });
+    }
+
+    $('a, button').click(function(){
+        if (isDirty && !$(this).hasClass('dirtyOK')) {
+            return (confirm("You will lose unsaved changes. Continue?"));
+        }
+        return true;
+    });
+
 });
 
 function validateCreateAuth() {
