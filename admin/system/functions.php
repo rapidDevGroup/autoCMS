@@ -101,7 +101,7 @@ function buildDataFilesByTags($files) {
             }
         }
 
-        foreach($html->find('.auto-edit, .auto-edit-img, .auto-edit-bg-img, .auto-repeat') as $edit) {
+        foreach($html->find('.auto-edit, .auto-edit-text, .auto-edit-img, .auto-edit-bg-img, .auto-repeat') as $edit) {
             $fieldID = uniqid();
             $desc = '';
             if (strpos($edit->class, 'auto-repeat') !== false) {
@@ -111,7 +111,7 @@ function buildDataFilesByTags($files) {
                 $count = 0;
                 $data[$fieldID]['repeat'][$count] = Array();
 
-                foreach($html->find('.auto-repeat .auto-edit, .auto-repeat .auto-edit-img, .auto-repeat .auto-edit-bg-img') as $repeat) {
+                foreach($html->find('.auto-repeat .auto-edit, .auto-repeat .auto-edit-text, .auto-repeat .auto-edit-img, .auto-repeat .auto-edit-bg-img') as $repeat) {
                     $desc = '';
 
                     $repeatFieldID = uniqid();
@@ -163,6 +163,12 @@ function buildDataFilesByTags($files) {
                             $repeat->class = str_replace('auto-edit-bg-img', '', $repeat->class);
                             $repeat->autocms = null;
                         }
+                    } else if (strpos($repeat->class, 'auto-edit-text') !== false) {
+                        if (isset($repeat->autocms)) $desc = $repeat->autocms;
+                        $data[$fieldID]['repeat'][$count][$repeatFieldID] = Array('html' => trim($repeat->innertext), 'description' => $desc, 'type' => 'text');
+                        $repeat->innertext = "<?=get('$dataFile', '$fieldID', ".'$x'.", '$repeatFieldID')?>";
+                        $repeat->class = str_replace('auto-edit-text', '', $repeat->class);
+                        $repeat->autocms = null;
                     } else if (strpos($repeat->class, 'auto-edit') !== false) {
                         if (isset($repeat->autocms)) $desc = $repeat->autocms;
                         $data[$fieldID]['repeat'][$count][$repeatFieldID] = Array('html' => trim($repeat->innertext), 'description' => $desc, 'type' => 'html');
@@ -224,6 +230,12 @@ function buildDataFilesByTags($files) {
                     $edit->class = str_replace('auto-edit-bg-img', '', $edit->class);
                     $edit->autocms = null;
                 }
+            } else if (strpos($edit->class, 'auto-edit-text') !== false) {
+                if (isset($edit->autocms)) $desc = $edit->autocms;
+                $data[$fieldID] = Array('html' => trim($edit->innertext), 'description' => $desc, 'type' => 'text');
+                $edit->innertext = "<?=get('$dataFile', '$fieldID')?>";
+                $edit->class = str_replace('auto-edit-text', '', $edit->class);
+                $edit->autocms = null;
             } else if (strpos($edit->class, 'auto-edit') !== false) {
                 if (isset($edit->autocms)) $desc = $edit->autocms;
                 $data[$fieldID] = Array('html' => trim($edit->innertext), 'description' => $desc, 'type' => 'html');

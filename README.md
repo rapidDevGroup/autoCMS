@@ -10,7 +10,7 @@ This is for people who do not wish to use a complicated site management system l
 
 
 ## Install Steps
-1. Create an HTML site and add the class "auto-edit" to heading tags, paragraph tags, span tags, or simply the whole div block.
+1. Create an HTML site and add the appropriate _auto-edit_ classes to heading tags, paragraph tags, span tags, or simply the whole div block or images.
 2. Copy the admin folder into the root of your site
 3. Make sure that the admin folder and sub-folders are writable
 4. Visit http://yoursite.com/admin/
@@ -35,16 +35,21 @@ This is for people who do not wish to use a complicated site management system l
 * All internal site links require this tag
 
 
-#### Text Tags
+#### Edit HTML Tags
 
 ```HTML
-<h1 class="auto-edit">...</h1>
-
-<p class="auto-edit">...</p>
-
 <div class="auto-edit">...</p>
 ```
 **TIP:** Best practice is to use div tags so multiple paragraphs can be added and style tags be seen in the CMS.
+
+
+#### Edit Text Tags
+
+```HTML
+<h1 class="auto-edit-text">...</h1>
+<p class="auto-edit-text">...</p>
+```
+**TIP:** Best practice is to use non-div tags, auto-edit-text preserves the intended style by only allowing adding text.
 
 
 #### Image Tags
@@ -121,10 +126,13 @@ This data tag can be used to add an additional description to a field, also used
 * Multi-Language
 * Blog Drafts
 * History Log
+* Prevent Refresh Form Errors
 * Check for Safe Files
 * Inline Editing
+* Repeat Bulk Load Images
 * User Privilege Settings
 * Multiple auto-repeat on a Page
+* Scan for New Changes
 * Commenting System
 * Add couchDB Option
 

@@ -47,7 +47,9 @@ hr {
 .pagination>li>a, .pagination>li>span {
     border: 1px solid #ccc;
 }
-
+.popover-title {
+    border-bottom: 1px solid #ccc;
+}
 
 
 

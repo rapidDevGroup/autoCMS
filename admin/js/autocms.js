@@ -78,8 +78,10 @@ $(function() {
 
     var $pag = $('.pagination li');
     $pag.click(function(){
-        $pag.removeClass('active');
-        $(this).addClass('active');
+        if (!$(this).hasClass('no-active')) {
+            $pag.removeClass('active');
+            $(this).addClass('active');
+        }
     });
 
 });
