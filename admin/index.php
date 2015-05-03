@@ -10,7 +10,7 @@ require_once('system/handlers.php');
 require_once('system/simple_html_dom.php');
 
 ToroHook::add("404", function() {
-    echo json_encode(StatusReturn::E404(), JSON_NUMERIC_CHECK);
+    echo json_encode(StatusReturn::E404('404 Not Found!!'), JSON_NUMERIC_CHECK);
 });
 
 ToroHook::add("404Web", function() {

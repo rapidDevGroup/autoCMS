@@ -151,27 +151,27 @@ class Description {
 }
 
 class RepeatDel {
-    function get($page, $key, $num) {
+    function get_xhr($page, $key, $num) {
         if (is_null($page) || is_null($key) || is_null($num)) {
-            include_once('admin-pages/404.html');
+            echo json_encode(StatusReturn::E404('404 Not Found!'), JSON_NUMERIC_CHECK);
         } else if (checkPass() && !authNeeded()) {
             deleteRepeat($page, $key, $num);
-            header('Location: /admin/page/' . $page . '/#' . $key);
+            echo json_encode(StatusReturn::S200('Item Deleted!'), JSON_NUMERIC_CHECK);
         } else {
-            include_once('admin-pages/401.html');
+            echo json_encode(StatusReturn::E401('401 Not Authorized!'), JSON_NUMERIC_CHECK);
         }
     }
 }
 
 class RepeatDup {
-    function get($page, $key, $num) {
+    function get_xhr($page, $key, $num) {
         if (is_null($page) || is_null($key) || is_null($num)) {
-            include_once('admin-pages/404.html');
+            echo json_encode(StatusReturn::E404('404 Not Found!'), JSON_NUMERIC_CHECK);
         } else if (checkPass() && !authNeeded()) {
             duplicateRepeat($page, $key, $num);
-            header('Location: /admin/page/' . $page . '/#' . $key);
+            echo json_encode(StatusReturn::S200('Item Duplicated!'), JSON_NUMERIC_CHECK);
         } else {
-            include_once('admin-pages/401.html');
+            echo json_encode(StatusReturn::E401('401 Not Authorized!'), JSON_NUMERIC_CHECK);
         }
     }
 }

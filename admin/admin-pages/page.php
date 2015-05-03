@@ -40,7 +40,7 @@ $data = getPageData($page);
 
                                 <div class="rounded-border">
 
-                                    <div id="carousel-repeat-<?=$key?>" class="carousel slide" data-ride="carousel" data-interval="false">
+                                    <div id="carousel-repeat-<?=$key?>" class="carousel slide" data-ride="carousel" data-interval="false" data-number="<?=count($datum['repeat'])?>">
 
                                         <!-- Wrapper for slides -->
                                         <div class="carousel-inner" role="listbox" style="overflow: visible;">
@@ -54,17 +54,17 @@ $data = getPageData($page);
                                                             </label>
                                                             <div class="col-lg-10 col-sm-10">
                                                                 <?php if ($repeatDatum['type'] == 'html') { ?>
-                                                                    <textarea name="<?=$key?>-<?=$x?>-<?=$repeatItemKey?>" class="form-control editor"><?=$repeatDatum['html']?></textarea>
+                                                                    <textarea name="<?=$key?>-<?=$x?>-<?=$repeatItemKey?>" data-key="<?=$repeatItemKey?>" class="form-control editor"><?=$repeatDatum['html']?></textarea>
                                                                 <?php } else if ($repeatDatum['type'] == 'text') { ?>
-                                                                    <input name="<?=$key?>-<?=$x?>-<?=$repeatItemKey?>" class="form-control" value="<?=$repeatDatum['text']?>">
+                                                                    <input name="<?=$key?>-<?=$x?>-<?=$repeatItemKey?>" data-key="<?=$repeatItemKey?>" class="form-control" value="<?=$repeatDatum['text']?>">
                                                                 <?php } else if ($repeatDatum['type'] == 'image') { ?>
                                                                     <div class="row">
                                                                         <div class="col-lg-9 col-sm-8">
-                                                                            <img id="<?=$key?>-<?=$x?>-<?=$repeatItemKey?>-image" class="img-responsive img-thumbnail" src="<?=$repeatDatum['image']?>">
+                                                                            <img id="<?=$key?>-<?=$x?>-<?=$repeatItemKey?>-image" data-key="<?=$repeatItemKey?>" class="img-responsive img-thumbnail" src="<?=$repeatDatum['image']?>">
                                                                         </div>
                                                                         <div class="col-lg-3 col-sm-4">
-                                                                            <input type="file" name="<?=$key?>-<?=$x?>-<?=$repeatItemKey?>" id="<?=$key?>-<?=$x?>-<?=$repeatItemKey?>" style="display: none;" onchange="readURL(this, '<?=$key?>-<?=$x?>-<?=$repeatItemKey?>');">
-                                                                            <button type="button" class="btn btn-default btn-block upload-button dirtyOK" data-trigger="<?=$key?>-<?=$x?>-<?=$repeatItemKey?>">Upload Image</button>
+                                                                            <input type="file" name="<?=$key?>-<?=$x?>-<?=$repeatItemKey?>" data-key="<?=$repeatItemKey?>" id="<?=$key?>-<?=$x?>-<?=$repeatItemKey?>" style="display: none;" onchange="readURL(this, '<?=$key?>-<?=$x?>-<?=$repeatItemKey?>');">
+                                                                            <button type="button" class="btn btn-default btn-block upload-button dirtyOK" data-key="<?=$repeatItemKey?>" data-trigger="<?=$key?>-<?=$x?>-<?=$repeatItemKey?>">Upload Image</button>
                                                                         </div>
                                                                     </div>
                                                                 <?php } ?>
@@ -78,15 +78,14 @@ $data = getPageData($page);
                                     </div>
 
                                     <div class="btn-group pull-right">
-                                        <a href="/admin/page/<?=$page?>/repeat-dup/<?=$key?>/0/" class="btn btn-default">Duplicate</a>
-                                        <?php if (count($datum['repeat']) > 1) { ?><a href="/admin/page/<?=$page?>/repeat-del/<?=$key?>/0/" class="btn btn-danger">Delete</a><?php } ?>
+                                        <a href="#" id="repeat-duplicate" data-key="<?=$key?>" data-page="<?=$page?>" class="btn btn-default dirtyOK">Duplicate</a>
+                                        <?php if (count($datum['repeat']) > 1) { ?><a href="#" id="repeat-delete" data-key="<?=$key?>" data-page="<?=$page?>" class="btn btn-danger dirtyOK">Delete</a><?php } ?>
                                     </div>
 
                                 </div>
 
                                 <nav>
-                                    <ul class="pagination pagination-sm">
-                                        <!--li class="no-active"><a href="#" class="dirtyOK">Copy First</a></li-->
+                                    <ul id="carousel-paging-<?=$key?>" class="pagination pagination-sm">
                                         <?php for ($x = 0; $x < count($datum['repeat']); $x++) { ?>
                                             <li data-target="#carousel-repeat-<?=$key?>" data-slide-to="<?=$x?>" class="<?php if ($x == 0) { ?>active<?php } ?>"><a href="#" class="dirtyOK"><?=$x+1?></a></li>
                                         <?php } ?>

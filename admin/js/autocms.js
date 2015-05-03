@@ -1,7 +1,6 @@
 $(function() {
     /* create exists function */
-    jQuery.fn.exists = function(){return this.length>0;}
-
+    jQuery.fn.exists = function(){return this.length>0;};
 
     $('#side-menu').metisMenu();
 
@@ -34,12 +33,16 @@ $(function() {
         element.addClass('active');
     }
 
-    $('textarea.editor').ckeditor( {
+    /*
+    var editorConfig = {
         linkShowAdvancedTab: false,
         removePlugins: 'elementspath',
         resize_enabled: false,
         toolbar: [['Format','Font','FontSize'],['Bold','Italic','Underline','Strike','Subscript','Superscript','-','RemoveFormat' ],['NumberedList','BulletedList','-','Outdent','Indent','-','Blockquote','CreateDiv', '-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','BidiLtr','BidiRtl' ],['Link','Unlink'],['Undo','Redo'],['Maximize','ShowBlocks'],['Source']]
-    });
+    };
+
+    $('textarea.editor').ckeditor(editorConfig);
+    */
 
     $('.desc-edit').editable();
 
@@ -76,14 +79,73 @@ $(function() {
         return true;
     });
 
-    var $pag = $('.pagination li');
-    $pag.click(function(){
+    $('.pagination').on('click', 'li', function(){
         if (!$(this).hasClass('no-active')) {
-            $pag.removeClass('active');
+            $(this).parent().find('li').removeClass('active');
             $(this).addClass('active');
         }
     });
 
+    var duplicating = false;
+    $('body').on('click','#repeat-duplicate',function(){
+        var page = $(this).data('page');
+        var key = $(this).attr('data-key');
+        var $carousel = $('#carousel-repeat-' + key);
+        var $carousel_active = $('#carousel-repeat-' + key + ' .item.active');
+        var $carousel_paging = $('#carousel-paging-' + key + ' .active');
+        var number_slides = $carousel.attr('data-number');
+        var number_slides_new = $carousel.attr('data-number')/1 + 1;
+        var current = $carousel_active.index('#carousel-repeat-' + key + ' .item');
+
+        if (!duplicating) {
+            duplicating = true;
+            $.getJSON('/admin/page/' + page + '/repeat-dup/' + key + '/' + current + '/', function () {
+                $carousel_active.clone().removeClass('active').appendTo('#carousel-repeat-' + key + ' .carousel-inner');
+                $carousel.removeData().carousel({
+                    interval: false
+                }).carousel(current);
+
+                $carousel_paging.clone().removeClass('active').attr('data-slide-to', number_slides).appendTo('#carousel-paging-' + key);
+                $('#carousel-paging-' + key + ' [data-slide-to=' + number_slides + '] a').text(number_slides / 1 + 1);
+
+                $('#repeat-delete').show();
+
+                $carousel.attr('data-number', number_slides_new);
+                duplicating =  false;
+            });
+        }
+        return false;
+    });
+
+    var deleting = false;
+    $('body').on('click','#repeat-delete',function(){
+        var page = $(this).data('page');
+        var key = $(this).attr('data-key');
+        var $carousel = $('#carousel-repeat-' + key);
+        var $carousel_active = $('#carousel-repeat-' + key + ' .item.active');
+        var number_slides_new = $carousel.attr('data-number')/1 - 1;
+        var current = $carousel_active.index('#carousel-repeat-' + key + ' .item');
+
+        if (!deleting) {
+            deleting = true;
+            $.getJSON('/admin/page/' + page + '/repeat-del/' + key + '/' + current + '/', function () {
+                $carousel_active.remove().appendTo('#carousel-repeat-' + key + ' .carousel-inner');
+                $carousel.removeData().carousel({
+                    interval: false
+                }).carousel(current);
+
+                $('#carousel-paging-' + key + ' li').removeClass('active');
+                $('#carousel-paging-' + key + ' li:first-child').addClass('active');
+                $('#carousel-paging-' + key + ' li:last-child').remove();
+
+                if (number_slides_new <= 1) $('#repeat-delete').hide();
+
+                $carousel.attr('data-number', number_slides_new);
+                deleting = false;
+            });
+        }
+        return false;
+    });
 });
 
 function validateCreateAuth() {
