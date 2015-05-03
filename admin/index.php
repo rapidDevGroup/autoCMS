@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-define("VERSION", "0.2.4");
+define("VERSION", "0.2.6");
 
 require_once('system/Toro.php');
 require_once('system/statusreturn.php');
@@ -18,13 +18,17 @@ ToroHook::add("404Web", function() {
 });
 
 Toro::serve(array(
-    '/admin/'                   => 'Init',
-    '/login/'                   => 'Login',
-    '/logout/'                  => 'Logout',
-    '/dash/'                    => 'Dash',
-    '/nav/'                     => 'Nav',
-    '/dash/:string'             => 'Dash',
-    '/page/:alpha'              => 'Page',
-    '/page/:alpha/desc/'        => 'Description',
-    '/page/:alpha/desc/:key/'   => 'Description'
+    '/admin/'                                   => 'Init',
+    '/login/'                                   => 'Login',
+    '/logout/'                                  => 'Logout',
+    '/dash/'                                    => 'Dash',
+    '/nav/'                                     => 'Nav',
+    '/nav/update/'                              => 'Nav',
+    '/dash/:string'                             => 'Dash',
+    '/page/:alpha'                              => 'Page',
+    '/page/:alpha/update/'                      => 'Page',
+    '/page/:alpha/desc/'                        => 'Description',
+    '/page/:alpha/desc/:key/'                   => 'Description',
+    '/page/:alpha/repeat-dup/:key/:number/'     => 'RepeatDup',
+    '/page/:alpha/repeat-del/:key/:number/'     => 'RepeatDel'
 ));

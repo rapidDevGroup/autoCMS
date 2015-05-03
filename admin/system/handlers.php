@@ -99,12 +99,11 @@ class Page {
             include_once('admin-pages/404.html');
         } else if (!is_null($page) && checkPass() && !authNeeded()) {
 
-            //print_r($_FILES);
-
             updatePage($page, $_POST);
             uploadFiles($page);
 
-            include_once('admin-pages/page.php');
+            header('Location: /admin/page/' . $page . '/');
+            die();
         } else {
             include_once('admin-pages/401.html');
         }
@@ -124,7 +123,7 @@ class Nav {
 
             updateNav($_POST);
 
-            include_once('admin-pages/nav.php');
+            header('Location: /admin/nav/');
         } else {
             include_once('admin-pages/401.html');
         }
@@ -147,6 +146,32 @@ class Description {
             echo json_encode(StatusReturn::S200('Description Saved!'), JSON_NUMERIC_CHECK);
         } else {
             echo json_encode(StatusReturn::E401('401 Not Authorized!'), JSON_NUMERIC_CHECK);
+        }
+    }
+}
+
+class RepeatDel {
+    function get($page, $key, $num) {
+        if (is_null($page) || is_null($key) || is_null($num)) {
+            include_once('admin-pages/404.html');
+        } else if (checkPass() && !authNeeded()) {
+            deleteRepeat($page, $key, $num);
+            header('Location: /admin/page/' . $page . '/#' . $key);
+        } else {
+            include_once('admin-pages/401.html');
+        }
+    }
+}
+
+class RepeatDup {
+    function get($page, $key, $num) {
+        if (is_null($page) || is_null($key) || is_null($num)) {
+            include_once('admin-pages/404.html');
+        } else if (checkPass() && !authNeeded()) {
+            duplicateRepeat($page, $key, $num);
+            header('Location: /admin/page/' . $page . '/#' . $key);
+        } else {
+            include_once('admin-pages/401.html');
         }
     }
 }

@@ -12,7 +12,7 @@ $data = getNavData();
 
     <div class="row">
         <div class="col-lg-12">
-            <form action="/admin/nav/" method="post" class="form-horizontal">
+            <form action="/admin/nav/update/" method="post" class="form-horizontal">
                 <?php foreach($data as $key => $datum) { ?>
                     <div class="form-group">
                         <?php $desc = $datum['description'];

@@ -12,9 +12,9 @@ $data = getPageData($page);
 
     <div class="row">
         <div class="col-lg-12">
-            <form action="/admin/page/<?=$page?>/" method="post" class="form-horizontal" enctype="multipart/form-data">
+            <form action="/admin/page/<?=$page?>/update/" method="post" class="form-horizontal" enctype="multipart/form-data">
                 <?php foreach($data as $key => $datum) { ?>
-                    <div class="form-group">
+                    <div id="<?=$key?>" class="form-group">
                         <?php $desc = $datum['description']; ?>
                         <label for="<?=$key?>" class="col-lg-2 col-sm-2 control-label">
                             <a id="desc-<?=$key?>" class="desc-edit dirtyOK" data-type="text" data-pk="<?=$key?>" data-url="/admin/page/<?=$page?>/desc/" data-title="edit description"><?=$desc?></a>
@@ -78,8 +78,8 @@ $data = getPageData($page);
                                     </div>
 
                                     <div class="btn-group pull-right">
-                                        <button type="button" class="btn btn-default">Duplicate</button>
-                                        <?php if (count($datum['repeat']) > 0) { ?><button type="button" class="btn btn-danger">Delete</button><?php } ?>
+                                        <a href="/admin/page/<?=$page?>/repeat-dup/<?=$key?>/0/" class="btn btn-default">Duplicate</a>
+                                        <?php if (count($datum['repeat']) > 1) { ?><a href="/admin/page/<?=$page?>/repeat-del/<?=$key?>/0/" class="btn btn-danger">Delete</a><?php } ?>
                                     </div>
 
                                 </div>

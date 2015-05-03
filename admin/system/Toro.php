@@ -28,10 +28,11 @@ class Toro
         }
         else if ($routes) {
             $tokens = array(
-                ':string' => '([a-zA-Z]+)',
-                ':number' => '([0-9]+)',
-                ':alpha'  => '([a-zA-Z0-9-_]+)',
-                ':key'    => '([a-z0-9]+)'
+                ':string'   => '([a-zA-Z]+)',
+                ':number'   => '([0-9]+)',
+                ':alpha'    => '([a-zA-Z0-9-_]+)',
+                ':key'      => '([a-z0-9]+)',
+                ':bool'     => '([true|false])'
             );
             foreach ($routes as $pattern => $handler_name) {
                 $pattern = strtr($pattern, $tokens);

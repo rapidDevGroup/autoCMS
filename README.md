@@ -67,7 +67,7 @@ Or for background images
 ```
 
 
-#### Repeating Tags **(Almost Done)**
+#### Repeating Tags
 
 ```HTML
 <div class="auto-repeat">

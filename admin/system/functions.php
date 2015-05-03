@@ -408,7 +408,7 @@ function uploadFiles($page) {
 
                 foreach ($json as $jsonKey => $datum) {
                     if ($key == $jsonKey && $json[$key]['type'] == 'image' && isset($json[$key])) {
-                        unlink($_SERVER['DOCUMENT_ROOT'] . $json[$key][$json[$key]['type']]);
+                        //unlink($_SERVER['DOCUMENT_ROOT'] . $json[$key][$json[$key]['type']]);
                         $json[$key]['image'] = $imgFileName;
                     } else {
                         list($repeatKey, $iteration, $itemKey) = explode("-", $key);
@@ -424,4 +424,34 @@ function uploadFiles($page) {
             }
         }
     }
+}
+
+function duplicateRepeat($page, $key, $num) {
+    $dataFile = 'data/page-' . $page . '.json';
+    $json = json_decode(file_get_contents($dataFile), true);
+
+    foreach ($json as $jsonKey => $datum) {
+        if ($key != 'key' && $jsonKey == $key && isset($json[$key]) && $json[$key]['type'] == 'repeat' && count($json[$key]['repeat']) > $num && isset($json[$key]['repeat'][$num])) {
+            $json[$key]['repeat'][] = $json[$key]['repeat'][$num];
+        }
+    }
+
+    $fp = fopen($dataFile, 'w');
+    fwrite($fp, json_encode($json));
+    fclose($fp);
+}
+
+function deleteRepeat($page, $key, $num) {
+    $dataFile = 'data/page-' . $page . '.json';
+    $json = json_decode(file_get_contents($dataFile), true);
+
+    foreach ($json as $jsonKey => $datum) {
+        if ($key != 'key' && $jsonKey == $key && isset($json[$key]) && $json[$key]['type'] == 'repeat' && count($json[$key]['repeat']) > $num && isset($json[$key]['repeat'][$num])) {
+            array_splice($json[$key]['repeat'], $num, 1);
+        }
+    }
+
+    $fp = fopen($dataFile, 'w');
+    fwrite($fp, json_encode($json));
+    fclose($fp);
 }
