@@ -371,7 +371,8 @@ function getAllNavigationData($files) {
 
                 $navArr[$desc] = Array('text' => $navigation->innertext, 'description' => $navigation->autocms, 'type' => 'text');
                 $navigation->innertext = "<?=get('$dataFile', '$desc')?>";
-                $navigation->href = str_replace(Array('.html', '.htm'), '/', '/' . $navigation->href);
+                $navigation->href = str_replace(Array('.html', '.htm', 'index.html', 'index.htm'), '/', '/' . $navigation->href);
+                $navigation->href = str_replace('//', '/', $navigation->href);
             }
         }
 
