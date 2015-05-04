@@ -342,7 +342,7 @@ function saveDescription($file, $editKey, $editDesc) {
         if (isset($json[$repeatKey]['repeat'][$iteration][$itemKey])) {
             $json[$repeatKey]['repeat'][$iteration][$itemKey]['description'] = trim($editDesc);
         }
-    } else {
+    } else if (isset($json[$editKey])) {
         $json[$editKey]['description'] = $editDesc;
     }
 
