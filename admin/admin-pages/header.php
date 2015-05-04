@@ -73,7 +73,7 @@ $pages = getPageList();
                                     </ul>
                                 </li>
                             <?php } ?>
-                            <?php if (false) {?><li><a href="/admin/blog/"><i class="fa fa-bars fa-fw"></i> Blog / News / RSS Feed</a></li><?php } ?>
+                            <?php if (false) {?><li><a href="/admin/blog/"><i class="fa fa-bars fa-fw"></i> Blog or News Feed</a></li><?php } ?>
                             <?php if (false) {?><li><a href="/admin/languages/"><i class="fa fa-bars fa-fw"></i> Multi-Language</a></li><?php } ?>
                             <?php if (false) {?><li><a href="/admin/settings/"><i class="fa fa-bars fa-fw"></i> Settings</a></li><?php } ?>
                         </ul>

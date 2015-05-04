@@ -95,18 +95,31 @@ This would be the same as the following with one addition repeat added by autoCM
 **TIP:** We recommend using the attribute autocms to add a description.
 
 
-#### Blog/News Feed Tags **(Coming Soon)**
+#### Blog/News Feed Tags **(Being Worked On)**
 
 This works like auto-repeat but has special blog tags. Use this to list all your blog posts on a page.
 ```HTML
-<div class="auto-blog">
+<div class="auto-blog-list list-10">
     <div class="auto-blog-title">...</div>
     <img src="..." class="auto-blog-img">
     <div class="auto-blog-short">...</div>
-    <a class="auto-blog-link">Read More</a>
+    <a class="auto-blog-link auto-edit-text">...</a>
 </div>
 ```
+**NOTE:** Can use list-3, list-5, list-10, list-20, leaving list out will list all posts. **(Pagination Coming Soon)**
 
+
+This works to display a single blog post.
+```HTML
+<div class="auto-blog-post">
+    <div class="auto-blog-title">...</div>
+    <div src="..." class="auto-blog-bg-img"></div>
+    <div class="auto-blog-text">...</div>
+</div>
+```
+**NOTE:**
+* Can use auto-blog-img and auto-blog-bg-img, however, this will be the same image used in the blog post.
+* auto-blog-post's page will be linked to automatically from the list, and will load the correct blog post.
 
 ## Special HTML Attributes
 
@@ -125,6 +138,7 @@ This data tag can be used to add an additional description to a field, also used
 * Adding RSS Feed
 * Multi-Language
 * Blog Drafts
+* Blog Pagination
 * History Log
 * Prevent Refresh Form Errors
 * Check for Safe Files
