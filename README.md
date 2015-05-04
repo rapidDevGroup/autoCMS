@@ -57,11 +57,10 @@ This is for people who do not wish to use a complicated site management system l
 ```HTML
 <img src="..." class="auto-edit-img" alt="...">
 ```
-
 **NOTE:** Image alt text will also be available to edit on non-background images.
 
-Or for background images
 
+For background images:
 ```HTML
 <div class="auto-edit-bg-img" style="background-image: url(path/to/original/image);">...</div>
 ```
