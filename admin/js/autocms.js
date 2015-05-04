@@ -33,7 +33,7 @@ $(function() {
         element.addClass('active');
     }
 
-    bkLib.onDomLoaded(function() { nicEditors.allTextAreas() });
+    bkLib.onDomLoaded(function() { nicEditors.allTextAreas({buttonList : ['bold','italic','underline','strikeThrough','removeformat','subscript','superscript','left','center','right','justified','ol','ul','subscript','superscript','indent','outdent','forecolor','bgcolor','link','unlink','fontFormat','fontFamily','fontSize','xhtml']}); });
 
     $('.desc-edit').editable();
 
