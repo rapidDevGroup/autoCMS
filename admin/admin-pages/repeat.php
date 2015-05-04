@@ -48,7 +48,10 @@ include_once('header.php');
                     <hr>
                 <?php $x++; } ?>
                 <div class="form-group">
-                    <div class="col-lg-offset-9 col-lg-2 col-sm-offset-9 col-sm-3">
+                    <div class="col-lg-2 col-sm-3">
+                        <a href="/admin/page/<?=$page?>/" class="btn btn-success btn-block">Return</a>
+                    </div>
+                    <div class="col-lg-offset-7 col-lg-2 col-sm-offset-6 col-sm-3">
                         <button type="submit" class="btn btn-primary btn-block pull-right dirtyOK">Save Page</button>
                     </div>
                 </div>

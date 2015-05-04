@@ -33,17 +33,6 @@ $(function() {
         element.addClass('active');
     }
 
-    /*
-    var editorConfig = {
-        linkShowAdvancedTab: false,
-        removePlugins: 'elementspath',
-        resize_enabled: false,
-        toolbar: [['Format','Font','FontSize'],['Bold','Italic','Underline','Strike','Subscript','Superscript','-','RemoveFormat' ],['NumberedList','BulletedList','-','Outdent','Indent','-','Blockquote','CreateDiv', '-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','BidiLtr','BidiRtl' ],['Link','Unlink'],['Undo','Redo'],['Maximize','ShowBlocks'],['Source']]
-    };
-
-    $('textarea.editor').ckeditor(editorConfig);
-    */
-
     bkLib.onDomLoaded(function() { nicEditors.allTextAreas() });
 
     $('.desc-edit').editable();
@@ -68,11 +57,9 @@ $(function() {
     $(':input').change(function(){
         isDirty = true;
     });
-    for (var i in CKEDITOR.instances) {
-        CKEDITOR.instances[i].on('change', function() {
-            isDirty = true;
-        });
-    }
+    $('body').on('keydown', 'div.nicEdit-main', function(){
+        isDirty = true;
+    });
 
     $('a, button').click(function(){
         if (isDirty && !$(this).hasClass('dirtyOK')) {
