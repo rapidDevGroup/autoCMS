@@ -333,12 +333,15 @@ function updateNav($data) {
     fclose($fp);
 }
 
-function saveDescription($file, $editKey, $editDesc, $secondKey = null) {
+function saveDescription($file, $editKey, $editDesc) {
     $dataFile = 'data/' . $file . '.json';
     $json = json_decode(file_get_contents($dataFile), true);
 
-    if (!is_null($secondKey)) {
-        $json[$editKey]['repeat'][$secondKey]['description'] = $editDesc;
+    if (strpos($editKey, '-') !== false) {
+        list($repeatKey, $iteration, $itemKey) = explode("-", $editKey);
+        if (isset($json[$repeatKey]['repeat'][$iteration][$itemKey])) {
+            $json[$repeatKey]['repeat'][$iteration][$itemKey]['description'] = trim($editDesc);
+        }
     } else {
         $json[$editKey]['description'] = $editDesc;
     }

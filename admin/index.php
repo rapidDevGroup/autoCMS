@@ -28,7 +28,6 @@ Toro::serve(array(
     '/page/:alpha'                              => 'Page',
     '/page/:alpha/update/'                      => 'Page',
     '/page/:alpha/desc/'                        => 'Description',
-    '/page/:alpha/desc/:key/'                   => 'Description',
     '/page/:alpha/repeat/:key/'                 => 'Repeat',
     '/page/:alpha/repeat/:key/update/'          => 'Repeat',
     '/page/:alpha/repeat-dup/:key/:number/'     => 'RepeatDup',
