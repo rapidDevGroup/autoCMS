@@ -23,7 +23,7 @@ include_once('header.php');
                             </div>
                         <?php } else if ($datum['type'] == 'text') { ?>
                             <div class="col-lg-9 col-sm-10">
-                                <input name="<?=$key?>" class="form-control" value="<?=$datum['text']?>">
+                                <input name="<?=$key?>" class="form-control" value="<?=$datum['text']?>" autocomplete="off">
                             </div>
                         <?php } else if ($datum['type'] == 'image') { ?>
                             <div class="col-lg-7 col-sm-7">

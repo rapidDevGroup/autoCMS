@@ -24,7 +24,7 @@ include_once('header.php');
                                 </div>
                             <?php } else if ($repeatDatum['type'] == 'text') { ?>
                                 <div class="col-lg-9 col-sm-10">
-                                    <input name="<?=$key?>-<?=$x?>-<?=$repeatItemKey?>" data-key="<?=$repeatItemKey?>" class="form-control" value="<?=$repeatDatum['text']?>">
+                                    <input name="<?=$key?>-<?=$x?>-<?=$repeatItemKey?>" data-key="<?=$repeatItemKey?>" class="form-control" value="<?=$repeatDatum['text']?>" autocomplete="off">
                                 </div>
                             <?php } else if ($repeatDatum['type'] == 'image') { ?>
                                 <div class="col-lg-7 col-sm-7">

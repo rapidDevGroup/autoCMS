@@ -58,7 +58,10 @@ hr {
 .popover-title {
     border-bottom: 1px solid #ccc;
 }
-
+label {
+    padding-top: 0 !important;
+    height: 33px;
+}
 
 
 
