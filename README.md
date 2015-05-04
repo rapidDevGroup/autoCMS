@@ -100,10 +100,10 @@ This would be the same as the following with one addition repeat added by autoCM
 This works like auto-repeat but has special blog tags. Use this to list all your blog posts on a page.
 ```HTML
 <div class="auto-blog-list list-10">
-    <div class="auto-blog-title">...</div>
-    <img src="..." class="auto-blog-img">
-    <div class="auto-blog-short">...</div>
-    <a class="auto-blog-link auto-edit-text">...</a>
+    <div class="auto-blog-title"></div>
+    <img src="" class="auto-blog-img">
+    <div class="auto-blog-short"></div>
+    <a class="auto-blog-link auto-edit-text"></a>
 </div>
 ```
 **NOTE:** Can use list-3, list-5, list-10, list-20, leaving list-X tag out will list all posts. **(Pagination Coming Soon)**
@@ -112,9 +112,9 @@ This works like auto-repeat but has special blog tags. Use this to list all your
 This works to display a single blog post.
 ```HTML
 <div class="auto-blog-post">
-    <div class="auto-blog-title">...</div>
-    <div src="..." class="auto-blog-bg-img"></div>
-    <div class="auto-blog-text">...</div>
+    <div class="auto-blog-title"></div>
+    <div src="" class="auto-blog-bg-img"></div>
+    <div class="auto-blog-text"></div>
 </div>
 ```
 **NOTE:**
