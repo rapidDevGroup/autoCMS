@@ -286,6 +286,13 @@ function getPageData($file) {
     return $json;
 }
 
+function getRepeatData($file, $key) {
+    $dataFile = 'data/page-' . $file . '.json';
+    $json = json_decode(file_get_contents($dataFile), true);
+
+    return $json[$key]['repeat'];
+}
+
 function getNavData() {
     $dataFile = 'data/autocms-nav.json';
     $json = json_decode(file_get_contents($dataFile), true);

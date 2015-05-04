@@ -44,6 +44,8 @@ $(function() {
     $('textarea.editor').ckeditor(editorConfig);
     */
 
+    bkLib.onDomLoaded(function() { nicEditors.allTextAreas() });
+
     $('.desc-edit').editable();
 
     var $uploadButtons = $('.upload-button');
@@ -77,74 +79,6 @@ $(function() {
             return (confirm("You will lose unsaved changes. Continue?"));
         }
         return true;
-    });
-
-    $('.pagination').on('click', 'li', function(){
-        if (!$(this).hasClass('no-active')) {
-            $(this).parent().find('li').removeClass('active');
-            $(this).addClass('active');
-        }
-    });
-
-    var duplicating = false;
-    $('body').on('click','#repeat-duplicate',function(){
-        var page = $(this).data('page');
-        var key = $(this).attr('data-key');
-        var $carousel = $('#carousel-repeat-' + key);
-        var $carousel_active = $('#carousel-repeat-' + key + ' .item.active');
-        var $carousel_paging = $('#carousel-paging-' + key + ' .active');
-        var number_slides = $carousel.attr('data-number');
-        var number_slides_new = $carousel.attr('data-number')/1 + 1;
-        var current = $carousel_active.index('#carousel-repeat-' + key + ' .item');
-
-        if (!duplicating) {
-            duplicating = true;
-            $.getJSON('/admin/page/' + page + '/repeat-dup/' + key + '/' + current + '/', function () {
-                $carousel_active.clone().removeClass('active').appendTo('#carousel-repeat-' + key + ' .carousel-inner');
-                $carousel.removeData().carousel({
-                    interval: false
-                }).carousel(current);
-
-                $carousel_paging.clone().removeClass('active').attr('data-slide-to', number_slides).appendTo('#carousel-paging-' + key);
-                $('#carousel-paging-' + key + ' [data-slide-to=' + number_slides + '] a').text(number_slides / 1 + 1);
-
-                $('#repeat-delete').show();
-
-                $carousel.attr('data-number', number_slides_new);
-                duplicating =  false;
-            });
-        }
-        return false;
-    });
-
-    var deleting = false;
-    $('body').on('click','#repeat-delete',function(){
-        var page = $(this).data('page');
-        var key = $(this).attr('data-key');
-        var $carousel = $('#carousel-repeat-' + key);
-        var $carousel_active = $('#carousel-repeat-' + key + ' .item.active');
-        var number_slides_new = $carousel.attr('data-number')/1 - 1;
-        var current = $carousel_active.index('#carousel-repeat-' + key + ' .item');
-
-        if (!deleting) {
-            deleting = true;
-            $.getJSON('/admin/page/' + page + '/repeat-del/' + key + '/' + current + '/', function () {
-                $carousel_active.remove().appendTo('#carousel-repeat-' + key + ' .carousel-inner');
-                $carousel.removeData().carousel({
-                    interval: false
-                }).carousel(current);
-
-                $('#carousel-paging-' + key + ' li').removeClass('active');
-                $('#carousel-paging-' + key + ' li:first-child').addClass('active');
-                $('#carousel-paging-' + key + ' li:last-child').remove();
-
-                if (number_slides_new <= 1) $('#repeat-delete').hide();
-
-                $carousel.attr('data-number', number_slides_new);
-                deleting = false;
-            });
-        }
-        return false;
     });
 });
 
