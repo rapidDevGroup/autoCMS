@@ -3,7 +3,7 @@ $pages = getPageList();
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="overflow: hidden;">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -28,7 +28,7 @@ $pages = getPageList();
             <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
     </head>
-    <body style="background-color: #f8f8f8;">
+    <body style="background-color: #f8f8f8; overflow: hidden;">
         <div id="wrapper">
             <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0; position: fixed; width: 100%;">
                 <div class="navbar-header">
