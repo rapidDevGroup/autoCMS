@@ -60,7 +60,6 @@ This will add information such as title, meta description, meta keywords, and me
 
 
 #### Footer Tag 
-**(Being Worked On)**
 
 ```HTML
 <footer class="auto-footer">

@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-define("VERSION", "0.2.6");
+define("VERSION", "0.2.7");
 
 require_once('system/Toro.php');
 require_once('system/statusreturn.php');
@@ -24,6 +24,8 @@ Toro::serve(array(
     '/dash/'                                    => 'Dash',
     '/nav/'                                     => 'Nav',
     '/nav/update/'                              => 'Nav',
+    '/footer/'                                  => 'Footer',
+    '/footer/update/'                           => 'Footer',
     '/dash/:string'                             => 'Dash',
     '/page/:alpha'                              => 'Page',
     '/page/:alpha/update/'                      => 'Page',

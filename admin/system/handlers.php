@@ -135,6 +135,27 @@ class Nav {
     }
 }
 
+class Footer {
+    function get() {
+        if (checkPass() && !authNeeded()) {
+            include_once('admin-pages/edit-footer.php');
+        } else {
+            include_once('admin-pages/401.html');
+        }
+    }
+    function post() {
+        if (checkPass() && !authNeeded()) {
+
+            updateFooter($_POST);
+
+            header('Location: /admin/footer/');
+
+        } else {
+            include_once('admin-pages/401.html');
+        }
+    }
+}
+
 class Description {
     function post_xhr($page = null) {
         if (is_null($page)) {

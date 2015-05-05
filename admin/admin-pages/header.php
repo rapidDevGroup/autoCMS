@@ -61,7 +61,7 @@ $pages = getPageList();
                         <ul class="nav" id="side-menu">
                             <li><a href="/admin/dash/"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a></li>
                             <?php if (hasNav()) {?><li><a href="/admin/nav/"><i class="fa fa-bars fa-fw"></i> Navigation</a></li><?php } ?>
-                            <?php if (footerExists()) {?><li><a href="/admin/footer/"><i class="fa fa-bars fa-fw"></i> Site Footer</a></li><?php } ?>
+                            <?php if (footerExists()) {?><li><a href="/admin/footer/"><i class="fa fa-file-code-o fa-fw"></i> Site Footer</a></li><?php } ?>
                             <?php if (count($pages) > 0) {?>
                                 <li>
                                     <a href="#"><i class="fa fa-files-o fa-fw"></i> Pages<span class="fa arrow"></span></a>

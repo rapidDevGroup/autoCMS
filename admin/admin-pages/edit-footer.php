@@ -1,18 +1,18 @@
 <?php
 include_once('header.php');
-$data = getNavData();
+$data = getFooterData();
 ?>
 
     <div class="row">
         <div class="col-lg-12">
-            <h2 class="page-header">Content editing for navigation text</h2>
+            <h2 class="page-header">Content editing for common footer</h2>
         </div>
         <!-- /.col-lg-12 -->
     </div>
 
     <div class="row">
         <div class="col-lg-12">
-            <form action="/admin/nav/update/" method="post" class="form-horizontal">
+            <form action="/admin/footer/update/" method="post" class="form-horizontal">
                 <?php foreach($data as $key => $datum) { ?>
                     <div class="form-group">
                         <?php $desc = $datum['description'];
@@ -41,7 +41,7 @@ $data = getNavData();
                 <hr>
                 <div class="form-group">
                     <div class="col-lg-offset-7 col-lg-3 col-sm-offset-9 col-sm-3">
-                        <button type="submit" class="btn btn-primary btn-block pull-right dirtyOK">Save Navigation</button>
+                        <button type="submit" class="btn btn-primary btn-block pull-right dirtyOK">Save Footer</button>
                     </div>
                 </div>
             </form>

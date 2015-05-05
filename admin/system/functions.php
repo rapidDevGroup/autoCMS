@@ -414,6 +414,13 @@ function getNavData() {
     return $json;
 }
 
+function getFooterData() {
+    $dataFile = 'data/autocms-footer.json';
+    $json = json_decode(file_get_contents($dataFile), true);
+
+    return $json;
+}
+
 function updatePage($file, $data) {
     $dataFile = 'data/page-' . $file . '.json';
     $json = json_decode(file_get_contents($dataFile), true);
@@ -436,6 +443,19 @@ function updatePage($file, $data) {
 
 function updateNav($data) {
     $dataFile = 'data/autocms-nav.json';
+    $json = json_decode(file_get_contents($dataFile), true);
+
+    foreach ($data as $key => $datum) {
+        $json[$key][$json[$key]['type']] = trim($datum);
+    }
+
+    $fp = fopen($dataFile, 'w');
+    fwrite($fp, json_encode($json));
+    fclose($fp);
+}
+
+function updateFooter($data) {
+    $dataFile = 'data/autocms-footer.json';
     $json = json_decode(file_get_contents($dataFile), true);
 
     foreach ($data as $key => $datum) {
