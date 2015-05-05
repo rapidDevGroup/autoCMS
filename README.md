@@ -43,7 +43,7 @@ This will add information such as title, meta description, meta keywords, and me
 ```
 **NOTE:** Cannot use autocms attribute on auto-head tag.
 
-[top](#tags-descriptions-and-examples)
+---
 
 
 #### Navigation Text Tags
@@ -148,14 +148,14 @@ This would be the same as the following with one addition repeat added by autoCM
 
 This works like auto-repeat but has special blog tags. Use this to list all your blog posts on a page.
 ```HTML
-<div class="auto-blog-list list-10">
+<div class="auto-blog-list">
     <div class="auto-blog-title"></div>
     <img src="" class="auto-blog-img">
     <div class="auto-blog-short"></div>
     <a class="auto-blog-link auto-blog-text"></a>
 </div>
 ```
-**NOTE:** Can use list-3, list-5, list-10, list-20, leaving list-X tag out will list all posts. **(Pagination Coming Soon)**
+**(Pagination Coming Soon)**
 
 This works to display a single blog post. Use the head tag to edit head information for each blog post.
 ```HTML
