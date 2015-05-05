@@ -24,6 +24,14 @@ This is for people who do not wish to use a complicated site management system l
 
 **NOTE:** Do not use these tags for styling as they will be removed.
 
+* [Head Information Tag](https://github.com/rapidDevGroup/autoCMS#head-information-tag)
+* [Navigation Text Tags](https://github.com/rapidDevGroup/autoCMS#navigation-text-tags)
+* [Footer Tag](https://github.com/rapidDevGroup/autoCMS#footer-tag)
+* [Edit HTML Tags](https://github.com/rapidDevGroup/autoCMS#edit-html-tags)
+* [Edit Text Tags](https://github.com/rapidDevGroup/autoCMS#edit-text-tags)
+* [Image Tags](https://github.com/rapidDevGroup/autoCMS#image-tags)
+* [Repeating Tags](https://github.com/rapidDevGroup/autoCMS#repeating-tags)
+* [Blog/News Feed Tags](https://github.com/rapidDevGroup/autoCMS#blognews-feed-tags)
 
 #### Head Information Tag
 
@@ -46,7 +54,8 @@ This will add information such as title, meta description, meta keywords, and me
 * All internal site links require these tag.
 
 
-#### Footer Tag **(Being Worked On)**
+#### Footer Tag 
+**(Being Worked On)**
 
 ```HTML
 <footer class="auto-footer">
@@ -120,7 +129,8 @@ This would be the same as the following with one addition repeat added by autoCM
 **TIP:** We recommend using the attribute autocms to add a description.
 
 
-#### Blog/News Feed Tags **(Being Worked On)**
+#### Blog/News Feed Tags
+**(Being Worked On)**
 
 This works like auto-repeat but has special blog tags. Use this to list all your blog posts on a page.
 ```HTML
@@ -171,13 +181,10 @@ This data tag can be used to add an additional description to a field, also used
 * Blog Drafts
 * Blog Pagination
 * History Log
-* Prevent Refresh Form Errors
 * Check for Safe Files
 * Inline Editing
-* Repeat Bulk Load Images
 * User Privilege Settings
 * Multiple auto-repeat on a Page
-* Scan for New Changes
 * Commenting System
 * Add couchDB Option
 * Detect Tag Needs
