@@ -11,8 +11,8 @@ This is for people who do not wish to use a complicated site management system l
 
 ## Install Steps
 1. Create an HTML site and add the appropriate _auto-edit_ classes to heading tags, paragraph tags, span tags, or simply the whole div block or images.
-2. Copy the admin folder into the root of your site
-3. Make sure that the admin folder and sub-folders are writable
+2. Copy the admin folder into the root of your site.
+3. Make sure that the admin folder and sub-folders are writable.
 4. Visit http://yoursite.com/admin/
 5. It will ask you to create a password, then scan your html files and ask you to process them and add to the CMS.
 6. autoCMS will rename files to .php (scan for links and rename those as well) and add the appropriate php tags.
@@ -24,15 +24,25 @@ This is for people who do not wish to use a complicated site management system l
 
 **NOTE:** Do not use these tags for styling as they will be removed.
 
+#### Head Information Tag
+
+This will add information such as title, meta description, meta keywords, and meta author tags into the CMS for editing.
+
+```HTML
+<head class="auto-head">...</head>
+```
+**NOTE:** Cannot use autocms attribute on head tag.
+
+
 #### Navigation Text Tags
 
 ```HTML
 <a href="..." class="auto-nav" autocms="home navigation">...</a>
 ```
 **NOTE:**
-* All auto-nav tags needs an autocms description attribute
-* All navigation links that link to the same page and have the same text must have the same description
-* All internal site links require this tag
+* All auto-nav tags needs an autocms description attribute.
+* All navigation links that link to the same page and have the same text must have the same description.
+* All internal site links require this tag.
 
 
 #### Edit HTML Tags
@@ -75,7 +85,7 @@ For background images:
 </div>
 ```
 
-This would be the same as the following with one addition repeat added by autoCMS
+This would be the same as the following with one addition repeat added by autoCMS.
 
 ```HTML
 <div>
@@ -107,7 +117,12 @@ This works like auto-repeat but has special blog tags. Use this to list all your
 ```
 **NOTE:** Can use list-3, list-5, list-10, list-20, leaving list-X tag out will list all posts. **(Pagination Coming Soon)**
 
-This works to display a single blog post.
+This works to display a single blog post. Use the head tag to edit head information for each blog post.
+```HTML
+<head class="auto-blog-head">...</head>
+```
+
+Use these tags to display actual blog content. 
 ```HTML
 <div class="auto-blog-post">
     <div class="auto-blog-title"></div>
@@ -118,7 +133,7 @@ This works to display a single blog post.
 **NOTE:**
 * Can use auto-blog-img and auto-blog-bg-img, however, this will be the same image used in the blog post.
 * auto-blog-post's page will be linked to automatically from the list, and will load the correct blog post.
-
+* Any other non-blog auto tags will be editable, however, will be the same for all blog posts.
 
 ## Special HTML Attributes
 
