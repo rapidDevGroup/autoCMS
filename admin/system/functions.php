@@ -70,6 +70,33 @@ function hasNav() {
     return true;
 }
 
+function footerExists() {
+    if (file_exists("data/autocms-footer.json")) return true;
+
+    return false;
+}
+
+function buildFooterDataFile($files) {
+    if (!footerExists()) {
+        $footerArr = Array();
+
+
+        foreach ($files as $file) {
+            $fileData = file_get_contents('../' . $file, true);
+
+            $html = str_get_html($fileData);
+
+            foreach($html->find('.auto-footer .auto-edit, .auto-footer .auto-edit-text, .auto-footer .auto-edit-img, .auto-footer .auto-edit-bg-img') as $edit) {
+
+            }
+        }
+
+        $fp = fopen('data/autocms-footer.json', 'w');
+        fwrite($fp, json_encode($footerArr));
+        fclose($fp);
+    }
+}
+
 function buildDataFilesByTags($files) {
     if (!file_exists("data/autocms-pages.json")) {
         $pageArr = Array();

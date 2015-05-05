@@ -31,7 +31,7 @@ This will add information such as title, meta description, meta keywords, and me
 ```HTML
 <head class="auto-head">...</head>
 ```
-**NOTE:** Cannot use autocms attribute on head tag.
+**NOTE:** Cannot use autocms attribute on auto-head tag.
 
 
 #### Navigation Text Tags
@@ -43,6 +43,19 @@ This will add information such as title, meta description, meta keywords, and me
 * All auto-nav tags needs an autocms description attribute.
 * All navigation links that link to the same page and have the same text must have the same description.
 * All internal site links require this tag.
+
+
+#### Footer Tag **(Being Worked On)**
+
+```HTML
+<footer class="auto-footer">
+    <div class="auto-edit">...</div>
+</footer>
+```
+**NOTE:**
+* Cannot use autocms attribute on auto-footer tag.
+* All footer tags need to be identical, only one copy is kept and repeated.
+* auto-footer can be added to div, section, or anything. Doesn't have to be footer.
 
 
 #### Edit HTML Tags
