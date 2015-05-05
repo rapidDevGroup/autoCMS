@@ -26,7 +26,7 @@ $data = getFooterData();
                             </div>
                         <?php } else if ($datum['type'] == 'text') { ?>
                             <div class="col-lg-8 col-sm-10">
-                                <input name="<?=$key?>" class="form-control" value="<?=$datum['text']?>">
+                                <input name="<?=$key?>" class="form-control" value="<?=$datum['text']?>" autocomplete="off">
                             </div>
                         <?php } else if ($datum['type'] == 'image') { ?>
                             <div class="col-lg-5 col-sm-7">
