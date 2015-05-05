@@ -11,6 +11,14 @@ class Init {
             include_once('admin-pages/login.php');
         }
     }
+    function post() {
+        if (checkPass($_POST['user'], $_POST['password']) && !authNeeded()) {
+            $_SESSION["user"] = $_POST['user'];
+            $_SESSION["password"] = $_POST['password'];
+
+            include_once('admin-pages/init.php');
+        }
+    }
 }
 
 class Login {
@@ -74,11 +82,6 @@ class Dash {
 
             include_once('admin-pages/dash.php');
 
-        } else if (is_null($action) && checkPass($_POST['user'], $_POST['password']) && !authNeeded()) {
-            $_SESSION["user"] = $_POST['user'];
-            $_SESSION["password"] = $_POST['password'];
-
-            include_once('admin-pages/dash.php');
         } else {
             include_once('admin-pages/401.html');
         }

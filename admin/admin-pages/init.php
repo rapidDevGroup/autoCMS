@@ -38,7 +38,7 @@ $pages = getPageList();
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="/admin/dash/">autoCMS Version <?=VERSION?></a>
+                    <a class="navbar-brand" href="/admin/">autoCMS Version <?=VERSION?></a>
                 </div>
 
                 <ul class="nav navbar-top-links navbar-right" style="text-align: right;">
