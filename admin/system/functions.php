@@ -107,13 +107,13 @@ function buildFooterDataFile($files) {
 
                             copy($source, $_SERVER['DOCUMENT_ROOT'] . $imgFileName);
 
-                            $data[$fieldID] = Array('image' => $imgFileName, 'description' => $desc, 'type' => 'image');
+                            $footerArr[$fieldID] = Array('image' => $imgFileName, 'description' => $desc, 'type' => 'image');
                             $edit->src = "<?=get('$dataFile', '$fieldID')?>";
 
                             $altText = $edit->alt;
                             $altFieldID = uniqid();
 
-                            $data[$altFieldID] = Array('alt' => $altText, 'description' => 'image alt text', 'type' => 'text', 'parent' => $fieldID);
+                            $footerArr[$altFieldID] = Array('alt' => $altText, 'description' => 'image alt text', 'type' => 'text', 'parent' => $fieldID);
                             $edit->alt = "<?=get('$dataFile', '$altFieldID')?>";
 
                             $edit->class = str_replace('auto-edit-img', '', $edit->class);
@@ -135,7 +135,7 @@ function buildFooterDataFile($files) {
 
                             copy($source, $_SERVER['DOCUMENT_ROOT'] . $imgFileName);
 
-                            $data[$fieldID] = Array('image' => $imgFileName, 'description' => $desc, 'type' => 'image');
+                            $footerArr[$fieldID] = Array('image' => $imgFileName, 'description' => $desc, 'type' => 'image');
                             $edit->style = str_replace($matches[0], '', $edit->style) . "background-image: url('<?=get('$dataFile', '$fieldID')?>');";
 
                             $edit->class = str_replace('auto-edit-bg-img', '', $edit->class);
@@ -143,26 +143,39 @@ function buildFooterDataFile($files) {
                         }
                     } else if (strpos($edit->class, 'auto-edit-text') !== false) {
                         if (isset($edit->autocms)) $desc = $edit->autocms;
-                        $data[$fieldID] = Array('html' => trim($edit->innertext), 'description' => $desc, 'type' => 'text');
+                        $footerArr[$fieldID] = Array('text' => trim($edit->innertext), 'description' => $desc, 'type' => 'text');
                         $edit->innertext = "<?=get('$dataFile', '$fieldID')?>";
                         $edit->class = str_replace('auto-edit-text', '', $edit->class);
                         $edit->autocms = null;
                     } else if (strpos($edit->class, 'auto-edit') !== false) {
                         if (isset($edit->autocms)) $desc = $edit->autocms;
-                        $data[$fieldID] = Array('html' => trim($edit->innertext), 'description' => $desc, 'type' => 'html');
+                        $footerArr[$fieldID] = Array('html' => trim($edit->innertext), 'description' => $desc, 'type' => 'html');
                         $edit->innertext = "<?=get('$dataFile', '$fieldID')?>";
                         $edit->class = str_replace('auto-edit', '', $edit->class);
                         $edit->autocms = null;
                     }
                 }
 
-                // copy into new footer file
+                $footerHTML = '';
+                foreach ($html->find('.auto-footer') as $edit) {
+                    $edit->class = str_replace('auto-footer', '', $edit->class);
+                    $footerHTML = clone $edit;
+                    $edit->outertext = '<?php require_once("admin/other/autocms-footer.php") ?>';
+                }
+
+                $fp = fopen('other/autocms-footer.php', 'w');
+                fwrite($fp, $footerHTML);
+                fclose($fp);
 
             } else {
-
-                // replace with include
-
+                foreach ($html->find('.auto-footer') as $edit) {
+                    $edit->outertext = '<?php require_once("admin/other/autocms-footer.php") ?>';
+                }
             }
+
+            $fp = fopen('../' . $file, 'w');
+            fwrite($fp, $html);
+            fclose($fp);
         }
 
         $fp = fopen('data/autocms-footer.json', 'w');
@@ -266,7 +279,7 @@ function buildDataFilesByTags($files) {
                         }
                     } else if (strpos($repeat->class, 'auto-edit-text') !== false) {
                         if (isset($repeat->autocms)) $desc = $repeat->autocms;
-                        $data[$fieldID]['repeat'][$count][$repeatFieldID] = Array('html' => trim($repeat->innertext), 'description' => $desc, 'type' => 'text');
+                        $data[$fieldID]['repeat'][$count][$repeatFieldID] = Array('text' => trim($repeat->innertext), 'description' => $desc, 'type' => 'text');
                         $repeat->innertext = "<?=get('$dataFile', '$fieldID', ".'$x'.", '$repeatFieldID')?>";
                         $repeat->class = str_replace('auto-edit-text', '', $repeat->class);
                         $repeat->autocms = null;
@@ -333,7 +346,7 @@ function buildDataFilesByTags($files) {
                 }
             } else if (strpos($edit->class, 'auto-edit-text') !== false) {
                 if (isset($edit->autocms)) $desc = $edit->autocms;
-                $data[$fieldID] = Array('html' => trim($edit->innertext), 'description' => $desc, 'type' => 'text');
+                $data[$fieldID] = Array('text' => trim($edit->innertext), 'description' => $desc, 'type' => 'text');
                 $edit->innertext = "<?=get('$dataFile', '$fieldID')?>";
                 $edit->class = str_replace('auto-edit-text', '', $edit->class);
                 $edit->autocms = null;
@@ -351,7 +364,7 @@ function buildDataFilesByTags($files) {
         fwrite($fp, json_encode($data));
         fclose($fp);
 
-        $fileTopper = '<?php require_once("admin/system/get.php") ?>';
+        $fileTopper = '<?php require_once("admin/other/get.php") ?>';
 
         // write html file
         $fp = fopen('../' . $file, 'w');
@@ -489,7 +502,7 @@ function getAllNavigationData($files) {
 }
 
 function copyApacheConfig() {
-    copy('./temp/.htaccess', '../.htaccess');
+    if (file_exists('./other/.htaccess')) copy('./other/.htaccess', '../.htaccess');
 }
 
 function uploadFiles($page) {
