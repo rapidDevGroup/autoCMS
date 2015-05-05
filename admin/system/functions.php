@@ -79,14 +79,88 @@ function footerExists() {
 function buildFooterDataFile($files) {
     if (!footerExists()) {
         $footerArr = Array();
-
+        $footerFound = false;
 
         foreach ($files as $file) {
             $fileData = file_get_contents('../' . $file, true);
+            $dataFile = 'autocms-footer.json';
 
             $html = str_get_html($fileData);
 
-            foreach($html->find('.auto-footer .auto-edit, .auto-footer .auto-edit-text, .auto-footer .auto-edit-img, .auto-footer .auto-edit-bg-img') as $edit) {
+            if (!$footerFound) {
+                foreach ($html->find('.auto-footer .auto-edit, .auto-footer .auto-edit-text, .auto-footer .auto-edit-img, .auto-footer .auto-edit-bg-img') as $edit) {
+                    $footerFound = true;
+                    $fieldID = uniqid();
+                    $desc = '';
+
+                    if (strpos($edit->class, 'auto-edit-img') !== false) {
+                        if (isset($edit->autocms)) $desc = $edit->autocms;
+
+                        $source = $edit->src;
+                        if (substr($edit->src, 0, 1) == "/") $source = $_SERVER['DOCUMENT_ROOT'] . $edit->src;
+
+                        $fileExt = pathinfo(parse_url($edit->src, PHP_URL_PATH), PATHINFO_EXTENSION);
+                        $fileExt = getImageType($fileExt, $source);
+
+                        if ($fileExt != 'error') {
+                            $imgFileName = '/admin/images/' . uniqid() . '.' . $fileExt;
+
+                            copy($source, $_SERVER['DOCUMENT_ROOT'] . $imgFileName);
+
+                            $data[$fieldID] = Array('image' => $imgFileName, 'description' => $desc, 'type' => 'image');
+                            $edit->src = "<?=get('$dataFile', '$fieldID')?>";
+
+                            $altText = $edit->alt;
+                            $altFieldID = uniqid();
+
+                            $data[$altFieldID] = Array('alt' => $altText, 'description' => 'image alt text', 'type' => 'text', 'parent' => $fieldID);
+                            $edit->alt = "<?=get('$dataFile', '$altFieldID')?>";
+
+                            $edit->class = str_replace('auto-edit-img', '', $edit->class);
+                            $edit->autocms = null;
+                        }
+                    } else if (strpos($edit->class, 'auto-edit-bg-img') !== false) {
+                        if (isset($edit->autocms)) $desc = $edit->autocms;
+
+                        $source = $edit->style;
+                        preg_match('~\bbackground(-image)?\s*:(.*?)\(\s*(\'|")?(?<image>.*?)\3?\s*\)~i', $source, $matches);
+                        $source = $matches[4];
+                        if (substr($edit->src, 0, 1) == "/") $source = $_SERVER['DOCUMENT_ROOT'] . $edit->src;
+
+                        $fileExt = pathinfo(parse_url($edit->src, PHP_URL_PATH), PATHINFO_EXTENSION);
+                        $fileExt = getImageType($fileExt, $source);
+
+                        if ($fileExt != 'error') {
+                            $imgFileName = '/admin/images/' . uniqid() . '.' . $fileExt;
+
+                            copy($source, $_SERVER['DOCUMENT_ROOT'] . $imgFileName);
+
+                            $data[$fieldID] = Array('image' => $imgFileName, 'description' => $desc, 'type' => 'image');
+                            $edit->style = str_replace($matches[0], '', $edit->style) . "background-image: url('<?=get('$dataFile', '$fieldID')?>');";
+
+                            $edit->class = str_replace('auto-edit-bg-img', '', $edit->class);
+                            $edit->autocms = null;
+                        }
+                    } else if (strpos($edit->class, 'auto-edit-text') !== false) {
+                        if (isset($edit->autocms)) $desc = $edit->autocms;
+                        $data[$fieldID] = Array('html' => trim($edit->innertext), 'description' => $desc, 'type' => 'text');
+                        $edit->innertext = "<?=get('$dataFile', '$fieldID')?>";
+                        $edit->class = str_replace('auto-edit-text', '', $edit->class);
+                        $edit->autocms = null;
+                    } else if (strpos($edit->class, 'auto-edit') !== false) {
+                        if (isset($edit->autocms)) $desc = $edit->autocms;
+                        $data[$fieldID] = Array('html' => trim($edit->innertext), 'description' => $desc, 'type' => 'html');
+                        $edit->innertext = "<?=get('$dataFile', '$fieldID')?>";
+                        $edit->class = str_replace('auto-edit', '', $edit->class);
+                        $edit->autocms = null;
+                    }
+                }
+
+                // copy into new footer file
+
+            } else {
+
+                // replace with include
 
             }
         }

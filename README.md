@@ -1,5 +1,5 @@
 # autoCMS
-Automatically create a CMS (Content Management System) using class names and a special attribute in plain HTML/JavaScript/CSS site. PHP experience isn't needed, however, PHP is needed on the target server. Apache server with Mod Rewrite is also needed.
+Automatically create a CMS (Content Management System) using class names and a special attribute in a plain HTML/JavaScript/CSS site. PHP experience isn't needed, however, PHP is needed on the target server. Apache server with Mod Rewrite is also needed.
 
 
 ## Who Should Use This
@@ -20,9 +20,10 @@ This is for people who do not wish to use a complicated site management system l
     * It will then bring you to a basic CMS to edit all your content.
 
 
-## Tags Examples
+## Tags Descriptions and Examples
 
 **NOTE:** Do not use these tags for styling as they will be removed.
+
 
 #### Head Information Tag
 
@@ -41,8 +42,8 @@ This will add information such as title, meta description, meta keywords, and me
 ```
 **NOTE:**
 * All auto-nav tags needs an autocms description attribute.
-* All navigation links that link to the same page and have the same text must have the same description.
-* All internal site links require this tag.
+* All navigation links that link to the same page and have the same text must have the same autocms description.
+* All internal site links require these tag.
 
 
 #### Footer Tag **(Being Worked On)**
@@ -50,6 +51,8 @@ This will add information such as title, meta description, meta keywords, and me
 ```HTML
 <footer class="auto-footer">
     <div class="auto-edit">...</div>
+    <div class="auto-edit-text">...</div>
+    ...
 </footer>
 ```
 **NOTE:**
@@ -112,7 +115,7 @@ This would be the same as the following with one addition repeat added by autoCM
 ```
 **NOTE:** 
 * Repeated content must be added by autoCMS, adding multiple copies in HTML will be interpreted as one repeat block.
-* Can only have one repeat tag per page.
+* Can only have one repeat tag per page (for now).
 
 **TIP:** We recommend using the attribute autocms to add a description.
 
@@ -149,6 +152,7 @@ Use these tags to display actual blog content.
 * Any other non-blog auto tags will be editable, however, will be the same for all blog posts.
 
 ## Special HTML Attributes
+
 
 #### autocms Attribute
 
