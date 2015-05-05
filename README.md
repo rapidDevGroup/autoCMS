@@ -189,7 +189,7 @@ This data tag can be used to add an additional description to a field, also used
 ```
 **TIP:** These descriptions can be edited with the CMS. Good to keep track of what's what.
 
-[top](https://github.com/rapidDevGroup/autoCMS#tags-descriptions-and-examples)
+---
 
 
 ## Coming Soon and Planned Future Updates
