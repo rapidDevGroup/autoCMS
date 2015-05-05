@@ -24,15 +24,15 @@ This is for people who do not wish to use a complicated site management system l
 
 **NOTE:** Do not use these tags for styling as they will be removed.
 
-* [Head Information Tag](https://github.com/rapidDevGroup/autoCMS#head-information-tag)
-* [Navigation Text Tags](https://github.com/rapidDevGroup/autoCMS#navigation-text-tags)
-* [Footer Tag](https://github.com/rapidDevGroup/autoCMS#footer-tag)
-* [Edit HTML Tag](https://github.com/rapidDevGroup/autoCMS#edit-html-tag)
-* [Edit Text Tag](https://github.com/rapidDevGroup/autoCMS#edit-text-tag)
-* [Image Tags](https://github.com/rapidDevGroup/autoCMS#image-tags)
-* [Repeating Tag](https://github.com/rapidDevGroup/autoCMS#repeating-tag)
-* [Blog/News Feed Tags](https://github.com/rapidDevGroup/autoCMS#blognews-feed-tags)
-* [autocms Attribute](https://github.com/rapidDevGroup/autoCMS#autocms-attribute)
+* [Head Information Tag](#head-information-tag)
+* [Navigation Text Tags](#navigation-text-tags)
+* [Footer Tag](#footer-tag)
+* [Edit HTML Tag](#edit-html-tag)
+* [Edit Text Tag](#edit-text-tag)
+* [Image Tags](#image-tags)
+* [Repeating Tag](#repeating-tag)
+* [Blog/News Feed Tags](#blognews-feed-tags)
+* [autocms Attribute](#autocms-attribute)
 
 #### Head Information Tag
 
