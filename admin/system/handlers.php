@@ -1,6 +1,5 @@
 <?php
 
-
 class Init {
     function get() {
         if (authNeeded()) {
@@ -16,7 +15,7 @@ class Init {
             $_SESSION["user"] = $_POST['user'];
             $_SESSION["password"] = $_POST['password'];
 
-            include_once('admin-pages/init.php');
+            header('Location: /admin/');
         }
     }
 }

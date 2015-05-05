@@ -4,7 +4,7 @@ include_once('header.php');
 <div class="container">
     <div class="row">
         <div class="col-lg-12">
-            <h2 class="page-header">Content editing for <?=$page?></h2>
+            <h2 class="page-header">Content editing for <?=$page?> page</h2>
         </div>
     </div>
 
