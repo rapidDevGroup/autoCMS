@@ -8,11 +8,9 @@ $(function() {
     //collapses the sidebar on window resize.
     // Sets the min-height of #page-wrapper to window size
     $(window).bind("load resize", function() {
-        topOffset = 50;
         width = (this.window.innerWidth > 0) ? this.window.innerWidth : this.screen.width;
         if (width < 768) {
             $('div.navbar-collapse').addClass('collapse');
-            topOffset = 100; // 2-row-menu
         } else {
             $('div.navbar-collapse').removeClass('collapse');
         }
@@ -25,6 +23,10 @@ $(function() {
     if (element.is('li')) {
         element.addClass('active');
     }
+
+    $('.navbar-default a').click(function(){
+        if (!$(this).hasClass('open-close') && $('.navbar-toggle').is(':visible') && $('.navbar-collapse').hasClass('in')) $('.navbar-toggle').trigger('click');
+    });
 
     bkLib.onDomLoaded(function() { nicEditors.allTextAreas({buttonList : ['bold','italic','underline','strikeThrough','removeformat','subscript','superscript','left','center','right','justified','ol','ul','subscript','superscript','indent','outdent','forecolor','bgcolor','link','unlink','fontFormat','fontFamily','fontSize','xhtml']}); });
 

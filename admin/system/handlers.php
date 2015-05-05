@@ -6,7 +6,7 @@ class Init {
         if (authNeeded()) {
             include_once('admin-pages/init-setup.php');
         } else if (checkPass() && !authNeeded()) {
-            include_once('admin-pages/dash.php');
+            include_once('admin-pages/init.php');
         } else {
             include_once('admin-pages/login.php');
         }

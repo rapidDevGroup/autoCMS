@@ -2,7 +2,7 @@
 include_once('header.php');
 $data = getFooterData();
 ?>
-
+<div class="container">
     <div class="row">
         <div class="col-lg-12">
             <h2 class="page-header">Content editing for common footer</h2>
@@ -47,7 +47,7 @@ $data = getFooterData();
             </form>
         </div>
     </div>
-
+</div>
 <?php
 include_once('footer.php');
 ?>

@@ -1,7 +1,7 @@
 <?php
 include_once('header.php');
 ?>
-
+<div class="container">
     <div class="row">
         <div class="col-lg-12">
             <h2 class="page-header">Repeat editing on page <?=$page?></h2>
@@ -59,7 +59,7 @@ include_once('header.php');
         </div>
     </div>
     <br><br>
-
+</div>
 <?php
 include_once('footer.php');
 ?>

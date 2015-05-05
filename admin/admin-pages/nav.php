@@ -2,7 +2,7 @@
 include_once('header.php');
 $data = getNavData();
 ?>
-
+<div class="container">
     <div class="row">
         <div class="col-lg-12">
             <h2 class="page-header">Content editing for navigation text</h2>
@@ -47,7 +47,7 @@ $data = getNavData();
             </form>
         </div>
     </div>
-
+</div>
 <?php
 include_once('footer.php');
 ?>

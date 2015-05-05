@@ -2,7 +2,7 @@
 include_once('header.php');
 $files = scanFiles('.html');
 ?>
-
+<div class="container">
     <div class="row">
         <div class="col-lg-12">
             <h2 class="page-header">Dashboard</h2>
@@ -82,7 +82,7 @@ $files = scanFiles('.html');
             </div>
         </div>
     </div>
-
+</div>
 <?php
 include_once('footer.php');
 ?>
