@@ -27,11 +27,12 @@ This is for people who do not wish to use a complicated site management system l
 * [Head Information Tag](https://github.com/rapidDevGroup/autoCMS#head-information-tag)
 * [Navigation Text Tags](https://github.com/rapidDevGroup/autoCMS#navigation-text-tags)
 * [Footer Tag](https://github.com/rapidDevGroup/autoCMS#footer-tag)
-* [Edit HTML Tags](https://github.com/rapidDevGroup/autoCMS#edit-html-tags)
-* [Edit Text Tags](https://github.com/rapidDevGroup/autoCMS#edit-text-tags)
+* [Edit HTML Tag](https://github.com/rapidDevGroup/autoCMS#edit-html-tag)
+* [Edit Text Tag](https://github.com/rapidDevGroup/autoCMS#edit-text-tag)
 * [Image Tags](https://github.com/rapidDevGroup/autoCMS#image-tags)
-* [Repeating Tags](https://github.com/rapidDevGroup/autoCMS#repeating-tags)
+* [Repeating Tag](https://github.com/rapidDevGroup/autoCMS#repeating-tag)
 * [Blog/News Feed Tags](https://github.com/rapidDevGroup/autoCMS#blognews-feed-tags)
+* [autocms Attribute](https://github.com/rapidDevGroup/autoCMS#autocms-attribute)
 
 #### Head Information Tag
 
@@ -70,7 +71,7 @@ This will add information such as title, meta description, meta keywords, and me
 * auto-footer can be added to div, section, or anything. Doesn't have to be footer.
 
 
-#### Edit HTML Tags
+#### Edit HTML Tag
 
 ```HTML
 <div class="auto-edit">...</p>
@@ -78,7 +79,7 @@ This will add information such as title, meta description, meta keywords, and me
 **TIP:** Best practice is to use div tags so multiple paragraphs can be added and style tags be seen in the CMS.
 
 
-#### Edit Text Tags
+#### Edit Text Tag
 
 ```HTML
 <h1 class="auto-edit-text">...</h1>
@@ -101,7 +102,7 @@ For background images:
 ```
 
 
-#### Repeating Tags
+#### Repeating Tag
 
 ```HTML
 <div class="auto-repeat">
