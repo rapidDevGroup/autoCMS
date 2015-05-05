@@ -56,7 +56,7 @@ This will add information such as title, meta description, meta keywords, and me
 * All navigation links that link to the same page and have the same text must have the same autocms description.
 * All internal site links require these tag.
 
-[top](#tags-descriptions-and-examples)
+---
 
 
 #### Footer Tag 
@@ -73,7 +73,7 @@ This will add information such as title, meta description, meta keywords, and me
 * All footer tags need to be identical, only one copy is kept and repeated.
 * auto-footer can be added to div, section, or anything. Doesn't have to be footer.
 
-[top](#tags-descriptions-and-examples)
+---
 
 
 #### Edit HTML Tag
@@ -83,7 +83,7 @@ This will add information such as title, meta description, meta keywords, and me
 ```
 **TIP:** Best practice is to use div tags so multiple paragraphs can be added and style tags be seen in the CMS.
 
-[top](#tags-descriptions-and-examples)
+---
 
 
 #### Edit Text Tag
@@ -94,7 +94,7 @@ This will add information such as title, meta description, meta keywords, and me
 ```
 **TIP:** Best practice is to use non-div tags, auto-edit-text preserves the intended style by only allowing adding text.
 
-[top](#tags-descriptions-and-examples)
+---
 
 
 #### Image Tags
@@ -110,7 +110,7 @@ For background images:
 <div class="auto-edit-bg-img" style="background-image: url(path/to/original/image);">...</div>
 ```
 
-[top](#tags-descriptions-and-examples)
+---
 
 
 #### Repeating Tag
@@ -140,7 +140,7 @@ This would be the same as the following with one addition repeat added by autoCM
 
 **TIP:** We recommend using the attribute autocms to add a description.
 
-[top](#tags-descriptions-and-examples)
+---
 
 
 #### Blog/News Feed Tags
@@ -175,7 +175,7 @@ Use these tags to display actual blog content.
 * auto-blog-post's page will be linked to automatically from the list, and will load the correct blog post.
 * Any other non-blog auto tags will be editable, however, will be the same for all blog posts.
 
-[top](#tags-descriptions-and-examples)
+---
 
 ## Special HTML Attributes
 
