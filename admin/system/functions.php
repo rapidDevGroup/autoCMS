@@ -661,50 +661,18 @@ function deleteRepeat($page, $key, $num) {
     fclose($fp);
 }
 
-function detectBlog($files) {
-    if (!file_exists("data/autocms-pages.json")) {
-        $pageArr = Array();
-    } else {
-        $pageArr = json_decode(file_get_contents("data/autocms-pages.json"), true);
-    }
+function processBlog($files) {
+    $dataFile = 'autocms-blog.json';
 
-    foreach ($files as $file) {
-        $pageArr[] = str_replace(Array('.html', '.htm'), '', $file);
-
-        // create datafile to store stuff
-        $dataFile = 'page-' . str_replace(Array('.html', '.htm'), '.json', $file);
-        $data = Array();
-
-        // start collecting fields to add to data
-        $fileData = file_get_contents('../' . $file, true);
-
-        $html = str_get_html($fileData);
-    }
-}
-
-function processBlog() {
-    $dataFile = 'autocms-nav.json';
-
-    if (!file_exists($dataFile)) {
-        $navArr = Array();
-    } else {
-        $navArr = json_decode(file_get_contents('data/' . $dataFile), true);
-    }
+    $blogArr = Array();
 
     foreach ($files as $file) {
         $fileData = file_get_contents('../' . $file, true);
 
         $html = str_get_html($fileData);
 
-        foreach($html->find('.auto-nav') as $navigation) {
-            if (isset($navigation->autocms)) {
-                $desc = preg_replace("/[^a-z^A-Z^0-9_-]/", "", $navigation->autocms);
+        foreach($html->find('.auto-blog-list, .auto-blog-head, .auto-blog-post, .auto-blog-title, .auto-blog-bg-img, .auto-blog-img, .auto-blog-short, .auto-blog-link, .auto-blog-full') as $navigation) {
 
-                $navArr[$desc] = Array('text' => $navigation->innertext, 'description' => $navigation->autocms, 'type' => 'text');
-                $navigation->innertext = "<?=get('$dataFile', '$desc')?>";
-                $navigation->href = str_replace(Array('index.html', 'index.htm', '.html', '.htm'), '/', '/' . $navigation->href);
-                $navigation->href = str_replace('//', '/', $navigation->href);
-            }
         }
 
         // write html file
@@ -714,6 +682,6 @@ function processBlog() {
     }
 
     $fp = fopen('data/' . $dataFile, 'w');
-    fwrite($fp, json_encode($navArr));
+    fwrite($fp, json_encode($blogArr));
     fclose($fp);
 }

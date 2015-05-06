@@ -34,6 +34,9 @@ This is for people who do not wish to use a complicated site management system l
 * [Blog/News Feed Tags](#blognews-feed-tags)
 * [autocms Attribute](#autocms-attribute)
 
+---
+
+
 #### Head Information Tag
 
 This will add information such as title, meta description, meta keywords, and meta author tags into the CMS for editing.
@@ -150,9 +153,9 @@ This works like auto-repeat but has special blog tags. Use this to list all your
 ```HTML
 <div class="auto-blog-list">
     <div class="auto-blog-title"></div>
-    <img src="" class="auto-blog-img">
+    <img class="auto-blog-img">
     <div class="auto-blog-short"></div>
-    <a class="auto-blog-link auto-blog-text"></a>
+    <a class="auto-blog-link"></a>
 </div>
 ```
 **(Pagination Coming Soon)**
@@ -206,6 +209,9 @@ This data tag can be used to add an additional description to a field, also used
 * Commenting System
 * Add couchDB Option
 * Detect Tag Needs
+
+---
+
 
 ## License
 

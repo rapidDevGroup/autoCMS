@@ -75,6 +75,8 @@ class Dash {
 
             getAllNavigationData($_POST['files']);
             buildFooterDataFile($_POST['files']);
+            processBlog($_POST['files']);
+
             buildDataFilesByTags($_POST['files']);
             renameFiles($_POST['files']);
             copyApacheConfig();
