@@ -70,6 +70,11 @@ function hasNav() {
     return true;
 }
 
+function hasBlog() {
+    if (!file_exists("data/autocms-blog.json")) return false;
+    return true;
+}
+
 function footerExists() {
     if (file_exists("data/autocms-footer.json")) return true;
 
