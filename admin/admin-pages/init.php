@@ -27,7 +27,7 @@ $pages = getPageList();
     </head>
     <body style="background-color: #f8f8f8; overflow: hidden;">
         <div id="wrapper">
-            <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0; position: fixed; width: 100%;">
+            <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0; width: 100%;">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                         <span class="sr-only">Toggle navigation</span>

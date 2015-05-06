@@ -1,7 +1,7 @@
 $(function() {
     /* create exists function */
     jQuery.fn.exists = function(){return this.length>0;};
-    
+
     if (!$('.container').exists()) {
         $('#side-menu').metisMenu();
     }
