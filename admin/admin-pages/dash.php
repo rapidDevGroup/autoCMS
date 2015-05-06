@@ -66,7 +66,7 @@ $files = scanFiles('.html');
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="myModalLabel">Files to Process</h4>
                 </div>
-                <form action="/admin/dash/process/" method="post" class="form-horizontal">
+                <form action="/admin/dash/process/" method="post" class="form-horizontal" target="_parent">
                     <div class="modal-body">
                         <?php foreach($files as $file) { ?>
                             <div class="checkbox">

@@ -79,7 +79,7 @@ class Dash {
             renameFiles($_POST['files']);
             copyApacheConfig();
 
-            include_once('admin-pages/dash.php');
+            header('Location: /admin/');
 
         } else {
             include_once('admin-pages/401.html');

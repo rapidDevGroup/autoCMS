@@ -103,7 +103,15 @@ function buildFooterDataFile($files) {
                         $fileExt = getImageType($fileExt, $source);
 
                         if ($fileExt != 'error') {
-                            $imgFileName = '/admin/images/' . uniqid() . '.' . $fileExt;
+                            $year = date("Y", time());
+                            if (!is_dir($_SERVER['DOCUMENT_ROOT'] . '/admin/images/'.$year.'/')) {
+                                mkdir($_SERVER['DOCUMENT_ROOT'] . '/admin/images/'.$year.'/');
+                            }
+                            $month = date("m", time());
+                            if (!is_dir($_SERVER['DOCUMENT_ROOT'] . '/admin/images/'.$year.'/'.$month.'/')) {
+                                mkdir($_SERVER['DOCUMENT_ROOT'] . '/admin/images/'.$year.'/'.$month.'/');
+                            }
+                            $imgFileName = '/admin/images/'.$year.'/'.$month.'/' . uniqid() . '.' . $fileExt;
 
                             copy($source, $_SERVER['DOCUMENT_ROOT'] . $imgFileName);
 
@@ -131,7 +139,15 @@ function buildFooterDataFile($files) {
                         $fileExt = getImageType($fileExt, $source);
 
                         if ($fileExt != 'error') {
-                            $imgFileName = '/admin/images/' . uniqid() . '.' . $fileExt;
+                            $year = date("Y", time());
+                            if (!is_dir($_SERVER['DOCUMENT_ROOT'] . '/admin/images/'.$year.'/')) {
+                                mkdir($_SERVER['DOCUMENT_ROOT'] . '/admin/images/'.$year.'/');
+                            }
+                            $month = date("m", time());
+                            if (!is_dir($_SERVER['DOCUMENT_ROOT'] . '/admin/images/'.$year.'/'.$month.'/')) {
+                                mkdir($_SERVER['DOCUMENT_ROOT'] . '/admin/images/'.$year.'/'.$month.'/');
+                            }
+                            $imgFileName = '/admin/images/'.$year.'/'.$month.'/' . uniqid() . '.' . $fileExt;
 
                             copy($source, $_SERVER['DOCUMENT_ROOT'] . $imgFileName);
 
@@ -239,7 +255,15 @@ function buildDataFilesByTags($files) {
                         $fileExt = getImageType($fileExt, $source);
 
                         if ($fileExt != 'error') {
-                            $imgFileName = '/admin/images/' . uniqid() . '.' . $fileExt;
+                            $year = date("Y", time());
+                            if (!is_dir($_SERVER['DOCUMENT_ROOT'] . '/admin/images/'.$year.'/')) {
+                                mkdir($_SERVER['DOCUMENT_ROOT'] . '/admin/images/'.$year.'/');
+                            }
+                            $month = date("m", time());
+                            if (!is_dir($_SERVER['DOCUMENT_ROOT'] . '/admin/images/'.$year.'/'.$month.'/')) {
+                                mkdir($_SERVER['DOCUMENT_ROOT'] . '/admin/images/'.$year.'/'.$month.'/');
+                            }
+                            $imgFileName = '/admin/images/'.$year.'/'.$month.'/' . uniqid() . '.' . $fileExt;
 
                             copy($source, $_SERVER['DOCUMENT_ROOT'] . $imgFileName);
 
@@ -267,7 +291,15 @@ function buildDataFilesByTags($files) {
                         $fileExt = getImageType($fileExt, $source);
 
                         if ($fileExt != 'error') {
-                            $imgFileName = '/admin/images/' . uniqid() . '.' . $fileExt;
+                            $year = date("Y", time());
+                            if (!is_dir($_SERVER['DOCUMENT_ROOT'] . '/admin/images/'.$year.'/')) {
+                                mkdir($_SERVER['DOCUMENT_ROOT'] . '/admin/images/'.$year.'/');
+                            }
+                            $month = date("m", time());
+                            if (!is_dir($_SERVER['DOCUMENT_ROOT'] . '/admin/images/'.$year.'/'.$month.'/')) {
+                                mkdir($_SERVER['DOCUMENT_ROOT'] . '/admin/images/'.$year.'/'.$month.'/');
+                            }
+                            $imgFileName = '/admin/images/'.$year.'/'.$month.'/' . uniqid() . '.' . $fileExt;
 
                             copy($source, $_SERVER['DOCUMENT_ROOT'] . $imgFileName);
 
@@ -306,7 +338,15 @@ function buildDataFilesByTags($files) {
                 $fileExt = getImageType($fileExt, $source);
 
                 if ($fileExt != 'error') {
-                    $imgFileName = '/admin/images/' . uniqid() . '.' . $fileExt;
+                    $year = date("Y", time());
+                    if (!is_dir($_SERVER['DOCUMENT_ROOT'] . '/admin/images/'.$year.'/')) {
+                        mkdir($_SERVER['DOCUMENT_ROOT'] . '/admin/images/'.$year.'/');
+                    }
+                    $month = date("m", time());
+                    if (!is_dir($_SERVER['DOCUMENT_ROOT'] . '/admin/images/'.$year.'/'.$month.'/')) {
+                        mkdir($_SERVER['DOCUMENT_ROOT'] . '/admin/images/'.$year.'/'.$month.'/');
+                    }
+                    $imgFileName = '/admin/images/'.$year.'/'.$month.'/' . uniqid() . '.' . $fileExt;
 
                     copy($source, $_SERVER['DOCUMENT_ROOT'] . $imgFileName);
 
@@ -334,7 +374,15 @@ function buildDataFilesByTags($files) {
                 $fileExt = getImageType($fileExt, $source);
 
                 if ($fileExt != 'error') {
-                    $imgFileName = '/admin/images/' . uniqid() . '.' . $fileExt;
+                    $year = date("Y", time());
+                    if (!is_dir($_SERVER['DOCUMENT_ROOT'] . '/admin/images/'.$year.'/')) {
+                        mkdir($_SERVER['DOCUMENT_ROOT'] . '/admin/images/'.$year.'/');
+                    }
+                    $month = date("m", time());
+                    if (!is_dir($_SERVER['DOCUMENT_ROOT'] . '/admin/images/'.$year.'/'.$month.'/')) {
+                        mkdir($_SERVER['DOCUMENT_ROOT'] . '/admin/images/'.$year.'/'.$month.'/');
+                    }
+                    $imgFileName = '/admin/images/'.$year.'/'.$month.'/' . uniqid() . '.' . $fileExt;
 
                     copy($source, $_SERVER['DOCUMENT_ROOT'] . $imgFileName);
 
@@ -545,7 +593,15 @@ function uploadFiles($page) {
             }
 
             if ($fileExt != 'error') {
-                $imgFileName = '/admin/images/' . uniqid() . '.' . $fileExt;
+                $year = date("Y", time());
+                if (!is_dir($_SERVER['DOCUMENT_ROOT'] . '/admin/images/'.$year.'/')) {
+                    mkdir($_SERVER['DOCUMENT_ROOT'] . '/admin/images/'.$year.'/');
+                }
+                $month = date("m", time());
+                if (!is_dir($_SERVER['DOCUMENT_ROOT'] . '/admin/images/'.$year.'/'.$month.'/')) {
+                    mkdir($_SERVER['DOCUMENT_ROOT'] . '/admin/images/'.$year.'/'.$month.'/');
+                }
+                $imgFileName = '/admin/images/'.$year.'/'.$month.'/' . uniqid() . '.' . $fileExt;
                 move_uploaded_file($_FILES[$key]['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . $imgFileName);
 
                 $dataFile = 'data/page-' . $page . '.json';
@@ -553,7 +609,6 @@ function uploadFiles($page) {
 
                 foreach ($json as $jsonKey => $datum) {
                     if ($key == $jsonKey && $json[$key]['type'] == 'image' && isset($json[$key])) {
-                        //unlink($_SERVER['DOCUMENT_ROOT'] . $json[$key][$json[$key]['type']]);
                         $json[$key]['image'] = $imgFileName;
                     } else {
                         list($repeatKey, $iteration, $itemKey) = explode("-", $key);
