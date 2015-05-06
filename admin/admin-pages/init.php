@@ -1,7 +1,6 @@
 <?php
 $pages = getPageList();
 ?>
-
 <!DOCTYPE html>
 <html lang="en" style="overflow: hidden;">
     <head>
@@ -15,12 +14,10 @@ $pages = getPageList();
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" type="text/css">
         <!-- MetisMenu CSS -->
         <link href="//cdnjs.cloudflare.com/ajax/libs/metisMenu/2.0.0/metisMenu.min.css" rel="stylesheet" type="text/css">
-        <!-- Custom CSS -->
-        <link href="/admin/css/autocms.css" rel="stylesheet">
         <!-- Custom Fonts -->
         <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-        <!-- Other -->
-        <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet" type="text/css">
+        <!-- Custom CSS -->
+        <link href="/admin/css/autocms.css" rel="stylesheet">
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -90,9 +87,6 @@ $pages = getPageList();
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
         <!-- Metis Menu Plugin JavaScript -->
         <script src="//cdnjs.cloudflare.com/ajax/libs/metisMenu/2.0.0/metisMenu.min.js"></script>
-        <!-- Others -->
-        <script src="//js.nicedit.com/nicEdit-latest.js" type="text/javascript"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
         <script src="/admin/js/autocms.js"></script>
     </body>
 </html>

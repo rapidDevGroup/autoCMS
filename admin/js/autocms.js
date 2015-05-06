@@ -1,8 +1,10 @@
 $(function() {
     /* create exists function */
     jQuery.fn.exists = function(){return this.length>0;};
-
-    $('#side-menu').metisMenu();
+    
+    if (!$('.container').exists()) {
+        $('#side-menu').metisMenu();
+    }
 
     //Loads the correct sidebar on window load,
     //collapses the sidebar on window resize.
@@ -28,9 +30,11 @@ $(function() {
         if (!$(this).hasClass('open-close') && $('.navbar-toggle').is(':visible') && $('.navbar-collapse').hasClass('in')) $('.navbar-toggle').trigger('click');
     });
 
-    bkLib.onDomLoaded(function() { nicEditors.allTextAreas({buttonList : ['bold','italic','underline','strikeThrough','removeformat','subscript','superscript','left','center','right','justified','ol','ul','subscript','superscript','indent','outdent','forecolor','bgcolor','link','unlink','fontFormat','fontFamily','fontSize','xhtml']}); });
+    if ($('.container').exists()) {
+        bkLib.onDomLoaded(function() { nicEditors.allTextAreas({buttonList : ['bold','italic','underline','strikeThrough','removeformat','subscript','superscript','left','center','right','justified','ol','ul','subscript','superscript','indent','outdent','forecolor','bgcolor','link','unlink','fontFormat','fontFamily','fontSize','xhtml']}); });
 
-    $('.desc-edit').editable();
+        $('.desc-edit').editable({'emptytext':'no description'});
+    }
 
     var $uploadButtons = $('.upload-button');
     if ($uploadButtons.exists()) {
