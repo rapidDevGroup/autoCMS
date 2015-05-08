@@ -44,7 +44,7 @@ $pages = getPageList();
                             <i class="fa fa-user fa-fw"></i> <?=$_SESSION["user"]?> <i class="fa fa-caret-down"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-user">
-                            <li><a href="#"><i class="fa fa-lock fa-fw"></i> Change Password</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#change-pass"><i class="fa fa-lock fa-fw"></i> Change Password</a></li>
                             <!--li><a href="#"><i class="fa fa-gear fa-fw"></i> User Settings</a></li-->
                             <li class="divider"></li>
                             <li><a href="/admin/logout/"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
@@ -78,6 +78,26 @@ $pages = getPageList();
                     </div>
                 </div>
             </nav>
+
+            <div class="modal fade" id="change-pass" tabindex="-1" role="dialog" aria-labelledby="changePassLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Change Password</h4>
+                        </div>
+                        <form action="/admin/dash/change-pass/" method="post" class="form-horizontal" target="_parent">
+                            <div class="modal-body">
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Change Password</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
 
             <iframe id="page-wrapper" name="iframe" src="/admin/dash/" border="0"></iframe>
         </div>

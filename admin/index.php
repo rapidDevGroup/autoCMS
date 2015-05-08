@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-define("VERSION", "0.2.8");
+define("VERSION", "0.2.9");
 define("_LOG_COUNT_MAX_", 100);
 
 require_once('system/Toro.php');
