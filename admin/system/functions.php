@@ -661,6 +661,33 @@ function deleteRepeat($page, $key, $num) {
     fclose($fp);
 }
 
+function addToLog($action, $page) {
+    $dataFile = 'data/autocms-log.json';
+
+    if (!file_exists($dataFile)) {
+        $logArr = Array();
+    } else {
+        $logArr = json_decode(file_get_contents($dataFile), true);
+    }
+
+    $logArr[] = Array('user' => $_SESSION["user"], 'action' => $action, 'page' => $page, 'date' => date(DATE_RFC2822));
+
+    $fp = fopen($dataFile, 'w');
+    fwrite($fp, json_encode($logArr));
+    fclose($fp);
+}
+
+function getLogData($num, $get = null) {
+    $dataFile = 'data/autocms-log.json';
+    if (file_exists($dataFile)) {
+        $json = json_decode(file_get_contents($dataFile), true);
+
+        return array_slice($json, $num, $get);
+    } else {
+        return Array();
+    }
+}
+
 function processBlog($files) {
     $dataFile = 'autocms-blog.json';
 

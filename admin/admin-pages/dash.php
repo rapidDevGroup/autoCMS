@@ -1,6 +1,7 @@
 <?php
 include_once('header.php');
 $files = scanFiles('.html');
+$logs = getLogData(-10);
 ?>
 <div class="container">
     <div class="row">
@@ -11,7 +12,7 @@ $files = scanFiles('.html');
 
     <div class="row">
         <?php if (count($files) > 0) { ?>
-            <div class="col-lg-4">
+            <div class="col-xs-12">
                 <div class="panel panel-red">
                     <div class="panel-heading">
                         Unprocessed Files
@@ -31,20 +32,25 @@ $files = scanFiles('.html');
                 </div>
             </div>
         <?php } ?>
-        <!--div class="col-lg-4">
-            <div class="panel panel-yellow">
+        <div class="col-xs-12">
+            <div class="panel panel-green">
                 <div class="panel-heading">
-                    Files Missing Content Management
+                    CMS Recent History
                 </div>
                 <div class="panel-body">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue.</p>
+                    <?php foreach($logs as $log) { ?>
+                        <div class="row">
+                            <div class="col-xs-5"><strong><?=$log['date']?></strong></div>
+                            <div class="col-xs-7">User <strong><?=$log['user']?></strong> <?=$log['action']?> <?=$log['page']?></div>
+                        </div>
+                    <?php } ?>
                 </div>
                 <div class="panel-footer">
-                    Panel Footer
+                    Last <?=count($logs)?> Logs Shown
                 </div>
             </div>
         </div>
-        <div class="col-lg-4">
+        <!--div class="col-lg-4">
             <div class="panel panel-green">
                 <div class="panel-heading">
                     Completed Files
