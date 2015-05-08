@@ -32,24 +32,26 @@ $logs = getLogData(-10);
                 </div>
             </div>
         <?php } ?>
-        <div class="col-xs-12">
-            <div class="panel panel-green">
-                <div class="panel-heading">
-                    CMS Recent History
-                </div>
-                <div class="panel-body">
-                    <?php foreach($logs as $log) { ?>
-                        <div class="row">
-                            <div class="col-xs-5"><strong><?=$log['date']?></strong></div>
-                            <div class="col-xs-7">User <strong><?=$log['user']?></strong> <?=$log['action']?> <?=$log['page']?></div>
-                        </div>
-                    <?php } ?>
-                </div>
-                <div class="panel-footer">
-                    Last <?=count($logs)?> Logs Shown
+        <?php if (count($logs) > 0) { ?>
+            <div class="col-xs-12">
+                <div class="panel panel-green">
+                    <div class="panel-heading">
+                        CMS Recent History
+                    </div>
+                    <div class="panel-body">
+                        <?php foreach($logs as $log) { ?>
+                            <div class="row">
+                                <div class="col-xs-5"><strong><?=$log['date']?></strong></div>
+                                <div class="col-xs-7">User <strong><?=$log['user']?></strong> <?=$log['action']?> <?=$log['page']?></div>
+                            </div>
+                        <?php } ?>
+                    </div>
+                    <div class="panel-footer">
+                        Last <?=count($logs)?> Logs Shown
+                    </div>
                 </div>
             </div>
-        </div>
+        <?php } ?>
         <!--div class="col-lg-4">
             <div class="panel panel-green">
                 <div class="panel-heading">
