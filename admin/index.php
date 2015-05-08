@@ -2,6 +2,7 @@
 session_start();
 
 define("VERSION", "0.2.8");
+define("_LOG_COUNT_MAX_", 100);
 
 require_once('system/Toro.php');
 require_once('system/statusreturn.php');

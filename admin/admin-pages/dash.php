@@ -1,7 +1,7 @@
 <?php
 include_once('header.php');
 $files = scanFiles('.html');
-$logs = getLogData(-10);
+$logs = getLogData(-5);
 ?>
 <div class="container">
     <div class="row">
@@ -12,7 +12,7 @@ $logs = getLogData(-10);
 
     <div class="row">
         <?php if (count($files) > 0) { ?>
-            <div class="col-xs-12">
+            <div class="col-xs-12 col-sm-6 col-md-4">
                 <div class="panel panel-red">
                     <div class="panel-heading">
                         Unprocessed Files
@@ -33,38 +33,36 @@ $logs = getLogData(-10);
             </div>
         <?php } ?>
         <?php if (count($logs) > 0) { ?>
-            <div class="col-xs-12">
+            <div class="col-xs-12 col-sm-6 col-md-4">
                 <div class="panel panel-green">
                     <div class="panel-heading">
                         CMS Recent History
                     </div>
                     <div class="panel-body">
                         <?php foreach($logs as $log) { ?>
-                            <div class="row">
-                                <div class="col-xs-5"><strong><?=$log['date']?></strong></div>
-                                <div class="col-xs-7">User <strong><?=$log['user']?></strong> <?=$log['action']?> <?=$log['page']?></div>
+                            <div class="media">
+                                <div class="media-left">
+                                    <div style="position:relative;">
+                                        <div style="position: absolute; top: 2px; width: 100%; text-align: center; font-size: 12px; z-index: 2; color: #fff;"><?=date("M", $log['timestamp'])?></div>
+                                        <div style="position: absolute; top: 15px; width: 100%; text-align: center; font-size: 30px; z-index: 2;"><?=date("j", $log['timestamp'])?></div>
+                                        <img class="media-object" src="/admin/img/ic_calendar.png" alt="<?=$log['timestamp']?>" style="width: 60px;">
+                                    </div>
+                                </div>
+                                <div class="media-body">
+                                    <h4 class="media-heading"><?=$log['user']?></h4>
+                                    <?=$log['action']?> <?=$log['page']?>
+                                </div>
                             </div>
                         <?php } ?>
                     </div>
                     <div class="panel-footer">
+                        <a href="/admin/logs/" class="btn btn-success btn-sm pull-right" style="color: #fff;">View All</a>
                         Last <?=count($logs)?> Logs Shown
+                        <div class="clearfix"></div>
                     </div>
                 </div>
             </div>
         <?php } ?>
-        <!--div class="col-lg-4">
-            <div class="panel panel-green">
-                <div class="panel-heading">
-                    Completed Files
-                </div>
-                <div class="panel-body">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue.</p>
-                </div>
-                <div class="panel-footer">
-                    Panel Footer
-                </div>
-            </div>
-        </div-->
     </div>
 
     <div class="modal fade" id="fixUnprocessed" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

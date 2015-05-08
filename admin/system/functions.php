@@ -670,7 +670,11 @@ function addToLog($action, $page) {
         $logArr = json_decode(file_get_contents($dataFile), true);
     }
 
-    $logArr[] = Array('user' => $_SESSION["user"], 'action' => $action, 'page' => $page, 'date' => date(DATE_RFC2822));
+    $logArr[] = Array('user' => $_SESSION["user"], 'action' => $action, 'page' => $page, 'timestamp' => time());
+
+    if (count($logArr) > _LOG_COUNT_MAX_) {
+        $logArr = array_slice($logArr, -_LOG_COUNT_MAX_);
+    }
 
     $fp = fopen($dataFile, 'w');
     fwrite($fp, json_encode($logArr));
