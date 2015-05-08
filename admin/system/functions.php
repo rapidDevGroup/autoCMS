@@ -681,12 +681,12 @@ function addToLog($action, $page) {
     fclose($fp);
 }
 
-function getLogData($num, $get = null) {
+function getLogData($num = 0, $get = null) {
     $dataFile = 'data/autocms-log.json';
     if (file_exists($dataFile)) {
         $json = json_decode(file_get_contents($dataFile), true);
 
-        return array_slice($json, $num, $get);
+        return array_reverse(array_slice($json, $num, $get));
     } else {
         return Array();
     }

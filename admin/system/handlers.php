@@ -141,6 +141,16 @@ class Nav {
     }
 }
 
+class Logs {
+    function get() {
+        if (checkPass() && !authNeeded()) {
+            include_once('admin-pages/logs.php');
+        } else {
+            include_once('admin-pages/401.html');
+        }
+    }
+}
+
 class Footer {
     function get() {
         if (checkPass() && !authNeeded()) {
