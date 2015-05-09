@@ -24,7 +24,7 @@ $logs = getLogData();
                     <div class="media-body">
                         <h4 class="media-heading"><?=$log['user']?></h4>
                         <?=$log['action']?> <?=$log['page']?><br>
-                        <?=htmlentities(serialize($log['details']))?>
+                        <?php if (!is_null($log['details'])) echo htmlentities(serialize($log['details'])); ?>
                     </div>
                 </div>
             <?php } ?>

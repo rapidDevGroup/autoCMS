@@ -2,7 +2,7 @@
 session_start();
 
 define("VERSION", "0.2.9");
-define("_LOG_COUNT_MAX_", 100);
+define("_LOG_COUNT_MAX_", 20);
 
 require_once('system/Toro.php');
 require_once('system/statusreturn.php');
@@ -28,7 +28,7 @@ Toro::serve(array(
     '/nav/update/'                              => 'Nav',
     '/footer/'                                  => 'Footer',
     '/footer/update/'                           => 'Footer',
-    '/dash/:string'                             => 'Dash',
+    '/dash/:alpha'                              => 'Dash',
     '/page/:alpha'                              => 'Page',
     '/page/:alpha/update/'                      => 'Page',
     '/page/:alpha/desc/'                        => 'Description',

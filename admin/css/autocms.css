@@ -65,6 +65,9 @@ label {
     padding-top: 0 !important;
     height: 33px;
 }
+#change-pass .control-label {
+    line-height: 33px;
+}
 
 
 #wrapper {

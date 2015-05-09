@@ -40,11 +40,11 @@ $pages = getPageList();
 
                 <ul class="nav navbar-top-links navbar-right" style="text-align: right;">
                     <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <a class="dropdown-toggle dirtyOK" data-toggle="dropdown" href="#">
                             <i class="fa fa-user fa-fw"></i> <?=$_SESSION["user"]?> <i class="fa fa-caret-down"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-user">
-                            <li><a href="#" data-toggle="modal" data-target="#change-pass"><i class="fa fa-lock fa-fw"></i> Change Password</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#change-pass" class="dirtyOK"><i class="fa fa-lock fa-fw"></i> Change Password</a></li>
                             <!--li><a href="#"><i class="fa fa-gear fa-fw"></i> User Settings</a></li-->
                             <li class="divider"></li>
                             <li><a href="/admin/logout/"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
@@ -83,16 +83,33 @@ $pages = getPageList();
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <button type="button" class="close dirtyOK" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             <h4 class="modal-title" id="myModalLabel">Change Password</h4>
                         </div>
-                        <form action="/admin/dash/change-pass/" method="post" class="form-horizontal" target="_parent">
+                        <form id="change-pass-form" class="form-horizontal">
                             <div class="modal-body">
-
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Current Password</label>
+                                    <div class="col-sm-8">
+                                        <input class="form-control dirtyOK" placeholder="Current Password" name="current" type="password" autofocus>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">New Password</label>
+                                    <div class="col-sm-8">
+                                        <input class="form-control dirtyOK" placeholder="New Password" name="password" type="password" value="">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">Confirm New Password</label>
+                                    <div class="col-sm-8">
+                                        <input class="form-control dirtyOK" placeholder="Confirm New Password" name="password2" type="password" value="">
+                                    </div>
+                                </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Change Password</button>
+                                <button type="button" class="btn btn-default dirtyOK" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary dirtyOK">Change Password</button>
                             </div>
                         </form>
                     </div>

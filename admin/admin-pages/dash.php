@@ -56,7 +56,7 @@ $logs = getLogData(-5);
                         <?php } ?>
                     </div>
                     <div class="panel-footer">
-                        <a href="/admin/logs/" class="btn btn-success btn-sm pull-right" style="color: #fff;">View All</a>
+                        <a href="/admin/logs/" class="btn btn-success btn-sm pull-right" style="color: #fff;">View Details</a>
                         Last <?=count($logs)?> Logs Shown
                         <div class="clearfix"></div>
                     </div>

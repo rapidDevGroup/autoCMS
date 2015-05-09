@@ -28,7 +28,6 @@ class Login {
         if (authNeeded()) {
             if ($_POST['user'] != '' && $_POST['password'] != '' && $_POST['password'] == $_POST['password2']) {
 
-                // todo: don't store password like this
                 $_SESSION["user"] = $_POST['user'];
                 $_SESSION["password"] = $_POST['password'];
 
@@ -83,9 +82,24 @@ class Dash {
             addToLog('has initiate the CMS', 'on all pages', ['files' => $_POST['files']]);
 
             header('Location: /admin/');
-
         } else {
             include_once('admin-pages/401.html');
+        }
+    }
+    function post_xhr($action = null) {
+        if (is_null($action)) {
+            echo json_encode(StatusReturn::E400('400 Missing Required Data!'), JSON_NUMERIC_CHECK);
+        } else if ($action == 'change-pass' && checkPass() && !authNeeded()) {
+            if ($_POST['current'] != '' && $_POST['password'] != '' && $_POST['password'] == $_POST['password2'] && checkPass(null, $_POST['current'])) {
+
+                changePassword($_POST['password']);
+
+                echo json_encode(StatusReturn::S200('Password Changed!'), JSON_NUMERIC_CHECK);
+            } else {
+                echo json_encode(StatusReturn::E400('400 Missing Required Data!'), JSON_NUMERIC_CHECK);
+            }
+        } else {
+            echo json_encode(StatusReturn::E401('401 Not Authorized!'), JSON_NUMERIC_CHECK);
         }
     }
 }

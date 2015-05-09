@@ -1,6 +1,8 @@
 $(function() {
     /* create exists function */
-    jQuery.fn.exists = function(){return this.length>0;};
+    jQuery.fn.exists = function () {
+        return this.length > 0;
+    };
 
     if (!$('.container').exists()) {
         $('#side-menu').metisMenu();
@@ -9,7 +11,7 @@ $(function() {
     //Loads the correct sidebar on window load,
     //collapses the sidebar on window resize.
     // Sets the min-height of #page-wrapper to window size
-    $(window).bind("load resize", function() {
+    $(window).bind("load resize", function () {
         width = (this.window.innerWidth > 0) ? this.window.innerWidth : this.screen.width;
         if (width < 768) {
             $('div.navbar-collapse').addClass('collapse');
@@ -19,26 +21,28 @@ $(function() {
     });
 
     var url = window.location;
-    var element = $('ul.nav a').filter(function() {
+    var element = $('ul.nav a').filter(function () {
         return this.href == url || url.href.indexOf(this.href) == 0;
     }).addClass('active').parent().parent().addClass('in').parent();
     if (element.is('li')) {
         element.addClass('active');
     }
 
-    $('.navbar-default a').click(function(){
+    $('.navbar-default a').click(function () {
         if (!$(this).hasClass('open-close') && $('.navbar-toggle').is(':visible') && $('.navbar-collapse').hasClass('in')) $('.navbar-toggle').trigger('click');
     });
 
     if ($('.container').exists()) {
-        bkLib.onDomLoaded(function() { nicEditors.allTextAreas({buttonList : ['bold','italic','underline','strikeThrough','removeformat','subscript','superscript','left','center','right','justified','ol','ul','subscript','superscript','indent','outdent','forecolor','bgcolor','link','unlink','fontFormat','fontFamily','fontSize','xhtml']}); });
+        bkLib.onDomLoaded(function () {
+            nicEditors.allTextAreas({buttonList: ['bold', 'italic', 'underline', 'strikeThrough', 'removeformat', 'subscript', 'superscript', 'left', 'center', 'right', 'justified', 'ol', 'ul', 'subscript', 'superscript', 'indent', 'outdent', 'forecolor', 'bgcolor', 'link', 'unlink', 'fontFormat', 'fontFamily', 'fontSize', 'xhtml']});
+        });
 
-        $('.desc-edit').editable({'emptytext':'no description'});
+        $('.desc-edit').editable({'emptytext': 'no description'});
     }
 
     var $uploadButtons = $('.upload-button');
     if ($uploadButtons.exists()) {
-        $uploadButtons.click(function(e){
+        $uploadButtons.click(function (e) {
             $('#' + $(this).data('trigger')).trigger('click');
         });
     }
@@ -53,18 +57,36 @@ $(function() {
     }
 
     var isDirty = false;
-    $(':input').change(function(){
-        isDirty = true;
+    $(':input').change(function () {
+        if (!$(this).hasClass('dirtyOK')) isDirty = true;
     });
-    $('body').on('keydown', 'div.nicEdit-main', function(){
+    $('body').on('keydown', 'div.nicEdit-main', function () {
         isDirty = true;
     });
 
-    $('a, button').click(function(){
+    $('a, button').click(function () {
         if (isDirty && !$(this).hasClass('dirtyOK')) {
             return (confirm("You will lose unsaved changes. Continue?"));
         }
         return true;
+    });
+
+    $(document).on('submit', '#change-pass-form', function() {
+        $.ajax({
+            url: '/admin/dash/change-pass/',
+            type: 'post',
+            dataType: 'json',
+            data: $(this).serialize(),
+            success: function(data) {
+                $('#change-pass').modal('hide');
+                $('#change-pass-form').find('input').each(function() {$(this).val('')});
+            },
+            error: function(xhr, err) {
+                alert('Error');
+                $('#change-pass-form').find('input').each(function() {$(this).val('')});
+            }
+        });
+        return false;
     });
 });
 

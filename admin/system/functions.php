@@ -30,6 +30,25 @@ function checkPass($user = null, $pass = null) {
     return false;
 }
 
+function changePassword($password) {
+    if (!file_exists("data/autocms-access.json")) return false;
+    $json = json_decode(file_get_contents("data/autocms-access.json"), true);
+
+    $_SESSION["password"] = $password;
+
+    foreach($json as $key => $user) {
+        if ($user['user'] == $_SESSION["user"]) {
+            $json[$key]['password'] = password_hash($password, PASSWORD_DEFAULT);
+        }
+    }
+
+    addToLog('has changed', 'his/her password', null);
+
+    $fp = fopen('data/autocms-access.json', 'w');
+    fwrite($fp, json_encode($json));
+    fclose($fp);
+}
+
 function search($array, $key, $value) {
     $results = array();
     if (is_array($array)) {
