@@ -697,7 +697,7 @@ function deleteRepeat($page, $key, $num) {
     fclose($fp);
 }
 
-function addToLog($action, $page, $details) {
+function addToLog($action, $page, $details = null) {
     $dataFile = 'data/autocms-log.json';
 
     if (!file_exists($dataFile)) {
@@ -717,10 +717,19 @@ function addToLog($action, $page, $details) {
     fclose($fp);
 }
 
-function getLogData($num = 0, $get = null) {
+function getLogData($num = 0, $get = null, $user = null) {
     $dataFile = 'data/autocms-log.json';
     if (file_exists($dataFile)) {
         $json = json_decode(file_get_contents($dataFile), true);
+
+        if (!is_null($user)) {
+            $userArr = Array();
+            foreach ($json as $key => $data) {
+                if ($json[$key]['user'] == $user) $userArr[] = $json[$key];
+            }
+
+            return array_reverse($userArr);
+        }
 
         return array_reverse(array_slice($json, $num, $get));
     } else {

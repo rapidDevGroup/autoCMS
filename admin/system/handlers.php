@@ -79,7 +79,7 @@ class Dash {
             buildDataFilesByTags($_POST['files']);
             renameFiles($_POST['files']);
             copyApacheConfig();
-            addToLog('has initiate the CMS', 'on all pages', ['files' => $_POST['files']]);
+            addToLog('has initiate the CMS', 'on all pages');
 
             header('Location: /admin/');
         } else {

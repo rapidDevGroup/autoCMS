@@ -45,6 +45,7 @@ $pages = getPageList();
                         </a>
                         <ul class="dropdown-menu dropdown-user">
                             <li><a href="#" data-toggle="modal" data-target="#change-pass" class="dirtyOK"><i class="fa fa-lock fa-fw"></i> Change Password</a></li>
+                            <li><a href="/admin/logs/?user-logs=<?=urlencode($_SESSION["user"])?>" target="iframe"><i class="fa fa-server fa-fw"></i> View My Logs</a></li>
                             <!--li><a href="#"><i class="fa fa-gear fa-fw"></i> User Settings</a></li-->
                             <li class="divider"></li>
                             <li><a href="/admin/logout/"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
