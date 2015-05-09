@@ -80,7 +80,7 @@ class Dash {
             buildDataFilesByTags($_POST['files']);
             renameFiles($_POST['files']);
             copyApacheConfig();
-            addToLog('has initiate the CMS', 'on all pages');
+            addToLog('has initiate the CMS', 'on all pages', ['files' => $_POST['files']]);
 
             header('Location: /admin/');
 
@@ -108,7 +108,6 @@ class Page {
             include_once('admin-pages/404.html');
         } else if (!is_null($page) && checkPass() && !authNeeded()) {
 
-            addToLog('has updated', $page . ' page');
             updatePage($page, $_POST);
             uploadFiles($page);
 

@@ -477,17 +477,22 @@ function getFooterData() {
 function updatePage($file, $data) {
     $dataFile = 'data/page-' . $file . '.json';
     $json = json_decode(file_get_contents($dataFile), true);
+    $changeLog = Array();
 
     foreach ($data as $key => $datum) {
-        if ($key != 'key' && isset($json[$key])) {
+        if ($key != 'key' && isset($json[$key]) && $json[$key][$json[$key]['type']] != trim($datum)) {
+            $changeLog[] = Array('key' => $key, 'change' => Array('original' => $json[$key][$json[$key]['type']], 'new' => trim($datum)));
             $json[$key][$json[$key]['type']] = trim($datum);
         } else {
             list($repeatKey, $iteration, $itemKey) = explode("-", $key);
-            if (isset($json[$repeatKey]['repeat'][$iteration][$itemKey])) {
+            if (isset($json[$repeatKey]['repeat'][$iteration][$itemKey]) && $json[$repeatKey]['repeat'][$iteration][$itemKey] != trim($datum)) {
+                $changeLog[] = Array('key' => $key, 'change' => Array('original' => $json[$repeatKey]['repeat'][$iteration][$itemKey][$json[$repeatKey]['repeat'][$iteration][$itemKey]['type']], 'new' => trim($datum)));
                 $json[$repeatKey]['repeat'][$iteration][$itemKey][$json[$repeatKey]['repeat'][$iteration][$itemKey]['type']] = trim($datum);
             }
         }
     }
+
+    addToLog('has updated', $file . ' page', $changeLog);
 
     $fp = fopen($dataFile, 'w');
     fwrite($fp, json_encode($json));
@@ -497,10 +502,16 @@ function updatePage($file, $data) {
 function updateNav($data) {
     $dataFile = 'data/autocms-nav.json';
     $json = json_decode(file_get_contents($dataFile), true);
+    $changeLog = Array();
 
     foreach ($data as $key => $datum) {
-        $json[$key][$json[$key]['type']] = trim($datum);
+        if ($json[$key][$json[$key]['type']] != trim($datum)) {
+            $changeLog[] = Array('key' => $key, 'change' => Array('original' => $json[$key][$json[$key]['type']], 'new' => trim($datum)));
+            $json[$key][$json[$key]['type']] = trim($datum);
+        }
     }
+
+    addToLog('has updated', 'navigation links', $changeLog);
 
     $fp = fopen($dataFile, 'w');
     fwrite($fp, json_encode($json));
@@ -510,10 +521,16 @@ function updateNav($data) {
 function updateFooter($data) {
     $dataFile = 'data/autocms-footer.json';
     $json = json_decode(file_get_contents($dataFile), true);
+    $changeLog = Array();
 
     foreach ($data as $key => $datum) {
-        $json[$key][$json[$key]['type']] = trim($datum);
+        if ($json[$key][$json[$key]['type']] != trim($datum)) {
+            $changeLog[] = Array('key' => $key, 'change' => Array('original' => $json[$key][$json[$key]['type']], 'new' => trim($datum)));
+            $json[$key][$json[$key]['type']] = trim($datum);
+        }
     }
+
+    addToLog('has updated', 'footer', $changeLog);
 
     $fp = fopen($dataFile, 'w');
     fwrite($fp, json_encode($json));
@@ -661,7 +678,7 @@ function deleteRepeat($page, $key, $num) {
     fclose($fp);
 }
 
-function addToLog($action, $page) {
+function addToLog($action, $page, $details) {
     $dataFile = 'data/autocms-log.json';
 
     if (!file_exists($dataFile)) {
@@ -670,7 +687,7 @@ function addToLog($action, $page) {
         $logArr = json_decode(file_get_contents($dataFile), true);
     }
 
-    $logArr[] = Array('user' => $_SESSION["user"], 'action' => $action, 'page' => $page, 'timestamp' => time());
+    $logArr[] = Array('user' => $_SESSION["user"], 'action' => $action, 'page' => $page, 'timestamp' => time(), 'details' => $details);
 
     if (count($logArr) > _LOG_COUNT_MAX_) {
         $logArr = array_slice($logArr, -_LOG_COUNT_MAX_);
