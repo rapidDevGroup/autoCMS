@@ -79,10 +79,11 @@ $(function() {
             data: $(this).serialize(),
             success: function(data) {
                 $('#change-pass').modal('hide');
+                $('#change-pass-error').hide('slow');
                 $('#change-pass-form').find('input').each(function() {$(this).val('')});
             },
             error: function(xhr, err) {
-                alert('Error');
+                $('#change-pass-error').show('slow');
                 $('#change-pass-form').find('input').each(function() {$(this).val('')});
             }
         });

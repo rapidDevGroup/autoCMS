@@ -88,6 +88,7 @@ $pages = getPageList();
                         </div>
                         <form id="change-pass-form" class="form-horizontal">
                             <div class="modal-body">
+                                <div id="change-pass-error" class="alert alert-danger" role="alert" style="display:none;">An error occurred, please try again!</div>
                                 <div class="form-group">
                                     <label class="col-sm-4 control-label">Current Password</label>
                                     <div class="col-sm-8">
