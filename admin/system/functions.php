@@ -492,7 +492,7 @@ function updatePage($file, $data) {
         }
     }
 
-    addToLog('has updated', $file . ' page', $changeLog);
+    if (count($changeLog) > 0) addToLog('has updated', $file . ' page', $changeLog);
 
     $fp = fopen($dataFile, 'w');
     fwrite($fp, json_encode($json));
@@ -511,7 +511,7 @@ function updateNav($data) {
         }
     }
 
-    addToLog('has updated', 'navigation links', $changeLog);
+    if (count($changeLog) > 0) addToLog('has updated', 'navigation links', $changeLog);
 
     $fp = fopen($dataFile, 'w');
     fwrite($fp, json_encode($json));
@@ -530,7 +530,7 @@ function updateFooter($data) {
         }
     }
 
-    addToLog('has updated', 'footer', $changeLog);
+    if (count($changeLog) > 0) addToLog('has updated', 'footer', $changeLog);
 
     $fp = fopen($dataFile, 'w');
     fwrite($fp, json_encode($json));
