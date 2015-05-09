@@ -7,7 +7,7 @@ $logs = getLogData(0, null, $getUserLogs);
 <div class="container">
     <div class="row">
         <div class="col-lg-12">
-            <h2 class="page-header">Logs for CMS Recent History</h2>
+            <h2 class="page-header"><?php if (!is_null($getUserLogs)) { print $getUserLogs . '\'s '; } ?>Logs for CMS Recent History</h2>
         </div>
         <!-- /.col-lg-12 -->
     </div>
