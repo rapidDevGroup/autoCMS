@@ -93,7 +93,7 @@ $pages = getPageList();
                                 <div class="form-group">
                                     <label class="col-sm-4 control-label">Current Password</label>
                                     <div class="col-sm-8">
-                                        <input class="form-control dirtyOK" placeholder="Current Password" name="current" type="password" autofocus>
+                                        <input class="form-control dirtyOK" placeholder="Current Password" name="current" type="password">
                                     </div>
                                 </div>
                                 <div class="form-group">

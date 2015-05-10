@@ -32,6 +32,7 @@ $logs = getLogData(0, null, $getUserLogs);
             <?php } ?>
         </div>
     </div>
+    <br><br>
 </div>
 <?php
 include_once('footer.php');
