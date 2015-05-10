@@ -177,6 +177,7 @@ function makeHTMLText(&$edit, &$dataArr, $dataFile, $fieldID, $desc, $type = 'ht
 function makeImageBGImage(&$edit, &$dataArr, $dataFile, $fieldID, $desc, $isBG = false, $count = null, $repeatFieldID = null) {
     if (isset($edit->autocms)) $desc = $edit->autocms;
     $tag = null;
+    $source = null;
 
     if ($isBG) {
         $source = $edit->style;
@@ -197,17 +198,34 @@ function makeImageBGImage(&$edit, &$dataArr, $dataFile, $fieldID, $desc, $isBG =
 
         copy($source, $_SERVER['DOCUMENT_ROOT'] . $imgFileName);
 
-        $dataArr[$fieldID] = Array('image' => $imgFileName, 'description' => $desc, 'type' => 'image');
+        if (!is_null($repeatFieldID)) {
+            $dataArr[$fieldID]['repeat'][$count][$repeatFieldID] = Array('image' => $imgFileName, 'description' => $desc, 'type' => 'image');
+        } else {
+            $dataArr[$fieldID] = Array('image' => $imgFileName, 'description' => $desc, 'type' => 'image');
+        }
 
         if ($isBG) {
-            $edit->style = str_replace($tag, '', $edit->style) . "background-image: url('<?=get('$dataFile', '$fieldID')?>');";
+            if (!is_null($repeatFieldID)) {
+                $edit->style = str_replace($tag, '', $edit->style) . "background-image: url('<?=get('$dataFile', '$fieldID', ".'$x'.", '$repeatFieldID')?>');";
+            } else {
+                $edit->style = str_replace($tag, '', $edit->style) . "background-image: url('<?=get('$dataFile', '$fieldID')?>');";
+            }
             $edit->class = str_replace('auto-edit-bg-img', '', $edit->class);
         } else {
-            $edit->src = "<?=get('$dataFile', '$fieldID')?>";
+            if (!is_null($repeatFieldID)) {
+                $edit->src = "<?=get('$dataFile', '$fieldID', ".'$x'.", '$repeatFieldID')?>";
+            } else {
+                $edit->src = "<?=get('$dataFile', '$fieldID')?>";
+            }
             $altText = $edit->alt;
             $altFieldID = uniqid();
             $dataArr[$altFieldID] = Array('alt' => $altText, 'description' => 'image alt text', 'type' => 'text', 'parent' => $fieldID);
-            $edit->alt = "<?=get('$dataFile', '$altFieldID')?>";
+
+            if (!is_null($repeatFieldID)) {
+                $edit->alt = "<?=get('$dataFile', '$fieldID', ".'$x'.", '$altFieldID')?>";
+            } else {
+                $edit->alt = "<?=get('$dataFile', '$altFieldID')?>";
+            }
             $edit->class = str_replace('auto-edit-img', '', $edit->class);
         }
         $edit->autocms = null;
@@ -260,53 +278,9 @@ function buildDataFilesByTags($files) {
 
                     $repeatFieldID = uniqid();
                     if (strpos($repeat->class, 'auto-edit-img') !== false) {
-                        if (isset($repeat->autocms)) $desc = $repeat->autocms;
-
-                        $source = $repeat->src;
-                        if (substr($repeat->src, 0, 1) == "/") $source = $_SERVER['DOCUMENT_ROOT'] . $repeat->src;
-
-                        $fileExt = pathinfo(parse_url($repeat->src, PHP_URL_PATH), PATHINFO_EXTENSION);
-                        $fileExt = getImageType($fileExt, $source);
-
-                        if ($fileExt != 'error') {
-                            $imgFileName = makeDateFolders() . uniqid() . '.' . $fileExt;
-
-                            copy($source, $_SERVER['DOCUMENT_ROOT'] . $imgFileName);
-
-                            $data[$fieldID]['repeat'][$count][$repeatFieldID] = Array('image' => $imgFileName, 'description' => $desc, 'type' => 'image');
-                            $repeat->src = "<?=get('$dataFile', '$fieldID', ".'$x'.", '$repeatFieldID')?>";
-
-                            $altText = $repeat->alt;
-                            $altFieldID = uniqid();
-
-                            $data[$fieldID]['repeat'][$count][$altFieldID] = Array('alt' => $altText, 'description' => 'image alt text', 'type' => 'text', 'parent' => $repeatFieldID);
-                            $repeat->alt = "<?=get('$dataFile', '$fieldID', ".'$x'.", '$altFieldID')?>";
-
-                            $repeat->class = str_replace('auto-edit-img', '', $repeat->class);
-                            $repeat->autocms = null;
-                        }
+                        makeImageBGImage($repeat, $data, $dataFile, $fieldID, $desc, false, $count, $repeatFieldID);
                     } else if (strpos($repeat->class, 'auto-edit-bg-img') !== false) {
-                        if (isset($repeat->autocms)) $desc = $edit->autocms;
-
-                        $source = $repeat->style;
-                        preg_match('~\bbackground(-image)?\s*:(.*?)\(\s*(\'|")?(?<image>.*?)\3?\s*\)~i', $source, $matches);
-                        $source = $matches[4];
-                        if (substr($repeat->src, 0, 1) == "/") $source = $_SERVER['DOCUMENT_ROOT'] . $repeat->src;
-
-                        $fileExt = pathinfo(parse_url($repeat->src, PHP_URL_PATH), PATHINFO_EXTENSION);
-                        $fileExt = getImageType($fileExt, $source);
-
-                        if ($fileExt != 'error') {
-                            $imgFileName = makeDateFolders() . uniqid() . '.' . $fileExt;
-
-                            copy($source, $_SERVER['DOCUMENT_ROOT'] . $imgFileName);
-
-                            $data[$fieldID]['repeat'][$count][$repeatFieldID] = Array('image' => $imgFileName, 'description' => $desc, 'type' => 'image');
-                            $repeat->style = str_replace($matches[0], '', $repeat->style) . "background-image: url('<?=get('$dataFile', '$fieldID', ".'$x'.", '$repeatFieldID')?>');";
-
-                            $repeat->class = str_replace('auto-edit-bg-img', '', $repeat->class);
-                            $repeat->autocms = null;
-                        }
+                        makeImageBGImage($repeat, $data, $dataFile, $fieldID, $desc, true, $count, $repeatFieldID);
                     } else if (strpos($repeat->class, 'auto-edit-text') !== false) {
                         makeHTMLText($repeat, $data, $dataFile, $fieldID, $desc, 'text', $count, $repeatFieldID);
                     } else if (strpos($repeat->class, 'auto-edit') !== false) {
