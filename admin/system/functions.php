@@ -166,17 +166,9 @@ function buildFooterDataFile($files) {
                             $edit->autocms = null;
                         }
                     } else if (strpos($edit->class, 'auto-edit-text') !== false) {
-                        if (isset($edit->autocms)) $desc = $edit->autocms;
-                        $footerArr[$fieldID] = Array('text' => trim($edit->innertext), 'description' => $desc, 'type' => 'text');
-                        $edit->innertext = "<?=get('$dataFile', '$fieldID')?>";
-                        $edit->class = str_replace('auto-edit-text', '', $edit->class);
-                        $edit->autocms = null;
+                        makeHTMLText($edit, $footerArr, $dataFile, $fieldID, $desc, 'text');
                     } else if (strpos($edit->class, 'auto-edit') !== false) {
-                        if (isset($edit->autocms)) $desc = $edit->autocms;
-                        $footerArr[$fieldID] = Array('html' => trim($edit->innertext), 'description' => $desc, 'type' => 'html');
-                        $edit->innertext = "<?=get('$dataFile', '$fieldID')?>";
-                        $edit->class = str_replace('auto-edit', '', $edit->class);
-                        $edit->autocms = null;
+                        makeHTMLText($edit, $footerArr, $dataFile, $fieldID, $desc);
                     }
                 }
 
@@ -206,6 +198,23 @@ function buildFooterDataFile($files) {
         fwrite($fp, json_encode($footerArr));
         fclose($fp);
     }
+}
+
+function makeHTMLText(&$edit, &$dataArr, $dataFile, $fieldID, $desc, $type = 'html', $count = null, $repeatFieldID = null) {
+    if (isset($edit->autocms)) $desc = $edit->autocms;
+    if (is_null($repeatFieldID)) {
+        $dataArr[$fieldID] = Array($type => trim($edit->innertext), 'description' => $desc, 'type' => $type);
+        $edit->innertext = "<?=get('$dataFile', '$fieldID')?>";
+    } else {
+        $dataArr[$fieldID]['repeat'][$count][$repeatFieldID] = Array($type => trim($edit->innertext), 'description' => $desc, 'type' => $type);
+        $edit->innertext = "<?=get('$dataFile', '$fieldID', " . '$x' . ", '$repeatFieldID')?>";
+    }
+    if ($type == 'html') {
+        $edit->class = str_replace('auto-edit', '', $edit->class);
+    } else {
+        $edit->class = str_replace('auto-edit-text', '', $edit->class);
+    }
+    $edit->autocms = null;
 }
 
 function buildDataFilesByTags($files) {
@@ -302,17 +311,9 @@ function buildDataFilesByTags($files) {
                             $repeat->autocms = null;
                         }
                     } else if (strpos($repeat->class, 'auto-edit-text') !== false) {
-                        if (isset($repeat->autocms)) $desc = $repeat->autocms;
-                        $data[$fieldID]['repeat'][$count][$repeatFieldID] = Array('text' => trim($repeat->innertext), 'description' => $desc, 'type' => 'text');
-                        $repeat->innertext = "<?=get('$dataFile', '$fieldID', ".'$x'.", '$repeatFieldID')?>";
-                        $repeat->class = str_replace('auto-edit-text', '', $repeat->class);
-                        $repeat->autocms = null;
+                        makeHTMLText($repeat, $data, $dataFile, $fieldID, $desc, 'text', $count, $repeatFieldID);
                     } else if (strpos($repeat->class, 'auto-edit') !== false) {
-                        if (isset($repeat->autocms)) $desc = $repeat->autocms;
-                        $data[$fieldID]['repeat'][$count][$repeatFieldID] = Array('html' => trim($repeat->innertext), 'description' => $desc, 'type' => 'html');
-                        $repeat->innertext = "<?=get('$dataFile', '$fieldID', ".'$x'.", '$repeatFieldID')?>";
-                        $repeat->class = str_replace('auto-edit', '', $repeat->class);
-                        $repeat->autocms = null;
+                        makeHTMLText($repeat, $data, $dataFile, $fieldID, $desc, 'html', $count, $repeatFieldID);
                     }
                 }
 
@@ -369,17 +370,9 @@ function buildDataFilesByTags($files) {
                     $edit->autocms = null;
                 }
             } else if (strpos($edit->class, 'auto-edit-text') !== false) {
-                if (isset($edit->autocms)) $desc = $edit->autocms;
-                $data[$fieldID] = Array('text' => trim($edit->innertext), 'description' => $desc, 'type' => 'text');
-                $edit->innertext = "<?=get('$dataFile', '$fieldID')?>";
-                $edit->class = str_replace('auto-edit-text', '', $edit->class);
-                $edit->autocms = null;
+                makeHTMLText($edit, $data, $dataFile, $fieldID, $desc, 'text');
             } else if (strpos($edit->class, 'auto-edit') !== false) {
-                if (isset($edit->autocms)) $desc = $edit->autocms;
-                $data[$fieldID] = Array('html' => trim($edit->innertext), 'description' => $desc, 'type' => 'html');
-                $edit->innertext = "<?=get('$dataFile', '$fieldID')?>";
-                $edit->class = str_replace('auto-edit', '', $edit->class);
-                $edit->autocms = null;
+                makeHTMLText($edit, $data, $dataFile, $fieldID, $desc);
             }
         }
 
@@ -695,6 +688,7 @@ function makeDateFolders() {
 }
 
 function processBlog($files) {
+    /*
     $dataFile = 'data/autocms-blog.json';
     $blogFolder = $_SERVER['DOCUMENT_ROOT'] . '/admin/data/blog/';
     if (!is_dir($blogFolder)) {
@@ -721,4 +715,5 @@ function processBlog($files) {
     $fp = fopen('data/' . $dataFile, 'w');
     fwrite($fp, json_encode($blogArr));
     fclose($fp);
+    */
 }
