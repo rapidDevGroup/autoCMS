@@ -118,53 +118,9 @@ function buildFooterDataFile($files) {
                     $desc = '';
 
                     if (strpos($edit->class, 'auto-edit-img') !== false) {
-                        if (isset($edit->autocms)) $desc = $edit->autocms;
-
-                        $source = $edit->src;
-                        if (substr($edit->src, 0, 1) == "/") $source = $_SERVER['DOCUMENT_ROOT'] . $edit->src;
-
-                        $fileExt = pathinfo(parse_url($edit->src, PHP_URL_PATH), PATHINFO_EXTENSION);
-                        $fileExt = getImageType($fileExt, $source);
-
-                        if ($fileExt != 'error') {
-                            $imgFileName = makeDateFolders() . uniqid() . '.' . $fileExt;
-
-                            copy($source, $_SERVER['DOCUMENT_ROOT'] . $imgFileName);
-
-                            $footerArr[$fieldID] = Array('image' => $imgFileName, 'description' => $desc, 'type' => 'image');
-                            $edit->src = "<?=get('$dataFile', '$fieldID')?>";
-
-                            $altText = $edit->alt;
-                            $altFieldID = uniqid();
-
-                            $footerArr[$altFieldID] = Array('alt' => $altText, 'description' => 'image alt text', 'type' => 'text', 'parent' => $fieldID);
-                            $edit->alt = "<?=get('$dataFile', '$altFieldID')?>";
-
-                            $edit->class = str_replace('auto-edit-img', '', $edit->class);
-                            $edit->autocms = null;
-                        }
+                        makeImageBGImage($edit, $footerArr, $dataFile, $fieldID, $desc);
                     } else if (strpos($edit->class, 'auto-edit-bg-img') !== false) {
-                        if (isset($edit->autocms)) $desc = $edit->autocms;
-
-                        $source = $edit->style;
-                        preg_match('~\bbackground(-image)?\s*:(.*?)\(\s*(\'|")?(?<image>.*?)\3?\s*\)~i', $source, $matches);
-                        $source = $matches[4];
-                        if (substr($edit->src, 0, 1) == "/") $source = $_SERVER['DOCUMENT_ROOT'] . $edit->src;
-
-                        $fileExt = pathinfo(parse_url($edit->src, PHP_URL_PATH), PATHINFO_EXTENSION);
-                        $fileExt = getImageType($fileExt, $source);
-
-                        if ($fileExt != 'error') {
-                            $imgFileName = makeDateFolders() . uniqid() . '.' . $fileExt;
-
-                            copy($source, $_SERVER['DOCUMENT_ROOT'] . $imgFileName);
-
-                            $footerArr[$fieldID] = Array('image' => $imgFileName, 'description' => $desc, 'type' => 'image');
-                            $edit->style = str_replace($matches[0], '', $edit->style) . "background-image: url('<?=get('$dataFile', '$fieldID')?>');";
-
-                            $edit->class = str_replace('auto-edit-bg-img', '', $edit->class);
-                            $edit->autocms = null;
-                        }
+                        makeImageBGImage($edit, $footerArr, $dataFile, $fieldID, $desc, true);
                     } else if (strpos($edit->class, 'auto-edit-text') !== false) {
                         makeHTMLText($edit, $footerArr, $dataFile, $fieldID, $desc, 'text');
                     } else if (strpos($edit->class, 'auto-edit') !== false) {
@@ -202,6 +158,7 @@ function buildFooterDataFile($files) {
 
 function makeHTMLText(&$edit, &$dataArr, $dataFile, $fieldID, $desc, $type = 'html', $count = null, $repeatFieldID = null) {
     if (isset($edit->autocms)) $desc = $edit->autocms;
+
     if (is_null($repeatFieldID)) {
         $dataArr[$fieldID] = Array($type => trim($edit->innertext), 'description' => $desc, 'type' => $type);
         $edit->innertext = "<?=get('$dataFile', '$fieldID')?>";
@@ -215,6 +172,46 @@ function makeHTMLText(&$edit, &$dataArr, $dataFile, $fieldID, $desc, $type = 'ht
         $edit->class = str_replace('auto-edit-text', '', $edit->class);
     }
     $edit->autocms = null;
+}
+
+function makeImageBGImage(&$edit, &$dataArr, $dataFile, $fieldID, $desc, $isBG = false, $count = null, $repeatFieldID = null) {
+    if (isset($edit->autocms)) $desc = $edit->autocms;
+    $tag = null;
+
+    if ($isBG) {
+        $source = $edit->style;
+        preg_match('~\bbackground(-image)?\s*:(.*?)\(\s*(\'|")?(?<image>.*?)\3?\s*\)~i', $source, $matches);
+        $source = $matches[4];
+        $tag = $matches[0];
+        if (substr($edit->src, 0, 1) == "/") $source = $_SERVER['DOCUMENT_ROOT'] . $edit->src;
+    } else {
+        $source = $edit->src;
+        if (substr($edit->src, 0, 1) == "/") $source = $_SERVER['DOCUMENT_ROOT'] . $edit->src;
+    }
+
+    $fileExt = pathinfo(parse_url($edit->src, PHP_URL_PATH), PATHINFO_EXTENSION);
+    $fileExt = getImageType($fileExt, $source);
+
+    if ($fileExt != 'error') {
+        $imgFileName = makeDateFolders() . uniqid() . '.' . $fileExt;
+
+        copy($source, $_SERVER['DOCUMENT_ROOT'] . $imgFileName);
+
+        $dataArr[$fieldID] = Array('image' => $imgFileName, 'description' => $desc, 'type' => 'image');
+
+        if ($isBG) {
+            $edit->style = str_replace($tag, '', $edit->style) . "background-image: url('<?=get('$dataFile', '$fieldID')?>');";
+            $edit->class = str_replace('auto-edit-bg-img', '', $edit->class);
+        } else {
+            $edit->src = "<?=get('$dataFile', '$fieldID')?>";
+            $altText = $edit->alt;
+            $altFieldID = uniqid();
+            $dataArr[$altFieldID] = Array('alt' => $altText, 'description' => 'image alt text', 'type' => 'text', 'parent' => $fieldID);
+            $edit->alt = "<?=get('$dataFile', '$altFieldID')?>";
+            $edit->class = str_replace('auto-edit-img', '', $edit->class);
+        }
+        $edit->autocms = null;
+    }
 }
 
 function buildDataFilesByTags($files) {
@@ -322,53 +319,9 @@ function buildDataFilesByTags($files) {
                 $edit->outertext = '<?php for ($x = 0; $x ' . "< repeatCount('$dataFile', '$fieldID');" . ' $x++) { ?>' . $edit->outertext . "<?php } ?>";
 
             } else if (strpos($edit->class, 'auto-edit-img') !== false) {
-                if (isset($edit->autocms)) $desc = $edit->autocms;
-
-                $source = $edit->src;
-                if (substr($edit->src, 0, 1) == "/") $source = $_SERVER['DOCUMENT_ROOT'] . $edit->src;
-
-                $fileExt = pathinfo(parse_url($edit->src,PHP_URL_PATH),PATHINFO_EXTENSION);
-                $fileExt = getImageType($fileExt, $source);
-
-                if ($fileExt != 'error') {
-                    $imgFileName = makeDateFolders() . uniqid() . '.' . $fileExt;
-
-                    copy($source, $_SERVER['DOCUMENT_ROOT'] . $imgFileName);
-
-                    $data[$fieldID] = Array('image' => $imgFileName, 'description' => $desc, 'type' => 'image');
-                    $edit->src = "<?=get('$dataFile', '$fieldID')?>";
-
-                    $altText = $edit->alt;
-                    $altFieldID = uniqid();
-                    
-                    $data[$altFieldID] = Array('alt' => $altText, 'description' => 'image alt text', 'type' => 'text', 'parent' => $fieldID);
-                    $edit->alt = "<?=get('$dataFile', '$altFieldID')?>";
-
-                    $edit->class = str_replace('auto-edit-img', '', $edit->class);
-                    $edit->autocms = null;
-                }
+                makeImageBGImage($edit, $data, $dataFile, $fieldID, $desc);
             } else if (strpos($edit->class, 'auto-edit-bg-img') !== false) {
-                if (isset($edit->autocms)) $desc = $edit->autocms;
-
-                $source = $edit->style;
-                preg_match('~\bbackground(-image)?\s*:(.*?)\(\s*(\'|")?(?<image>.*?)\3?\s*\)~i', $source, $matches);
-                $source = $matches[4];
-                if (substr($edit->src, 0, 1) == "/") $source = $_SERVER['DOCUMENT_ROOT'] . $edit->src;
-
-                $fileExt = pathinfo(parse_url($edit->src,PHP_URL_PATH),PATHINFO_EXTENSION);
-                $fileExt = getImageType($fileExt, $source);
-
-                if ($fileExt != 'error') {
-                    $imgFileName = makeDateFolders() . uniqid() . '.' . $fileExt;
-
-                    copy($source, $_SERVER['DOCUMENT_ROOT'] . $imgFileName);
-
-                    $data[$fieldID] = Array('image' => $imgFileName, 'description' => $desc, 'type' => 'image');
-                    $edit->style = str_replace($matches[0], '', $edit->style) . "background-image: url('<?=get('$dataFile', '$fieldID')?>');";
-
-                    $edit->class = str_replace('auto-edit-bg-img', '', $edit->class);
-                    $edit->autocms = null;
-                }
+                makeImageBGImage($edit, $data, $dataFile, $fieldID, $desc, true);
             } else if (strpos($edit->class, 'auto-edit-text') !== false) {
                 makeHTMLText($edit, $data, $dataFile, $fieldID, $desc, 'text');
             } else if (strpos($edit->class, 'auto-edit') !== false) {
