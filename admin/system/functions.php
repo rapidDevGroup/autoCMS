@@ -629,11 +629,10 @@ function processBlog($files) {
 
         $html = str_get_html($fileData);
 
-        foreach($html->find('.auto-blog-list, .auto-blog-head, .auto-blog-post, .auto-blog-title, .auto-blog-bg-img, .auto-blog-img, .auto-blog-short, .auto-blog-link, .auto-blog-full') as $navigation) {
+        foreach($html->find('.auto-blog-list, .auto-blog-head, .auto-blog-post, .auto-blog-title, .auto-blog-bg-img, .auto-blog-img, .auto-blog-short, .auto-blog-link, .auto-blog-full') as $blog) {
 
         }
 
-        // write html file
         $fp = fopen('../' . $file, 'w');
         fwrite($fp, $html);
         fclose($fp);

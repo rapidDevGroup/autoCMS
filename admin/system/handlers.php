@@ -73,8 +73,8 @@ class Dash {
         if ($action == 'process' && checkPass() && !authNeeded()) {
 
             getAllNavigationData($_POST['files']);
-            buildFooterDataFile($_POST['files']);
             processBlog($_POST['files']);
+            buildFooterDataFile($_POST['files']);
 
             buildDataFilesByTags($_POST['files']);
             renameFiles($_POST['files']);
