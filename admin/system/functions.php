@@ -435,9 +435,11 @@ function saveDescription($file, $editKey, $editDesc) {
     if (strpos($editKey, '-') !== false) {
         list($repeatKey, $iteration, $itemKey) = explode("-", $editKey);
         if (isset($json[$repeatKey]['repeat'][$iteration][$itemKey])) {
+            addToLog('has changes a description on', str_replace('page-', '', $file) . ' page', Array('key' => $editKey, 'change' => Array('original' => $json[$editKey]['description'], 'new' => $editDesc)));
             $json[$repeatKey]['repeat'][$iteration][$itemKey]['description'] = trim($editDesc);
         }
     } else if (isset($json[$editKey])) {
+        addToLog('has changes a description on', str_replace('page-', '', $file) . ' page', Array('key' => $editKey, 'change' => Array('original' => $json[$editKey]['description'], 'new' => $editDesc)));
         $json[$editKey]['description'] = $editDesc;
     }
 
@@ -537,9 +539,8 @@ function duplicateRepeat($page, $key, $num) {
 
     foreach ($json as $jsonKey => $datum) {
         if ($key != 'key' && $jsonKey == $key && isset($json[$key]) && $json[$key]['type'] == 'repeat' && count($json[$key]['repeat']) > $num && isset($json[$key]['repeat'][$num])) {
+            addToLog('has duplicated repeat on', $page . ' page', Array('key' => $key, 'change' => Array('duplicated' => $json[$key]['repeat'][$num])));
             $json[$key]['repeat'][] = $json[$key]['repeat'][$num];
-
-            addToLog('has duplicated repeat on', $page . ' page', Array('key' => $key, 'change' => Array('original' => $num, 'new' => count($json[$key]['repeat']))));
         }
     }
 
@@ -554,9 +555,8 @@ function deleteRepeat($page, $key, $num) {
 
     foreach ($json as $jsonKey => $datum) {
         if ($key != 'key' && $jsonKey == $key && isset($json[$key]) && $json[$key]['type'] == 'repeat' && count($json[$key]['repeat']) > $num && isset($json[$key]['repeat'][$num])) {
+            addToLog('has deleted repeat on', $page . ' page', Array('key' => $key, 'change' => Array('deleted' => $json[$key]['repeat'][$num])));
             array_splice($json[$key]['repeat'], $num, 1);
-
-            addToLog('has deleted repeat on', $page . ' page', Array('key' => $key, 'change' => Array('original' => $num, 'new' => count($json[$key]['repeat']))));
         }
     }
 
