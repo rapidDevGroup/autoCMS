@@ -538,6 +538,8 @@ function duplicateRepeat($page, $key, $num) {
     foreach ($json as $jsonKey => $datum) {
         if ($key != 'key' && $jsonKey == $key && isset($json[$key]) && $json[$key]['type'] == 'repeat' && count($json[$key]['repeat']) > $num && isset($json[$key]['repeat'][$num])) {
             $json[$key]['repeat'][] = $json[$key]['repeat'][$num];
+
+            addToLog('has duplicated repeat on', $page . ' page', Array('key' => $key, 'change' => Array('original' => $num, 'new' => count($json[$key]['repeat']))));
         }
     }
 
@@ -553,6 +555,8 @@ function deleteRepeat($page, $key, $num) {
     foreach ($json as $jsonKey => $datum) {
         if ($key != 'key' && $jsonKey == $key && isset($json[$key]) && $json[$key]['type'] == 'repeat' && count($json[$key]['repeat']) > $num && isset($json[$key]['repeat'][$num])) {
             array_splice($json[$key]['repeat'], $num, 1);
+
+            addToLog('has deleted repeat on', $page . ' page', Array('key' => $key, 'change' => Array('original' => $num, 'new' => count($json[$key]['repeat']))));
         }
     }
 
