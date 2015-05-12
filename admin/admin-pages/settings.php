@@ -16,7 +16,7 @@ $data = getNavData();
 
                 <hr>
                 <div class="form-group">
-                    <div class="col-lg-offset-7 col-lg-3 col-sm-offset-9 col-sm-3">
+                    <div class="col-lg-offset-9 col-lg-2 col-sm-offset-9 col-sm-3">
                         <button type="submit" class="btn btn-primary btn-block pull-right dirtyOK">Save Settings</button>
                     </div>
                 </div>

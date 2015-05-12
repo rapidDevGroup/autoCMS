@@ -20,18 +20,18 @@ $data = getNavData();
                         } ?>
                         <label for="<?=$key?>" class="col-lg-2 col-sm-2 control-label"><a id="desc-<?=$key?>" class="desc-edit" data-type="text" data-pk="<?=$key?>" data-url="/admin/page/nav/desc/" data-title="edit description"><?=$desc?></a></label>
                         <?php if ($datum['type'] == 'html') { ?>
-                            <div class="col-lg-8 col-sm-10">
+                            <div class="col-lg-9 col-sm-10">
                                 <textarea name="<?=$key?>" class="form-control"><?=$datum['html']?></textarea>
                             </div>
                         <?php } else if ($datum['type'] == 'text') { ?>
-                            <div class="col-lg-8 col-sm-10">
+                            <div class="col-lg-9 col-sm-10">
                                 <input name="<?=$key?>" class="form-control" value="<?=$datum['text']?>" autocomplete="off">
                             </div>
                         <?php } else if ($datum['type'] == 'image') { ?>
-                            <div class="col-lg-5 col-sm-7">
+                            <div class="col-lg-7 col-sm-7">
                                 <img class="img-responsive img-thumbnail" src="<?=$datum['image']?>">
                             </div>
-                            <div class="col-lg-3 col-sm-3">
+                            <div class="col-lg-2 col-sm-3">
                                 <button type="button" class="btn btn-default btn-block">Upload New Image</button>
                             </div>
                         <?php } ?>
@@ -39,7 +39,7 @@ $data = getNavData();
                 <?php } ?>
                 <hr>
                 <div class="form-group">
-                    <div class="col-lg-offset-7 col-lg-3 col-sm-offset-9 col-sm-3">
+                    <div class="col-lg-offset-9 col-lg-2 col-sm-offset-9 col-sm-3">
                         <button type="submit" class="btn btn-primary btn-block pull-right dirtyOK">Save Navigation</button>
                     </div>
                 </div>
