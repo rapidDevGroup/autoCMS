@@ -28,8 +28,11 @@ Toro::serve(array(
     '/nav/update/'                              => 'Nav',
     '/footer/'                                  => 'Footer',
     '/footer/update/'                           => 'Footer',
-    '/dash/:alpha'                              => 'Dash',
-    '/page/:alpha'                              => 'Page',
+    '/settings/'                                => 'Settings',
+    '/settings/update/'                         => 'Settings',
+
+    '/dash/:alpha/'                             => 'Dash',
+    '/page/:alpha/'                             => 'Page',
     '/page/:alpha/update/'                      => 'Page',
     '/page/:alpha/desc/'                        => 'Description',
     '/page/:alpha/repeat/:key/'                 => 'Repeat',

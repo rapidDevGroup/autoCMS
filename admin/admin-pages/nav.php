@@ -7,7 +7,6 @@ $data = getNavData();
         <div class="col-lg-12">
             <h2 class="page-header">Content editing for navigation text</h2>
         </div>
-        <!-- /.col-lg-12 -->
     </div>
 
     <div class="row">

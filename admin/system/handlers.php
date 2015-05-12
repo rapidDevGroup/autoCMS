@@ -104,6 +104,25 @@ class Dash {
     }
 }
 
+class Settings {
+    function get() {
+        if (checkPass() && !authNeeded()) {
+            include_once('admin-pages/settings.php');
+        } else {
+            include_once('admin-pages/401.html');
+        }
+    }
+    function post() {
+        if (checkPass() && !authNeeded()) {
+            // todo: update settings
+
+            header('Location: /admin/settings/?updated=true');
+        } else {
+            include_once('admin-pages/401.html');
+        }
+    }
+}
+
 class Page {
     function get($page = null) {
         if (is_null($page) && checkPass() && !authNeeded()) {
@@ -125,8 +144,7 @@ class Page {
             updatePage($page, $_POST);
             uploadFiles($page);
 
-            header('Location: /admin/page/' . $page . '/');
-
+            header('Location: /admin/page/' . $page . '/?updated=true');
         } else {
             include_once('admin-pages/401.html');
         }
@@ -146,8 +164,7 @@ class Nav {
 
             updateNav($_POST);
 
-            header('Location: /admin/nav/');
-
+            header('Location: /admin/nav/?updated=true');
         } else {
             include_once('admin-pages/401.html');
         }
@@ -177,8 +194,7 @@ class Footer {
 
             updateFooter($_POST);
 
-            header('Location: /admin/footer/');
-
+            header('Location: /admin/footer/?updated=true');
         } else {
             include_once('admin-pages/401.html');
         }
@@ -256,7 +272,7 @@ class Repeat {
             updatePage($page, $_POST);
             uploadFiles($page);
 
-            header('Location: /admin/page/' . $page . '/repeat/' . $key . '/');
+            header('Location: /admin/page/' . $page . '/repeat/' . $key . '/?updated=true');
 
         } else {
             include_once('admin-pages/401.html');
