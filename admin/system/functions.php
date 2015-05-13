@@ -619,7 +619,6 @@ function makeDateFolders() {
 }
 
 function processBlog($files) {
-    /*
     $dataFile = 'data/autocms-blog.json';
     $blogFolder = $_SERVER['DOCUMENT_ROOT'] . '/admin/data/blog/';
     if (!is_dir($blogFolder)) {
@@ -633,8 +632,42 @@ function processBlog($files) {
 
         $html = str_get_html($fileData);
 
-        foreach($html->find('.auto-blog-list, .auto-blog-head, .auto-blog-post, .auto-blog-title, .auto-blog-bg-img, .auto-blog-img, .auto-blog-short, .auto-blog-link, .auto-blog-full') as $blog) {
+        // .auto-blog-title, .auto-blog-bg-img, .auto-blog-img, .auto-blog-short, .auto-blog-link, .auto-blog-full
 
+        foreach($html->find('.auto-blog-list, .auto-blog-head, .auto-blog-post') as $blog) {
+            if (strpos($blog->class, 'auto-blog-list') !== false) {
+                foreach($html->find('.auto-blog-list .auto-blog-title, .auto-blog-list .auto-blog-bg-img, .auto-blog-list .auto-blog-img, .auto-blog-list .auto-blog-short, .auto-blog-list .auto-blog-full, .auto-blog-list .auto-blog-link') as $list) {
+                    if (strpos($list->class, 'auto-blog-title') !== false) {
+                        $blog->innertext = '<?=getBlog("title", "$x")?>';
+                    } else if (strpos($list->class, 'auto-blog-img') !== false) {
+                        $blog->innertext = '<?=getBlog("image", "$x")?>';
+                    } else if (strpos($list->class, 'auto-blog-short') !== false) {
+                        $blog->innertext = '<?=getBlog("short", "$x")?>';
+                    } else if (strpos($list->class, 'auto-blog-full') !== false) {
+                        $blog->innertext = '<?=getBlog("full", "$x")?>';
+                    } else if (strpos($list->class, 'auto-blog-link') !== false) {
+                        $blog->src = '<?=getBlog("link", "$x")?>';
+                        $blog->innertext = '<?=getBlog("link-text", "$x")?>';
+                    }
+                }
+                $blog->outertext = '<?php for ($x = 0; $x ' . '< blogCount(' . $file . ');' . ' $x++) { ?>' . $blog->outertext . "<?php } ?>";
+            } else if (strpos($blog->class, 'auto-blog-head') !== false) {
+                foreach($html->find('.auto-blog-head title') as $pageTitle) {
+                    $pageTitle->innertext = "<?=getBlog('title')?>";
+                }
+                foreach($html->find('.auto-blog-head meta') as $pageMeta) {
+                    if ($pageMeta->name == 'keywords' || $pageMeta->name == 'description' || $pageMeta->name == 'author') {
+                        $pageMeta->content = "<?=getBlog('$pageMeta->name')?>";
+                    }
+                }
+                $blog->class = str_replace('auto-blog-head', '', $blog->class);
+            } else if (strpos($blog->class, 'auto-blog-post') !== false) {
+                foreach($html->find('.auto-blog-post .auto-blog-title, .auto-blog-post .auto-blog-bg-img, .auto-blog-post .auto-blog-img, .auto-blog-post .auto-blog-short, .auto-blog-post .auto-blog-full') as $post) {
+
+
+
+                }
+            }
         }
 
         $fp = fopen('../' . $file, 'w');
@@ -642,8 +675,7 @@ function processBlog($files) {
         fclose($fp);
     }
 
-    $fp = fopen('data/' . $dataFile, 'w');
+    $fp = fopen($dataFile, 'w');
     fwrite($fp, json_encode($blogArr));
     fclose($fp);
-    */
 }

@@ -1,5 +1,13 @@
 <?php
 
+// if request is a post, make sure file exists
+if (isset($_GET['post']) && !file_exists($_SERVER['DOCUMENT_ROOT'] . 'admin/data/blog/' . strtolower($_GET['post']) . '.json')) {
+    header("HTTP/1.0 404 Not Found");
+    if (file_exists($_SERVER['DOCUMENT_ROOT'] . '404.php')) include_once('404.php');
+    die();
+}
+
+// get data
 function get($file, $key, $count = null, $secondary = null) {
     $dataFile = 'admin/data/' . $file;
     $json = json_decode(file_get_contents($dataFile), true);
@@ -10,15 +18,23 @@ function get($file, $key, $count = null, $secondary = null) {
     return $json[$key][$json[$key]['type']];
 }
 
-function getBlog($count, $key) {
-    $dataFile = 'admin/data/autocms-blog.json';
-    $json = json_decode(file_get_contents($dataFile), true);
-
-}
-
+// return count of the repeat
 function repeatCount($file, $key) {
     $dataFile = 'admin/data/' . $file;
     $json = json_decode(file_get_contents($dataFile), true);
 
     return count($json[$key]['repeat']);
+}
+
+// get the post data
+function getBlog($key, $count = 0) {
+    $dataFile = 'admin/data/blog/' . strtolower($_GET['post']) . '.json';
+    $json = json_decode(file_get_contents($dataFile), true);
+
+    return $json[$key][$json[$key]['type']];
+}
+
+// get how many blog list count to show on this page
+function blogCount($file) {
+
 }

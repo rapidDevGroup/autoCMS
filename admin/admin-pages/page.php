@@ -12,7 +12,7 @@ include_once('header.php');
         <div class="col-lg-12">
             <form action="/admin/page/<?=$page?>/update/" method="post" class="form-horizontal" enctype="multipart/form-data">
                 <?php foreach($data as $key => $datum) { ?>
-                    <div id="<?=$key?>" class="form-group">
+                    <div class="form-group">
                         <?php $desc = $datum['description']; ?>
                         <label for="<?=$key?>" class="col-lg-2 col-sm-2 control-label">
                             <a id="desc-<?=$key?>" class="desc-edit dirtyOK" data-type="text" data-pk="<?=$key?>" data-url="/admin/page/<?=$page?>/desc/" data-title="edit description"><?=$desc?></a>
