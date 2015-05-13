@@ -59,7 +59,7 @@ deny from all
 Options +FollowSymlinks
 RewriteEngine On
 
-# Make sure to accept only certain languages
+# Set certain languages
 RewriteCond %{HTTP:Accept-Language} ^.*(de|es|fr|en).*$ [NC]
 RewriteRule ^(.*)$ - [env=prefer-language:%1]
 

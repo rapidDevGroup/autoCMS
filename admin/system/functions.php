@@ -85,13 +85,15 @@ function getPageList() {
 }
 
 function hasNav() {
-    if (!file_exists("data/autocms-nav.json")) return false;
-    return true;
+    return file_exists("data/autocms-nav.json");
 }
 
 function hasBlog() {
-    if (!file_exists("data/autocms-blog.json")) return false;
-    return true;
+    return file_exists("data/autocms-blog.json");
+}
+
+function hasSettings() {
+    return file_exists("data/autocms-settings.json");
 }
 
 function footerExists() {
@@ -638,16 +640,18 @@ function processBlog($files) {
             if (strpos($blog->class, 'auto-blog-list') !== false) {
                 foreach($html->find('.auto-blog-list .auto-blog-title, .auto-blog-list .auto-blog-bg-img, .auto-blog-list .auto-blog-img, .auto-blog-list .auto-blog-short, .auto-blog-list .auto-blog-full, .auto-blog-list .auto-blog-link') as $list) {
                     if (strpos($list->class, 'auto-blog-title') !== false) {
-                        $blog->innertext = '<?=getBlog("title", "$x")?>';
+                        $blog->innertext = '<?=getBlogList("title", "$x")?>';
+                    } else if (strpos($list->class, 'auto-blog-bg-img') !== false) {
+                        $blog->style = "background-image: url('<?=getBlogList(" . '"image", $x' . ")?>');";
                     } else if (strpos($list->class, 'auto-blog-img') !== false) {
-                        $blog->innertext = '<?=getBlog("image", "$x")?>';
+                        $blog->innertext = '<?=getBlogList("image", "$x")?>';
                     } else if (strpos($list->class, 'auto-blog-short') !== false) {
-                        $blog->innertext = '<?=getBlog("short", "$x")?>';
+                        $blog->innertext = '<?=getBlogList("short", "$x")?>';
                     } else if (strpos($list->class, 'auto-blog-full') !== false) {
-                        $blog->innertext = '<?=getBlog("full", "$x")?>';
+                        $blog->innertext = '<?=getBlogList("full", "$x")?>';
                     } else if (strpos($list->class, 'auto-blog-link') !== false) {
-                        $blog->src = '<?=getBlog("link", "$x")?>';
-                        $blog->innertext = '<?=getBlog("link-text", "$x")?>';
+                        $blog->src = '<?=getBlogList("link", "$x")?>';
+                        $blog->innertext = '<?=getBlogList("link-text", "$x")?>';
                     }
                 }
                 $blog->outertext = '<?php for ($x = 0; $x ' . '< blogCount(' . $file . ');' . ' $x++) { ?>' . $blog->outertext . "<?php } ?>";
