@@ -627,50 +627,87 @@ function processBlog($files) {
         mkdir($blogFolder);
     }
 
-    $blogArr = Array();
+    $blogArr = Array('types' => Array(), 'posts' => Array(), 'pages' => Array());
 
     foreach ($files as $file) {
         $fileData = file_get_contents('../' . $file, true);
 
         $html = str_get_html($fileData);
 
-        // .auto-blog-title, .auto-blog-bg-img, .auto-blog-img, .auto-blog-short, .auto-blog-link, .auto-blog-full
-
         foreach($html->find('.auto-blog-list, .auto-blog-head, .auto-blog-post') as $blog) {
             if (strpos($blog->class, 'auto-blog-list') !== false) {
                 foreach($html->find('.auto-blog-list .auto-blog-title, .auto-blog-list .auto-blog-bg-img, .auto-blog-list .auto-blog-img, .auto-blog-list .auto-blog-short, .auto-blog-list .auto-blog-full, .auto-blog-list .auto-blog-link') as $list) {
                     if (strpos($list->class, 'auto-blog-title') !== false) {
-                        $blog->innertext = '<?=getBlogList("title", "$x")?>';
+                        $list->innertext = '<?=getBlog("title", "$x")?>';
+                        $list->class = str_replace('auto-blog-title', '', $list->class);
+                        if (!isset($blogArr['types']['title'])) $blogArr['types']['title'] = true;
                     } else if (strpos($list->class, 'auto-blog-bg-img') !== false) {
-                        $blog->style = "background-image: url('<?=getBlogList(" . '"image", $x' . ")?>');";
+                        $list->style = "background-image: url('<?=getBlog(" . '"image", $x' . ")?>');";
+                        $list->class = str_replace('auto-blog-bg-img', '', $list->class);
+                        if (!isset($blogArr['types']['image'])) $blogArr['types']['image'] = true;
                     } else if (strpos($list->class, 'auto-blog-img') !== false) {
-                        $blog->innertext = '<?=getBlogList("image", "$x")?>';
+                        $list->src = '<?=getBlog("image", "$x")?>';
+                        $list->alt = '<?=getBlog("image-alt", "$x")?>';
+                        $list->class = str_replace('auto-blog-img', '', $list->class);
+                        if (!isset($blogArr['types']['image'])) $blogArr['types']['image'] = true;
+                        if (!isset($blogArr['types']['image-alt'])) $blogArr['types']['image-alt'] = true;
                     } else if (strpos($list->class, 'auto-blog-short') !== false) {
-                        $blog->innertext = '<?=getBlogList("short", "$x")?>';
+                        $list->innertext = '<?=getBlog("short", "$x")?>';
+                        $list->class = str_replace('auto-blog-short', '', $list->class);
+                        if (!isset($blogArr['types']['short'])) $blogArr['types']['short'] = true;
                     } else if (strpos($list->class, 'auto-blog-full') !== false) {
-                        $blog->innertext = '<?=getBlogList("full", "$x")?>';
+                        $list->innertext = '<?=getBlog("full", "$x")?>';
+                        $list->class = str_replace('auto-blog-full', '', $list->class);
+                        if (!isset($blogArr['types']['full'])) $blogArr['types']['full'] = true;
                     } else if (strpos($list->class, 'auto-blog-link') !== false) {
-                        $blog->src = '<?=getBlogList("link", "$x")?>';
-                        $blog->innertext = '<?=getBlogList("link-text", "$x")?>';
+                        $list->src = '<?=getBlogList("link", "$x")?>';
+                        $list->innertext = '<?=getBlog("link-text", "$x")?>';
+                        $list->class = str_replace('auto-blog-link', '', $list->class);
+                        if (!isset($blogArr['types']['link'])) $blogArr['types']['link'] = true;
                     }
                 }
+                $blog->class = str_replace('auto-blog-list', '', $blog->class);
                 $blog->outertext = '<?php for ($x = 0; $x ' . '< blogCount(' . $file . ');' . ' $x++) { ?>' . $blog->outertext . "<?php } ?>";
+                $blogArr['list-pages'][$file] = 3;
             } else if (strpos($blog->class, 'auto-blog-head') !== false) {
                 foreach($html->find('.auto-blog-head title') as $pageTitle) {
                     $pageTitle->innertext = "<?=getBlog('title')?>";
+                    if (!isset($blogArr['types']['title'])) $blogArr['types']['title'] = true;
                 }
                 foreach($html->find('.auto-blog-head meta') as $pageMeta) {
                     if ($pageMeta->name == 'keywords' || $pageMeta->name == 'description' || $pageMeta->name == 'author') {
                         $pageMeta->content = "<?=getBlog('$pageMeta->name')?>";
+                        if (!isset($blogArr['types'][$pageMeta->name])) $blogArr['types'][$pageMeta->name] = true;
                     }
                 }
                 $blog->class = str_replace('auto-blog-head', '', $blog->class);
             } else if (strpos($blog->class, 'auto-blog-post') !== false) {
                 foreach($html->find('.auto-blog-post .auto-blog-title, .auto-blog-post .auto-blog-bg-img, .auto-blog-post .auto-blog-img, .auto-blog-post .auto-blog-short, .auto-blog-post .auto-blog-full') as $post) {
-
-
-
+                    if (strpos($post->class, 'auto-blog-title') !== false) {
+                        $post->innertext = '<?=getBlog("title")?>';
+                        $post->class = str_replace('auto-blog-title', '', $post->class);
+                        if (!isset($blogArr['types']['title'])) $blogArr['types']['title'] = true;
+                    } else if (strpos($post->class, 'auto-blog-bg-img') !== false) {
+                        $post->style = "background-image: url('<?=getBlog(" . '"image"' . ")?>');";
+                        $post->class = str_replace('auto-blog-bg-img', '', $post->class);
+                        if (!isset($blogArr['types']['image'])) $blogArr['types']['image'] = true;
+                    } else if (strpos($post->class, 'auto-blog-img') !== false) {
+                        $post->src = '<?=getBlog("image")?>';
+                        $post->alt = '<?=getBlog("image-alt")?>';
+                        $post->class = str_replace('auto-blog-img', '', $post->class);
+                        if (!isset($blogArr['types']['image'])) $blogArr['types']['image'] = true;
+                        if (!isset($blogArr['types']['image-alt'])) $blogArr['types']['image-alt'] = true;
+                    } else if (strpos($post->class, 'auto-blog-short') !== false) {
+                        $post->innertext = '<?=getBlog("short")?>';
+                        $post->class = str_replace('auto-blog-short', '', $post->class);
+                        if (!isset($blogArr['types']['short'])) $blogArr['types']['short'] = true;
+                    } else if (strpos($post->class, 'auto-blog-full') !== false) {
+                        $post->innertext = '<?=getBlog("full")?>';
+                        $post->class = str_replace('auto-blog-full', '', $post->class);
+                        if (!isset($blogArr['types']['full'])) $blogArr['types']['full'] = true;
+                    }
                 }
+                $blog->class = str_replace('auto-blog-post', '', $blog->class);
             }
         }
 

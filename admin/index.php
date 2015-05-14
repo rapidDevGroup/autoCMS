@@ -30,7 +30,10 @@ Toro::serve(array(
     '/footer/update/'                           => 'Footer',
     '/settings/'                                => 'Settings',
     '/settings/update/'                         => 'Settings',
-
+    '/blog/'                                    => 'Blog',
+    '/blog/update/'                             => 'Blog',
+    '/blog/:alpha/'                             => 'BlogPost',
+    '/blog/:alpha/update/'                      => 'BlogPost',
     '/dash/:alpha/'                             => 'Dash',
     '/page/:alpha/'                             => 'Page',
     '/page/:alpha/update/'                      => 'Page',

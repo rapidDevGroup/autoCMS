@@ -30,19 +30,14 @@ function repeatCount($file, $key) {
 }
 
 // get the post data
-function getBlogList($key, $count = 0) {
-    $dataFile = 'admin/data/autocms-blog.json';
+function getBlog($key, $count = null) {
+    $dataBlogListFile = 'admin/data/autocms-blog.json';
+    $jsonBlog = json_decode(file_get_contents($dataBlogListFile), true);
+
+    $dataFile = 'admin/data/blog/' . strtolower($_GET['post']) . '.json';
     $json = json_decode(file_get_contents($dataFile), true);
 
     // todo: get file name from blog, look up key in blog file
-
-    return $json[$key][$json[$key]['type']];
-}
-
-// get the post data
-function getBlog($key) {
-    $dataFile = 'admin/data/blog/' . strtolower($_GET['post']) . '.json';
-    $json = json_decode(file_get_contents($dataFile), true);
 
     return $json[$key][$json[$key]['type']];
 }

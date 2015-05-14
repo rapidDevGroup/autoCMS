@@ -123,6 +123,48 @@ class Settings {
     }
 }
 
+class Blog {
+    function get() {
+        if (checkPass() && !authNeeded()) {
+            include_once('admin-pages/blog.php');
+        } else {
+            include_once('admin-pages/401.html');
+        }
+    }
+    function post() {
+        if (checkPass() && !authNeeded()) {
+            // todo: update blog stuff
+
+            header('Location: /admin/blog/?updated=true');
+        } else {
+            include_once('admin-pages/401.html');
+        }
+    }
+}
+
+class BlogPost {
+    function get($post = null) {
+        if (is_null($post)) {
+            include_once('admin-pages/404.html');
+        } else if (checkPass() && !authNeeded()) {
+            include_once('admin-pages/post.php');
+        } else {
+            include_once('admin-pages/401.html');
+        }
+    }
+    function post($post = null) {
+        if (is_null($post)) {
+            include_once('admin-pages/404.html');
+        } else if (checkPass() && !authNeeded()) {
+            // todo: update blog stuff
+
+            header('Location: /admin/blog/?updated=true');
+        } else {
+            include_once('admin-pages/401.html');
+        }
+    }
+}
+
 class Page {
     function get($page = null) {
         if (is_null($page) && checkPass() && !authNeeded()) {
