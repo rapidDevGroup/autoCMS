@@ -218,16 +218,15 @@ This data tag can be used to add an additional description to a field, also used
 
 * Adding RSS Feed
 * Multi-Language
-* Blog Drafts
 * Blog Pagination
-* History Log
 * Check for Safe Files
 * Inline Editing
 * User Privilege Settings
 * Multiple auto-repeat on a Page
 * Commenting System
-* Add couchDB Option
-* Detect Tag Needs
+* Social Media Integration
+* Add couchDB/SQL Database Options
+* Detect Tag Needs (Where a tag might be missing)
 
 ---
 
