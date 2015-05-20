@@ -32,6 +32,7 @@ This is for people who do not wish to use a complicated site management system l
 * [Image Tags](#image-tags)
 * [Repeating Tag](#repeating-tag)
 * [Blog/News Feed Tags](#blognews-feed-tags)
+* [Background Color Tag](#background-color-tag)
 * [autocms Attribute](#autocms-attribute)
 
 ---
@@ -183,7 +184,6 @@ Use these tags to display actual blog content.
 
 
 #### Background Color Tag
-**(Being Worked On)**
 
 This allows you to select a background color on your site.
 ```HTML
