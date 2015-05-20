@@ -112,6 +112,7 @@ For background images:
 ```HTML
 <div class="auto-edit-bg-img" style="background-image: url(path/to/original/image);">...</div>
 ```
+**NOTE:** background-image must be added by style attribute and not in CSS using a class.
 
 ---
 
@@ -119,7 +120,7 @@ For background images:
 #### Repeating Tag
 
 ```HTML
-<div class="auto-repeat">
+<div class="auto-repeat" autocms="...">
     <div class="auto-edit" autocms="...">...</div>
     <img src="..." class="auto-edit-img" autocms="...">
 </div>
@@ -176,12 +177,12 @@ Use these tags to display actual blog content.
 **NOTE:**
 * Can use auto-blog-img and auto-blog-bg-img, however, this will be the same image used in the blog post.
 * auto-blog-post's page will be linked to automatically from the list, and will load the correct blog post.
-* Any other non-blog auto tags will be editable, however, will be the same for all blog posts.
+* Any other non-blog autocms tags will be editable for the blog post page, however, will be the same for all blog posts.
 
 ---
 
 
-#### Color Tags
+#### Background Color Tag
 **(Being Worked On)**
 
 This allows you to select a background color on your site.
