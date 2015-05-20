@@ -6,6 +6,7 @@
         <!-- Others -->
         <script src="//js.nicedit.com/nicEdit-latest.js" type="text/javascript"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/2.1.1/js/bootstrap-colorpicker.min.js"></script>
         <script src="/admin/js/autocms.js"></script>
     </body>
 </html>

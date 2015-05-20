@@ -114,7 +114,7 @@ function buildFooterDataFile($files) {
             $html = str_get_html($fileData);
 
             if (!$footerFound) {
-                foreach ($html->find('.auto-footer .auto-edit, .auto-footer .auto-edit-text, .auto-footer .auto-edit-img, .auto-footer .auto-edit-bg-img') as $edit) {
+                foreach ($html->find('.auto-footer .auto-color, .auto-footer .auto-edit, .auto-footer .auto-edit-text, .auto-footer .auto-edit-img, .auto-footer .auto-edit-bg-img') as $edit) {
                     $footerFound = true;
                     $fieldID = uniqid();
                     $desc = '';
@@ -127,12 +127,15 @@ function buildFooterDataFile($files) {
                         makeHTMLText($edit, $footerArr, $dataFile, $fieldID, $desc, 'text');
                     } else if (strpos($edit->class, 'auto-edit') !== false) {
                         makeHTMLText($edit, $footerArr, $dataFile, $fieldID, $desc);
+                    } else if (strpos($edit->class, 'auto-color') !== false) {
+                        makeColor($edit, $footerArr, $dataFile, $fieldID, $desc);
                     }
                 }
 
                 $footerHTML = '';
                 foreach ($html->find('.auto-footer') as $edit) {
                     $edit->class = str_replace('auto-footer', '', $edit->class);
+                    if (trim($edit->class) === '') $edit->class = null;
                     $footerHTML = clone $edit;
                     $edit->outertext = '<?php require_once("admin/other/autocms-footer.php") ?>';
                 }
@@ -173,6 +176,32 @@ function makeHTMLText(&$edit, &$dataArr, $dataFile, $fieldID, $desc, $type = 'ht
     } else {
         $edit->class = str_replace('auto-edit-text', '', $edit->class);
     }
+    if (trim($edit->class) === '') $edit->class = null;
+    $edit->autocms = null;
+}
+
+function makeColor(&$edit, &$dataArr, $dataFile, $fieldID, $desc, $count = null, $repeatFieldID = null) {
+    if (isset($edit->autocms)) $desc = $edit->autocms;
+
+    $color = $edit->style;
+    preg_match('~\bbackground(-color)?\s*:\s*(#[0-9a-f]{3,6}|[a-z\(\0-9,\)]+)\s*(;)?~i', $color, $matches);
+    $color = $matches[2];
+    $tag = $matches[0];
+
+    if (!is_null($repeatFieldID)) {
+        $dataArr[$fieldID]['repeat'][$count][$repeatFieldID] = Array('color' => $color, 'description' => $desc, 'type' => 'color');
+    } else {
+        $dataArr[$fieldID] = Array('color' => $color, 'description' => $desc, 'type' => 'color');
+    }
+
+    if (!is_null($repeatFieldID)) {
+        $edit->style = str_replace($tag, '', $edit->style) . "background-color: <?=get('$dataFile', '$fieldID', ".'$x'.", '$repeatFieldID')?>;";
+    } else {
+        $edit->style = str_replace($tag, '', $edit->style) . "background-color: <?=get('$dataFile', '$fieldID')?>;";
+    }
+    $edit->class = str_replace('auto-color', '', $edit->class);
+    if (trim($edit->class) === '') $edit->class = null;
+
     $edit->autocms = null;
 }
 
@@ -214,14 +243,16 @@ function makeImageBGImage(&$edit, &$dataArr, $dataFile, $fieldID, $desc, $isBG =
             }
             $edit->class = str_replace('auto-edit-bg-img', '', $edit->class);
         } else {
+            $altText = $edit->alt;
+            if ($altText === false) $altText = '';
+            $altFieldID = uniqid();
             if (!is_null($repeatFieldID)) {
                 $edit->src = "<?=get('$dataFile', '$fieldID', ".'$x'.", '$repeatFieldID')?>";
+                $dataArr[$fieldID]['repeat'][$count][$altFieldID] = Array('text' => $altText, 'description' => 'image alt text', 'type' => 'text', 'parent' => $fieldID);
             } else {
                 $edit->src = "<?=get('$dataFile', '$fieldID')?>";
+                $dataArr[$altFieldID] = Array('text' => $altText, 'description' => 'image alt text', 'type' => 'text', 'parent' => $fieldID);
             }
-            $altText = $edit->alt;
-            $altFieldID = uniqid();
-            $dataArr[$altFieldID] = Array('alt' => $altText, 'description' => 'image alt text', 'type' => 'text', 'parent' => $fieldID);
 
             if (!is_null($repeatFieldID)) {
                 $edit->alt = "<?=get('$dataFile', '$fieldID', ".'$x'.", '$altFieldID')?>";
@@ -230,6 +261,7 @@ function makeImageBGImage(&$edit, &$dataArr, $dataFile, $fieldID, $desc, $isBG =
             }
             $edit->class = str_replace('auto-edit-img', '', $edit->class);
         }
+        if (trim($edit->class) === '') $edit->class = null;
         $edit->autocms = null;
     }
 }
@@ -265,7 +297,7 @@ function buildDataFilesByTags($files) {
             }
         }
 
-        foreach($html->find('.auto-edit, .auto-edit-text, .auto-edit-img, .auto-edit-bg-img, .auto-repeat') as $edit) {
+        foreach($html->find('.auto-color, .auto-edit, .auto-edit-text, .auto-edit-img, .auto-edit-bg-img, .auto-repeat') as $edit) {
             $fieldID = uniqid();
             $desc = '';
             if (strpos($edit->class, 'auto-repeat') !== false) {
@@ -275,7 +307,7 @@ function buildDataFilesByTags($files) {
                 $count = 0;
                 $data[$fieldID]['repeat'][$count] = Array();
 
-                foreach($html->find('.auto-repeat .auto-edit, .auto-repeat .auto-edit-text, .auto-repeat .auto-edit-img, .auto-repeat .auto-edit-bg-img') as $repeat) {
+                foreach($html->find('.auto-repeat .auto-color, .auto-repeat .auto-edit, .auto-repeat .auto-edit-text, .auto-repeat .auto-edit-img, .auto-repeat .auto-edit-bg-img') as $repeat) {
                     $desc = '';
 
                     $repeatFieldID = uniqid();
@@ -287,10 +319,13 @@ function buildDataFilesByTags($files) {
                         makeHTMLText($repeat, $data, $dataFile, $fieldID, $desc, 'text', $count, $repeatFieldID);
                     } else if (strpos($repeat->class, 'auto-edit') !== false) {
                         makeHTMLText($repeat, $data, $dataFile, $fieldID, $desc, 'html', $count, $repeatFieldID);
+                    } else if (strpos($repeat->class, 'auto-color') !== false) {
+                        makeColor($repeat, $data, $dataFile, $fieldID, $desc, $count, $repeatFieldID);
                     }
                 }
 
                 $edit->class = str_replace('auto-repeat', '', $edit->class);
+                if (trim($edit->class) === '') $edit->class = null;
                 $edit->autocms = null;
                 $edit->outertext = '<?php for ($x = 0; $x ' . "< repeatCount('$dataFile', '$fieldID');" . ' $x++) { ?>' . $edit->outertext . "<?php } ?>";
 
@@ -302,6 +337,8 @@ function buildDataFilesByTags($files) {
                 makeHTMLText($edit, $data, $dataFile, $fieldID, $desc, 'text');
             } else if (strpos($edit->class, 'auto-edit') !== false) {
                 makeHTMLText($edit, $data, $dataFile, $fieldID, $desc);
+            } else if (strpos($edit->class, 'auto-color') !== false) {
+                makeColor($edit, $data, $dataFile, $fieldID, $desc);
             }
         }
 

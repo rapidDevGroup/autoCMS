@@ -187,14 +187,12 @@ Use these tags to display actual blog content.
 
 This allows you to select a background color on your site.
 ```HTML
-<div class="auto-color">
-</div>
+<div class="auto-color">...</div>
 ```
 
 Same as the following with SELCOL as the color code selected
 ```HTML
-<div style="background-color:#SELCOL">
-</div>
+<div style="background-color:#SELCOL">...</div>
 ```
 
 ---
