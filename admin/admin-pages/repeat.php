@@ -26,6 +26,13 @@ include_once('header.php');
                                 <div class="col-lg-9 col-sm-10">
                                     <input name="<?=$key?>-<?=$x?>-<?=$repeatItemKey?>" data-key="<?=$repeatItemKey?>" class="form-control" value="<?=$repeatDatum['text']?>" autocomplete="off">
                                 </div>
+                            <?php } else if ($repeatDatum['type'] == 'color') { ?>
+                                <div class="col-lg-9 col-sm-10">
+                                    <div class="input-group color-picker" data-align="left" data-format="rgba">
+                                        <input name="<?=$key?>-<?=$x?>-<?=$repeatItemKey?>" type="text" value="<?=$repeatDatum['color']?>" class="form-control" autocomplete="off">
+                                        <span class="input-group-addon"><i></i></span>
+                                    </div>
+                                </div>
                             <?php } else if ($repeatDatum['type'] == 'image') { ?>
                                 <div class="col-lg-7 col-sm-7">
                                     <img id="<?=$key?>-<?=$x?>-<?=$repeatItemKey?>-image" data-key="<?=$repeatItemKey?>" class="img-responsive img-thumbnail" src="<?=$repeatDatum['image']?>">

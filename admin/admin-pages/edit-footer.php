@@ -24,6 +24,13 @@ $data = getFooterData();
                             <div class="col-lg-9 col-sm-10">
                                 <textarea name="<?=$key?>" class="form-control"><?=$datum['html']?></textarea>
                             </div>
+                        <?php } else if ($datum['type'] == 'color') { ?>
+                            <div class="col-lg-9 col-sm-10">
+                                <div class="input-group color-picker" data-align="left" data-format="rgba">
+                                    <input name="<?=$key?>" type="text" value="<?=$datum['color']?>" class="form-control" autocomplete="off">
+                                    <span class="input-group-addon"><i></i></span>
+                                </div>
+                            </div>
                         <?php } else if ($datum['type'] == 'text') { ?>
                             <div class="col-lg-9 col-sm-10">
                                 <input name="<?=$key?>" class="form-control" value="<?=$datum['text']?>" autocomplete="off">

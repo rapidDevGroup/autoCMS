@@ -89,6 +89,11 @@ $(function() {
         });
         return false;
     });
+
+    var cp = $('.color-picker');
+    if (cp.exists()) {
+        cp.colorpicker();
+    }
 });
 
 function validateCreateAuth() {
