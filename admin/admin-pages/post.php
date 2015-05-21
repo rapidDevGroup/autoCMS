@@ -11,18 +11,18 @@ $fields = getPostFields();
 
     <div class="row">
         <div class="col-lg-12">
-            <form action="/admin/blog/update/" method="post" class="form-horizontal">
+            <form action="/admin/blog/<?=$post_id?>/update/" method="post" class="form-horizontal">
                 <?php foreach($fields as $key => $field) { ?>
                     <?php if ($field) { ?>
                         <div class="form-group">
                             <label class="col-lg-2 col-sm-2 control-label">
-                                <?=$key?>
+                                <?=ucwords(str_replace("-", " ", $key))?>
                             </label>
                             <?php if ($key == 'full-blog' || $key == 'short-blog') { ?>
                                 <div class="col-lg-9 col-sm-10 textarea">
                                     <textarea name="<?=$key?>" class="form-control editor"></textarea>
                                 </div>
-                            <?php } else if ($key == 'title' || $key == 'author' || $key == 'keywords' || $key == 'description' || $key == 'image-alt' || $key == 'link-text') { ?>
+                            <?php } else if ($key == 'title' || $key == 'author' || $key == 'keywords' || $key == 'description' || $key == 'image-alt-text' || $key == 'link-text') { ?>
                                 <div class="col-lg-9 col-sm-10">
                                     <input name="<?=$key?>" class="form-control" value="" autocomplete="off">
                                 </div>
@@ -40,11 +40,11 @@ $fields = getPostFields();
                 <?php } ?>
                 <hr>
                 <div class="form-group">
-                    <div class="col-lg-offset-9 col-lg-2 col-sm-offset-9 col-sm-3">
-                        <div class="btn-group btn-group-justified">
-                            <a href="#" class="btn btn-warning dirtyOK">Save</a>
-                            <a href="#" class="btn btn-primary dirtyOK">Publish</a>
-                        </div>
+                    <div class="col-lg-offset-7 col-lg-2 col-sm-offset-6 col-sm-3">
+                        <button type="submit" class="btn btn-warning btn-block dirtyOK">Save Draft</button>
+                    </div>
+                    <div class="col-lg-2 col-sm-3">
+                        <button type="submit" class="btn btn-primary btn-block dirtyOK">Publish Post</button>
                     </div>
                 </div>
             </form>

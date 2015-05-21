@@ -527,7 +527,7 @@ function copyApacheConfig() {
     if (file_exists('./other/.htaccess')) copy('./other/.htaccess', '../.htaccess');
 }
 
-function uploadFiles($page) {
+function uploadFiles($page, $isBlog = false) {
     foreach ($_FILES as $key => $data) {
         if ($_FILES[$key]['error'] == 0) {
             $sourceName = $_FILES[$key]['name'];
@@ -550,18 +550,26 @@ function uploadFiles($page) {
                 $imgFileName = makeDateFolders() . uniqid() . '.' . $fileExt;
                 move_uploaded_file($_FILES[$key]['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . $imgFileName);
 
-                $dataFile = 'data/page-' . $page . '.json';
-                $json = json_decode(file_get_contents($dataFile), true);
+                $dataFile = null;
+                $json = null;
+                if (!$isBlog) {
+                    $dataFile = 'data/page-' . $page . '.json';
+                    $json = json_decode(file_get_contents($dataFile), true);
 
-                foreach ($json as $jsonKey => $datum) {
-                    if ($key == $jsonKey && $json[$key]['type'] == 'image' && isset($json[$key])) {
-                        $json[$key]['image'] = $imgFileName;
-                    } else {
-                        list($repeatKey, $iteration, $itemKey) = explode("-", $key);
-                        if (isset($json[$repeatKey]['repeat'][$iteration][$itemKey]) && $json[$repeatKey]['repeat'][$iteration][$itemKey]['type'] == 'image') {
-                            $json[$repeatKey]['repeat'][$iteration][$itemKey]['image'] = $imgFileName;
+                    foreach ($json as $jsonKey => $datum) {
+                        if ($key == $jsonKey && $json[$key]['type'] == 'image' && isset($json[$key])) {
+                            $json[$key]['image'] = $imgFileName;
+                        } else {
+                            list($repeatKey, $iteration, $itemKey) = explode("-", $key);
+                            if (isset($json[$repeatKey]['repeat'][$iteration][$itemKey]) && $json[$repeatKey]['repeat'][$iteration][$itemKey]['type'] == 'image') {
+                                $json[$repeatKey]['repeat'][$iteration][$itemKey]['image'] = $imgFileName;
+                            }
                         }
                     }
+                } else {
+                    $dataFile = 'data/blog/blog-' . $page . '.json';
+                    $json = json_decode(file_get_contents($dataFile), true);
+                    $json['image'] = $imgFileName;
                 }
 
                 $fp = fopen($dataFile, 'w');
@@ -664,7 +672,7 @@ function processBlog($files) {
         mkdir($blogFolder);
     }
 
-    $blogArr = Array('types' => Array('title' => false, 'keywords' => false, 'description' => false, 'author' => false, 'image' => false, 'image-alt' => false, 'short-blog' => false, 'full-blog' => false, 'link-text' => false), 'posts' => Array(), 'list-pages' => Array());
+    $blogArr = Array('types' => Array('title' => false, 'keywords' => false, 'description' => false, 'author' => false, 'image' => false, 'image-alt-text' => false, 'short-blog' => false, 'full-blog' => false, 'link-text' => false), 'posts' => Array(), 'list-pages' => Array());
 
     foreach ($files as $file) {
         $fileData = file_get_contents('../' . $file, true);
@@ -699,7 +707,7 @@ function processBlog($files) {
                         $list->alt = '<?=getBlog("image-alt", "$x")?>';
                         $list->class = str_replace('auto-blog-img', '', $list->class);
                         $blogArr['types']['image'] = true;
-                        $blogArr['types']['image-alt'] = true;
+                        $blogArr['types']['image-alt-text'] = true;
                     } else if (strpos($list->class, 'auto-blog-short') !== false) {
                         $list->innertext = '<?=getBlog("short", "$x")?>';
                         $list->class = str_replace('auto-blog-short', '', $list->class);
@@ -730,16 +738,16 @@ function processBlog($files) {
                         $blogArr['types']['image'] = true;
                     } else if (strpos($post->class, 'auto-blog-img') !== false) {
                         $post->src = '<?=getBlog("image")?>';
-                        $post->alt = '<?=getBlog("image-alt")?>';
+                        $post->alt = '<?=getBlog("image-alt-text")?>';
                         $post->class = str_replace('auto-blog-img', '', $post->class);
                         $blogArr['types']['image'] = true;
                         $blogArr['types']['image-alt'] = true;
                     } else if (strpos($post->class, 'auto-blog-short') !== false) {
-                        $post->innertext = '<?=getBlog("short")?>';
+                        $post->innertext = '<?=getBlog("short-blog")?>';
                         $post->class = str_replace('auto-blog-short', '', $post->class);
                         $blogArr['types']['short-blog'] = true;
                     } else if (strpos($post->class, 'auto-blog-full') !== false) {
-                        $post->innertext = '<?=getBlog("full")?>';
+                        $post->innertext = '<?=getBlog("full-blog")?>';
                         $post->class = str_replace('auto-blog-full', '', $post->class);
                         $blogArr['types']['full-blog'] = true;
                     }
@@ -763,4 +771,46 @@ function getPostFields() {
     $json = json_decode(file_get_contents($dataFile), true);
 
     return $json['types'];
+}
+
+function getPostID($title) {
+    $dataFile = 'data/autocms-blog.json';
+    $json = json_decode(file_get_contents($dataFile), true);
+
+    foreach ($json['posts'] as $key => $data) {
+        if ($data['external-title'] == $title) return $key;
+    }
+
+    return null;
+}
+
+function updateBlogPost($post_id, $data) {
+    $dataFile = 'data/blog/blog-' . $post_id . '.json';
+    $changeLog = Array();
+    $isNew = false;
+    if (file_exists($dataFile)) {
+        $json = json_decode(file_get_contents($dataFile), true);
+    } else {
+        $isNew = true;
+        $json = Array('title' => null, 'keywords' => null, 'description' => null, 'author' => null, 'image' => null, 'image-alt-text' => null, 'short-blog' => null, 'full-blog' => null, 'link-text' => null);
+    }
+
+    foreach ($data as $key => $datum) {
+        $changeLog[] = Array('key' => $key, 'change' => Array('original' => $json[$key], 'new' => trim($datum)));
+        $json[$key] = trim($datum);
+    }
+
+    $json['external-title'] = preg_replace('/[^\da-z\-]/i', '', str_replace('-', ' ', $json['title']));
+
+    if (count($changeLog) > 0 && !$isNew) {
+        addToLog('has updated', $data['title'] . ' blog', $changeLog);
+    } else if (count($changeLog) > 0 && $isNew) {
+        addToLog('has created', $data['title'] . ' blog', $changeLog);
+    }
+
+    // todo: add to blog file (external title and key) also check if title already exists, if it does, add a random number at the end
+
+    $fp = fopen($dataFile, 'w');
+    fwrite($fp, json_encode($json));
+    fclose($fp);
 }

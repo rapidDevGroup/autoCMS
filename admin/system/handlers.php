@@ -143,20 +143,25 @@ class Blog {
 }
 
 class BlogPost {
-    function get($post = null) {
-        if (is_null($post)) {
+    function get($post_id = null) {
+        if (is_null($post_id)) {
             include_once('admin-pages/404.html');
         } else if (checkPass() && !authNeeded()) {
+            if ($post_id == 'new') $post_id = uniqid();
+            // else $post_id = getPostID($post_id);
             include_once('admin-pages/post.php');
         } else {
             include_once('admin-pages/401.html');
         }
     }
-    function post($post = null) {
-        if (is_null($post)) {
+    function post($post_id = null) {
+        if (is_null($post_id)) {
             include_once('admin-pages/404.html');
         } else if (checkPass() && !authNeeded()) {
             // todo: update blog stuff
+
+            updateBlogPost($post_id, $_POST);
+            uploadFiles($post_id);
 
             header('Location: /admin/blog/?updated=true');
         } else {
