@@ -38,7 +38,7 @@ include_once('header.php');
                             </div>
                             <div class="col-lg-2 col-sm-3">
                                 <input type="file" name="<?=$key?>" id="<?=$key?>" style="display: none;" onchange="readURL(this, '<?=$key?>');">
-                                <button type="button" class="btn btn-info btn-block upload-button" data-trigger="<?=$key?>">Upload Image</button>
+                                <button type="button" class="btn btn-info btn-block upload-button dirtyOK" data-trigger="<?=$key?>">Upload Image</button>
                             </div>
                         <?php } else if ($datum['type'] == 'repeat') { ?>
                             <div class="col-lg-9 col-sm-10">

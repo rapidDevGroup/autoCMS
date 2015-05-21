@@ -32,7 +32,7 @@ $fields = getPostFields();
                                 </div>
                                 <div class="col-lg-2 col-sm-3">
                                     <input type="file" name="<?=$key?>" id="<?=$key?>" style="display: none;" onchange="readURL(this, '<?=$key?>');">
-                                    <button type="button" class="btn btn-info btn-block upload-button" data-trigger="<?=$key?>">Upload Image</button>
+                                    <button type="button" class="btn btn-info btn-block upload-button dirtyOK" data-trigger="<?=$key?>">Upload Image</button>
                                 </div>
                             <?php } ?>
                         </div>
@@ -42,14 +42,15 @@ $fields = getPostFields();
                 <div class="form-group">
                     <div class="col-lg-offset-9 col-lg-2 col-sm-offset-9 col-sm-3">
                         <div class="btn-group btn-group-justified">
-                            <a href="#" class="btn btn-warning dirtyOK">Save Draft</a>
-                            <a href="#" class="btn btn-primary dirtyOK">Publish Post</a>
+                            <a href="#" class="btn btn-warning dirtyOK">Save</a>
+                            <a href="#" class="btn btn-primary dirtyOK">Publish</a>
                         </div>
                     </div>
                 </div>
             </form>
         </div>
     </div>
+    <br><br>
 </div>
 <?php
 include_once('footer.php');

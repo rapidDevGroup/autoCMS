@@ -18,6 +18,7 @@ include_once('header.php');
             </div>
         </div>
     </div>
+    <br><br>
 </div>
 <?php
 include_once('footer.php');

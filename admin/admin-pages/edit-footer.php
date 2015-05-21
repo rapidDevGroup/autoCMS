@@ -40,7 +40,7 @@ $data = getFooterData();
                                 <img class="img-responsive img-thumbnail" src="<?=$datum['image']?>">
                             </div>
                             <div class="col-lg-2 col-sm-3">
-                                <button type="button" class="btn btn-default btn-block">Upload New Image</button>
+                                <button type="button" class="btn btn-default btn-block dirtyOK">Upload New Image</button>
                             </div>
                         <?php } ?>
                     </div>
@@ -54,6 +54,7 @@ $data = getFooterData();
             </form>
         </div>
     </div>
+    <br><br>
 </div>
 <?php
 include_once('footer.php');
