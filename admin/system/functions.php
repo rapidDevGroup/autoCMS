@@ -828,7 +828,7 @@ function updateBlogPost($post_id, $data, $publish = false) {
 
         $count = 0;
         foreach ($jsonBlog['posts'] as $key => $data) {
-            while ($data == $externalTitle) {
+            while ($data['external'] == $externalTitle) {
                 $externalTitle = $externalTitleOriginal . '-' . $count++;
             }
         }
