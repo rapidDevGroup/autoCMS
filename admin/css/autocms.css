@@ -1,5 +1,6 @@
 body, html {
     height: 100%;
+    overflow: hidden;
 }
 .btn.active.focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn:active:focus, .btn:focus, a:focus {
     outline: none !important;
@@ -15,6 +16,9 @@ body, html {
 }
 .panel-footer {
     line-height: 30px;
+}
+.editable-popup {
+    min-width: 276px !important;
 }
 
 /* fix for form within form */

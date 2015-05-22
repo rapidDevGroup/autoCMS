@@ -158,10 +158,9 @@ class BlogPost {
         if (is_null($post_id)) {
             include_once('admin-pages/404.html');
         } else if (checkPass() && !authNeeded()) {
-            // todo: update blog stuff
 
             updateBlogPost($post_id, $_POST);
-            uploadFiles($post_id);
+            uploadFiles($post_id, true);
 
             header('Location: /admin/blog/?updated=true');
         } else {

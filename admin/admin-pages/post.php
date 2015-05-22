@@ -11,7 +11,7 @@ $fields = getPostFields();
 
     <div class="row">
         <div class="col-lg-12">
-            <form action="/admin/blog/<?=$post_id?>/update/" method="post" class="form-horizontal">
+            <form action="/admin/blog/<?=$post_id?>/update/" method="post" class="form-horizontal" enctype="multipart/form-data">
                 <?php foreach($fields as $key => $field) { ?>
                     <?php if ($field) { ?>
                         <div class="form-group">

@@ -29,4 +29,4 @@ $pages = getPageList();
             <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
     </head>
-    <body>
+    <body style="overflow-y: scroll; -webkit-overflow-scrolling: touch;">

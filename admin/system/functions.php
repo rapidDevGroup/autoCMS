@@ -704,7 +704,7 @@ function processBlog($files) {
                         $blogArr['types']['image'] = true;
                     } else if (strpos($list->class, 'auto-blog-img') !== false) {
                         $list->src = '<?=getBlog("image", "$x")?>';
-                        $list->alt = '<?=getBlog("image-alt", "$x")?>';
+                        $list->alt = '<?=getBlog("image-alt-text", "$x")?>';
                         $list->class = str_replace('auto-blog-img', '', $list->class);
                         $blogArr['types']['image'] = true;
                         $blogArr['types']['image-alt-text'] = true;
@@ -741,7 +741,7 @@ function processBlog($files) {
                         $post->alt = '<?=getBlog("image-alt-text")?>';
                         $post->class = str_replace('auto-blog-img', '', $post->class);
                         $blogArr['types']['image'] = true;
-                        $blogArr['types']['image-alt'] = true;
+                        $blogArr['types']['image-alt-text'] = true;
                     } else if (strpos($post->class, 'auto-blog-short') !== false) {
                         $post->innertext = '<?=getBlog("short-blog")?>';
                         $post->class = str_replace('auto-blog-short', '', $post->class);
@@ -790,9 +790,11 @@ function updateBlogPost($post_id, $data) {
     $isNew = false;
     if (file_exists($dataFile)) {
         $json = json_decode(file_get_contents($dataFile), true);
+        // todo: change last updated
     } else {
         $isNew = true;
         $json = Array('title' => null, 'keywords' => null, 'description' => null, 'author' => null, 'image' => null, 'image-alt-text' => null, 'short-blog' => null, 'full-blog' => null, 'link-text' => null);
+        // todo: add date time of creation
     }
 
     foreach ($data as $key => $datum) {
@@ -800,7 +802,7 @@ function updateBlogPost($post_id, $data) {
         $json[$key] = trim($datum);
     }
 
-    $json['external-title'] = preg_replace('/[^\da-z\-]/i', '', str_replace('-', ' ', $json['title']));
+    $externalTitle = preg_replace('/[^\da-z-]/i', '', str_replace('-', ' ', $json['title']));
 
     if (count($changeLog) > 0 && !$isNew) {
         addToLog('has updated', $data['title'] . ' blog', $changeLog);
@@ -808,9 +810,25 @@ function updateBlogPost($post_id, $data) {
         addToLog('has created', $data['title'] . ' blog', $changeLog);
     }
 
-    // todo: add to blog file (external title and key) also check if title already exists, if it does, add a random number at the end
-
     $fp = fopen($dataFile, 'w');
     fwrite($fp, json_encode($json));
+    fclose($fp);
+
+    $dataBlogFile = 'data/autocms-blog.json';
+    $jsonBlog = json_decode(file_get_contents($dataBlogFile), true);
+
+    $externalTitleOriginal = $externalTitle;
+    $count = 0;
+
+    foreach ($jsonBlog['posts'] as $key => $data) {
+        while ($data == $externalTitle) {
+            $externalTitle = $externalTitleOriginal . '-' . $count++;
+        }
+    }
+
+    $jsonBlog['posts'][$post_id] = $externalTitle;
+
+    $fp = fopen($dataBlogFile, 'w');
+    fwrite($fp, json_encode($jsonBlog));
     fclose($fp);
 }
