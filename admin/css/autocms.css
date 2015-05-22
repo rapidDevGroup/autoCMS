@@ -2,6 +2,9 @@ body, html {
     height: 100%;
     overflow: hidden;
 }
+.colorpicker.colorpicker-with-alpha {
+    min-width: 148px !important;
+}
 .btn.active.focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn:active:focus, .btn:focus, a:focus {
     outline: none !important;
 }

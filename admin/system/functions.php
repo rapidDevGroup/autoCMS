@@ -778,31 +778,36 @@ function getPostID($title) {
     $json = json_decode(file_get_contents($dataFile), true);
 
     foreach ($json['posts'] as $key => $data) {
-        if ($data['external-title'] == $title) return $key;
+        if ($data['external'] == $title) return $key;
     }
 
     return null;
 }
 
-function updateBlogPost($post_id, $data) {
+function getBlogList() {
+    $dataFile = 'data/autocms-blog.json';
+    $json = json_decode(file_get_contents($dataFile), true);
+
+    return array_reverse($json['posts']);
+}
+
+function updateBlogPost($post_id, $data, $publish = false) {
     $dataFile = 'data/blog/blog-' . $post_id . '.json';
     $changeLog = Array();
     $isNew = false;
+    $updateTime = time();
+    $creationTime = time();
     if (file_exists($dataFile)) {
         $json = json_decode(file_get_contents($dataFile), true);
-        // todo: change last updated
     } else {
         $isNew = true;
         $json = Array('title' => null, 'keywords' => null, 'description' => null, 'author' => null, 'image' => null, 'image-alt-text' => null, 'short-blog' => null, 'full-blog' => null, 'link-text' => null);
-        // todo: add date time of creation
     }
 
     foreach ($data as $key => $datum) {
         $changeLog[] = Array('key' => $key, 'change' => Array('original' => $json[$key], 'new' => trim($datum)));
         $json[$key] = trim($datum);
     }
-
-    $externalTitle = preg_replace('/[^\da-z-]/i', '', str_replace('-', ' ', $json['title']));
 
     if (count($changeLog) > 0 && !$isNew) {
         addToLog('has updated', $data['title'] . ' blog', $changeLog);
@@ -817,16 +822,25 @@ function updateBlogPost($post_id, $data) {
     $dataBlogFile = 'data/autocms-blog.json';
     $jsonBlog = json_decode(file_get_contents($dataBlogFile), true);
 
-    $externalTitleOriginal = $externalTitle;
-    $count = 0;
+    if ($isNew) {
+        $externalTitle = preg_replace('/[^a-z0-9-]/i', '', str_replace(' ', '-', strtolower(trim($json['title']))));
+        $externalTitleOriginal = $externalTitle;
 
-    foreach ($jsonBlog['posts'] as $key => $data) {
-        while ($data == $externalTitle) {
-            $externalTitle = $externalTitleOriginal . '-' . $count++;
+        $count = 0;
+        foreach ($jsonBlog['posts'] as $key => $data) {
+            while ($data == $externalTitle) {
+                $externalTitle = $externalTitleOriginal . '-' . $count++;
+            }
         }
+
+        $jsonBlog['posts'][$post_id] = Array('external' => $externalTitle, 'created' => $creationTime);
+    } else {
+        $jsonBlog['posts'][$post_id]['last-updated'] = $updateTime;
     }
 
-    $jsonBlog['posts'][$post_id] = $externalTitle;
+    if ($publish) {
+        $jsonBlog['posts'][$post_id]['published'] = $updateTime;
+    }
 
     $fp = fopen($dataBlogFile, 'w');
     fwrite($fp, json_encode($jsonBlog));

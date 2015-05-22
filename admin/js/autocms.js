@@ -58,16 +58,25 @@ $(function() {
 
     var isDirty = false;
     $(':input').change(function () {
-        if (!$(this).hasClass('dirtyOK')) isDirty = true;
+        if (!$(this).hasClass('dirtyOK')) {
+            isDirty = true;
+            $(window).on('beforeunload', function(){
+                return 'You will lose unsaved changes.';
+            });
+        }
     });
     $('body').on('keydown', 'div.nicEdit-main', function () {
         isDirty = true;
+        $(window).on('beforeunload', function(){
+            return 'You will lose unsaved changes.';
+        });
     });
 
     $('a, button').click(function () {
         if (isDirty && !$(this).hasClass('dirtyOK')) {
             return (confirm("You will lose unsaved changes. Continue?"));
         }
+        $(window).off('beforeunload');
         return true;
     });
 
