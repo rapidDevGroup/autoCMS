@@ -148,7 +148,8 @@ class BlogPost {
             include_once('admin-pages/404.html');
         } else if (checkPass() && !authNeeded()) {
             if ($post_id == 'new') $post_id = uniqid();
-            // else $post_id = getPostID($post_id);
+            else $postInfo = getPostData($post_id);
+
             include_once('admin-pages/post.php');
         } else {
             include_once('admin-pages/401.html');
@@ -159,7 +160,7 @@ class BlogPost {
             include_once('admin-pages/404.html');
         } else if (checkPass() && !authNeeded()) {
 
-            updateBlogPost($post_id, $_POST);
+            updateBlogPost($post_id, $_POST, isset($_POST['publish']));
             uploadFiles($post_id, true);
 
             header('Location: /admin/blog/?updated=true');

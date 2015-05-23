@@ -784,6 +784,13 @@ function getPostID($title) {
     return null;
 }
 
+function getPostData($post_id) {
+    $dataFile = 'data/blog/blog-' . $post_id . '.json';
+    $json = json_decode(file_get_contents($dataFile), true);
+
+    return $json;
+}
+
 function getBlogList() {
     $dataFile = 'data/autocms-blog.json';
     $json = json_decode(file_get_contents($dataFile), true);
@@ -833,7 +840,7 @@ function updateBlogPost($post_id, $data, $publish = false) {
             }
         }
 
-        $jsonBlog['posts'][$post_id] = Array('external' => $externalTitle, 'created' => $creationTime);
+        $jsonBlog['posts'][$post_id] = Array('external' => $externalTitle, 'title' => $json['title'], 'creator' => $_SESSION["user"],'created' => $creationTime);
     } else {
         $jsonBlog['posts'][$post_id]['last-updated'] = $updateTime;
     }

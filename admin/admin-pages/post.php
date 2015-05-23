@@ -20,15 +20,15 @@ $fields = getPostFields();
                             </label>
                             <?php if ($key == 'full-blog' || $key == 'short-blog') { ?>
                                 <div class="col-lg-9 col-sm-10 textarea">
-                                    <textarea name="<?=$key?>" class="form-control editor"></textarea>
+                                    <textarea name="<?=$key?>" class="form-control editor"><?php if(isset($postInfo[$key])) { print $postInfo[$key]; } ?></textarea>
                                 </div>
                             <?php } else if ($key == 'title' || $key == 'author' || $key == 'keywords' || $key == 'description' || $key == 'image-alt-text' || $key == 'link-text') { ?>
                                 <div class="col-lg-9 col-sm-10">
-                                    <input name="<?=$key?>" class="form-control" value="" autocomplete="off">
+                                    <input name="<?=$key?>" class="form-control" value="<?php if(isset($postInfo[$key])) { print $postInfo[$key]; } ?>" autocomplete="off"<?php if($key == 'title' && isset($postInfo[$key])) { print ' disabled="disabled"'; } ?>>
                                 </div>
                             <?php } else if ($key == 'image') { ?>
                                 <div class="col-lg-7 col-sm-7">
-                                    <img id="<?=$key?>-image" class="img-responsive img-thumbnail" src="">
+                                    <img id="<?=$key?>-image" class="img-responsive img-thumbnail" src="<?php if(isset($postInfo[$key])) { print $postInfo[$key]; } ?>">
                                 </div>
                                 <div class="col-lg-2 col-sm-3">
                                     <input type="file" name="<?=$key?>" id="<?=$key?>" style="display: none;" onchange="readURL(this, '<?=$key?>');">
@@ -39,12 +39,12 @@ $fields = getPostFields();
                     <?php } ?>
                 <?php } ?>
                 <hr>
-                <div class="form-group">
+                <div class="row">
                     <div class="col-lg-offset-7 col-lg-2 col-sm-offset-6 col-sm-3">
-                        <button type="submit" class="btn btn-warning btn-block dirtyOK">Save Draft</button>
+                        <button name="save" type="submit" class="btn btn-warning btn-block dirtyOK">Save Draft</button>
                     </div>
                     <div class="col-lg-2 col-sm-3">
-                        <button type="submit" class="btn btn-primary btn-block dirtyOK">Publish Post</button>
+                        <button name="publish" type="submit" class="btn btn-primary btn-block dirtyOK">Publish Post</button>
                     </div>
                 </div>
             </form>
