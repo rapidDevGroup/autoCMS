@@ -59,10 +59,6 @@ deny from all
 Options +FollowSymlinks
 RewriteEngine On
 
-# Set certain languages
-RewriteCond %{HTTP:Accept-Language} ^.*(de|es|fr|en).*$ [NC]
-RewriteRule ^(.*)$ - [env=prefer-language:%1]
-
 # Remove www
 RewriteCond %{HTTP_HOST}//s%{HTTPS} ^www.(.*)//((s)on|s.*)$ [NC]
 RewriteRule ^ http%3://%1%{REQUEST_URI} [L,R=301]
@@ -71,14 +67,19 @@ RewriteRule ^ http%3://%1%{REQUEST_URI} [L,R=301]
 RewriteCond s%{HTTPS} ^((s)on|s.*)$ [NC]
 RewriteRule ^/*(.+/)?([^.]*[^/])$ http%2://%{HTTP_HOST}/$1$2/ [L,R=301]
 
+# Find php file for missing directory plus blog if exists
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([a-zA-Z]+)/([a-zA-Z]+)/$ $1.php?blog=$2 [L]
+
 # Find php file for missing directory
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^([a-zA-Z]+)/([a-zA-Z]+)/$ $1.php?page=$2 [L]
+RewriteRule ^([a-zA-Z]+)/$ $1.php [L]
 
 # redirect these errors
-ErrorDocument 400 /index.html
-ErrorDocument 401 /index.html
-ErrorDocument 403 /index.html
-ErrorDocument 404 /index.html
-ErrorDocument 500 /index.html
+ErrorDocument 400 /
+ErrorDocument 401 /
+ErrorDocument 403 /
+ErrorDocument 404 /
+ErrorDocument 500 /

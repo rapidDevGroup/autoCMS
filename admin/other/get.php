@@ -1,13 +1,24 @@
 <?php
 $post = null;
 
+function getPostID($external) {
+    $dataFile = 'data/autocms-blog.json';
+    $json = json_decode(file_get_contents($dataFile), true);
+
+    foreach ($json['posts'] as $key => $data) {
+        if ($data['external'] == $external) return $key;
+    }
+
+    return null;
+}
+
 // if request is a post, make sure file exists
-if (isset($_GET['post']) && !file_exists($_SERVER['DOCUMENT_ROOT'] . 'admin/data/blog/' . strtolower($_GET['post']) . '.json')) {
+if (isset($_GET['blog']) && !file_exists($_SERVER['DOCUMENT_ROOT'] . 'admin/data/blog/' . getPostID(strtolower($_GET['blog'])) . '.json')) {
     header("HTTP/1.0 404 Not Found");
     if (file_exists($_SERVER['DOCUMENT_ROOT'] . '404.php')) include_once('404.php');
     die();
-} else if (isset($_GET['post'])) {
-    $post = strtolower($_GET['post']);
+} else if (isset($_GET['blog'])) {
+    $post = strtolower($_GET['blog']);
 }
 
 // get data

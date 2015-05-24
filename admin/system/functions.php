@@ -672,7 +672,7 @@ function processBlog($files) {
         mkdir($blogFolder);
     }
 
-    $blogArr = Array('types' => Array('title' => false, 'keywords' => false, 'description' => false, 'author' => false, 'image' => false, 'image-alt-text' => false, 'short-blog' => false, 'full-blog' => false, 'link-text' => false), 'posts' => Array(), 'list-pages' => Array());
+    $blogArr = Array('post-page' => null,'types' => Array('title' => false, 'keywords' => false, 'description' => false, 'author' => false, 'image' => false, 'image-alt-text' => false, 'short-blog' => false, 'full-blog' => false, 'link-text' => false), 'posts' => Array(), 'list-pages' => Array());
 
     foreach ($files as $file) {
         $fileData = file_get_contents('../' . $file, true);
@@ -727,6 +727,7 @@ function processBlog($files) {
                 $blog->outertext = '<?php for ($x = 0; $x ' . '< blogCount(' . $file . ');' . ' $x++) { ?>' . $blog->outertext . "<?php } ?>";
                 $blogArr['list-pages'][$file] = 3;
             } else if (strpos($blog->class, 'auto-blog-post') !== false) {
+                $blogArr['post-page'] = str_replace(Array('.html', '.htm'), '', $file);
                 foreach($html->find('.auto-blog-post .auto-blog-title, .auto-blog-post .auto-blog-bg-img, .auto-blog-post .auto-blog-img, .auto-blog-post .auto-blog-short, .auto-blog-post .auto-blog-full') as $post) {
                     if (strpos($post->class, 'auto-blog-title') !== false) {
                         $post->innertext = '<?=getBlog("title")?>';
@@ -771,17 +772,6 @@ function getPostFields() {
     $json = json_decode(file_get_contents($dataFile), true);
 
     return $json['types'];
-}
-
-function getPostID($title) {
-    $dataFile = 'data/autocms-blog.json';
-    $json = json_decode(file_get_contents($dataFile), true);
-
-    foreach ($json['posts'] as $key => $data) {
-        if ($data['external'] == $title) return $key;
-    }
-
-    return null;
 }
 
 function getPostData($post_id) {
