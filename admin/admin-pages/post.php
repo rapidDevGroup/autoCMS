@@ -41,10 +41,10 @@ $fields = getPostFields();
                 <hr>
                 <div class="row">
                     <div class="col-lg-offset-7 col-lg-2 col-sm-offset-6 col-sm-3">
-                        <button name="save" type="submit" class="btn btn-warning btn-block dirtyOK">Save Draft</button>
+                        <button name="save" type="submit" class="btn btn-warning btn-block dirtyOK">Save</button>
                     </div>
                     <div class="col-lg-2 col-sm-3">
-                        <button name="publish" type="submit" class="btn btn-primary btn-block dirtyOK">Publish Post</button>
+                        <button name="publish" type="submit" class="btn btn-primary btn-block dirtyOK">Save and Publish</button>
                     </div>
                 </div>
             </form>

@@ -1,24 +1,24 @@
 <?php
-$post = null;
+$post_id = null;
 
 function getPostID($external) {
-    $dataFile = 'data/autocms-blog.json';
+    $dataFile = 'admin/data/autocms-blog.json';
     $json = json_decode(file_get_contents($dataFile), true);
-
-    foreach ($json['posts'] as $key => $data) {
+    foreach ($json['posts'] as $key => $data)
         if ($data['external'] == $external) return $key;
-    }
 
     return null;
 }
 
 // if request is a post, make sure file exists
-if (isset($_GET['blog']) && !file_exists($_SERVER['DOCUMENT_ROOT'] . 'admin/data/blog/' . getPostID(strtolower($_GET['blog'])) . '.json')) {
+if (isset($_GET['blog']) && !file_exists($_SERVER['DOCUMENT_ROOT'] . '/admin/data/blog/blog-' . getPostID(strtolower($_GET['blog'])) . '.json')) {
     header("HTTP/1.0 404 Not Found");
-    if (file_exists($_SERVER['DOCUMENT_ROOT'] . '404.php')) include_once('404.php');
+    if (file_exists($_SERVER['DOCUMENT_ROOT'] . '404.php')) {
+        include_once('404.php');
+    } else {
+        print "<!DOCTYPE html><html><head><title>404 Not Found</title></head><body><h1>Not Found</h1><p>The requested URL was not found on this server.</p></body></html>";
+    }
     die();
-} else if (isset($_GET['blog'])) {
-    $post = strtolower($_GET['blog']);
 }
 
 // get data
@@ -45,15 +45,34 @@ function getBlog($key, $count = null) {
     $dataBlogListFile = 'admin/data/autocms-blog.json';
     $jsonBlog = json_decode(file_get_contents($dataBlogListFile), true);
 
-    $dataFile = 'admin/data/blog/' . strtolower($_GET['post']) . '.json';
-    $json = json_decode(file_get_contents($dataFile), true);
+    if (!is_null($count)) {
+        $pageKey = array_keys($jsonBlog['posts'])[$count];
+        $dataFile = 'admin/data/blog/blog-' . $pageKey . '.json';
+        if (file_exists($dataFile)) $json = json_decode(file_get_contents($dataFile), true);
 
-    // todo: get file name from blog, look up key in blog file
+        if ($key == 'link') {
+            return '/' . $jsonBlog['post-page'] . '/' . $jsonBlog['posts'][$pageKey]['external'] . '/';
+        } else if (isset($json[$key])) {
+            return $json[$key];
+        }
+    } else {
+        $post_id = getPostID(strtolower($_GET['blog']));
+        $dataFile = 'admin/data/blog/blog-' . $post_id . '.json';
+        if (file_exists($dataFile)) $json = json_decode(file_get_contents($dataFile), true);
 
-    return $json[$key][$json[$key]['type']];
+        return $json[$key];
+    }
+    return '';
 }
 
 // get how many blog list count to show on this page
 function blogCount($file) {
+    $dataBlogListFile = 'admin/data/autocms-blog.json';
+    $jsonBlog = json_decode(file_get_contents($dataBlogListFile), true);
 
+    $countPub = 0;
+    foreach ($jsonBlog['posts'] as $key => $data)
+        if (isset($data['published'])) $countPub++;
+
+    return ($jsonBlog['list-pages'][$file] < $countPub ? $jsonBlog['list-pages'][$file] : $countPub);
 }

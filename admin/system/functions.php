@@ -709,22 +709,23 @@ function processBlog($files) {
                         $blogArr['types']['image'] = true;
                         $blogArr['types']['image-alt-text'] = true;
                     } else if (strpos($list->class, 'auto-blog-short') !== false) {
-                        $list->innertext = '<?=getBlog("short", "$x")?>';
+                        $list->innertext = '<?=getBlog("short-blog", "$x")?>';
                         $list->class = str_replace('auto-blog-short', '', $list->class);
                         $blogArr['types']['short-blog'] = true;
                     } else if (strpos($list->class, 'auto-blog-full') !== false) {
-                        $list->innertext = '<?=getBlog("full", "$x")?>';
+                        $list->innertext = '<?=getBlog("full-blog", "$x")?>';
                         $list->class = str_replace('auto-blog-full', '', $list->class);
                         $blogArr['types']['full'] = true;
                     } else if (strpos($list->class, 'auto-blog-link') !== false) {
-                        $list->src = '<?=getBlogList("link", "$x")?>';
+                        $list->href = '<?=getBlog("link", "$x")?>';
                         $list->innertext = '<?=getBlog("link-text", "$x")?>';
                         $list->class = str_replace('auto-blog-link', '', $list->class);
                         $blogArr['types']['link-text'] = true;
                     }
+                    if (trim($list->class) === '') $list->class = null;
                 }
                 $blog->class = str_replace('auto-blog-list', '', $blog->class);
-                $blog->outertext = '<?php for ($x = 0; $x ' . '< blogCount(' . $file . ');' . ' $x++) { ?>' . $blog->outertext . "<?php } ?>";
+                $blog->outertext = '<?php for ($x = 0; $x ' . '< blogCount("' . $file . '");' . ' $x++) { ?>' . $blog->outertext . "<?php } ?>";
                 $blogArr['list-pages'][$file] = 3;
             } else if (strpos($blog->class, 'auto-blog-post') !== false) {
                 $blogArr['post-page'] = str_replace(Array('.html', '.htm'), '', $file);
@@ -752,9 +753,11 @@ function processBlog($files) {
                         $post->class = str_replace('auto-blog-full', '', $post->class);
                         $blogArr['types']['full-blog'] = true;
                     }
+                    if (trim($post->class) === '') $post->class = null;
                 }
                 $blog->class = str_replace('auto-blog-post', '', $blog->class);
             }
+            if (trim($blog->class) === '') $blog->class = null;
         }
 
         $fp = fopen('../' . $file, 'w');
@@ -889,7 +892,7 @@ function orderBlog() {
     $dataBlogFile = 'data/autocms-blog.json';
     $jsonBlog = json_decode(file_get_contents($dataBlogFile), true);
 
-    $jsonBlog['posts'] = arrayMSort($jsonBlog['posts'], array('published'=>SORT_DESC));
+    $jsonBlog['posts'] = arrayMSort($jsonBlog['posts'], array('published'=>SORT_ASC));
 
     $fp = fopen($dataBlogFile, 'w');
     fwrite($fp, json_encode($jsonBlog));
