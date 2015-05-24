@@ -138,22 +138,25 @@ class BlogPost {
         if (is_null($post_id)) {
             include_once('admin-pages/404.html');
         } else if (checkPass() && !authNeeded()) {
-            if ($post_id == 'new') $post_id = uniqid();
-            else $postInfo = getPostData($post_id);
-
             if ($action == 'publish') {
                 publishPost($post_id);
                 header('Location: /admin/blog/?updated=true');
+                orderBlog();
                 die();
             } else if ($action == 'unpublish') {
                 unpublishPost($post_id);
                 header('Location: /admin/blog/?updated=true');
+                orderBlog();
                 die();
             } else if ($action == 'trash') {
                 trashPost($post_id);
                 header('Location: /admin/blog/?updated=true');
+                orderBlog();
                 die();
             }
+
+            if ($post_id == 'new') $post_id = uniqid();
+            else $postInfo = getPostData($post_id);
 
             include_once('admin-pages/post.php');
         } else {
@@ -169,6 +172,7 @@ class BlogPost {
                 updateBlogPost($post_id, $_POST, isset($_POST['publish']));
                 uploadFiles($post_id, true);
             }
+            orderBlog();
 
             header('Location: /admin/blog/?updated=true');
         } else {

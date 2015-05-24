@@ -74,7 +74,7 @@ RewriteRule ^/*(.+/)?([^.]*[^/])$ http%2://%{HTTP_HOST}/$1$2/ [L,R=301]
 # Find php file for missing directory
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^([a-zA-Z]+)/$ $1.php [L]
+RewriteRule ^([a-zA-Z]+)/([a-zA-Z]+)/$ $1.php?page=$2 [L]
 
 # redirect these errors
 ErrorDocument 400 /index.html

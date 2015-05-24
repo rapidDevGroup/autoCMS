@@ -894,3 +894,38 @@ function trashPost($post_id) {
 
     unlink('data/blog/blog-' . $post_id . '.json');
 }
+
+function orderBlog() {
+    $dataBlogFile = 'data/autocms-blog.json';
+    $jsonBlog = json_decode(file_get_contents($dataBlogFile), true);
+
+    $jsonBlog['posts'] = arrayMSort($jsonBlog['posts'], array('published'=>SORT_DESC));
+
+    $fp = fopen($dataBlogFile, 'w');
+    fwrite($fp, json_encode($jsonBlog));
+    fclose($fp);
+}
+
+function arrayMSort($array, $cols) {
+    $colArr = array();
+    foreach ($cols as $col => $order) {
+        $colArr[$col] = array();
+        foreach ($array as $k => $row) { $colArr[$col]['_'.$k] = strtolower($row[$col]); }
+    }
+    $eval = 'array_multisort(';
+    foreach ($cols as $col => $order) {
+        $eval .= '$colArr[\''.$col.'\'],'.$order.',';
+    }
+    $eval = substr($eval,0,-1).');';
+    eval($eval);
+    $ret = array();
+    foreach ($colArr as $col => $arr) {
+        foreach ($arr as $k => $v) {
+            $k = substr($k,1);
+            if (!isset($ret[$k])) $ret[$k] = $array[$k];
+            $ret[$k][$col] = $array[$k][$col];
+        }
+    }
+    return $ret;
+
+}
