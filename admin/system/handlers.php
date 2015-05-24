@@ -131,37 +131,44 @@ class Blog {
             include_once('admin-pages/401.html');
         }
     }
-    function post() {
-        if (checkPass() && !authNeeded()) {
-            // todo: update blog stuff
-
-            header('Location: /admin/blog/?updated=true');
-        } else {
-            include_once('admin-pages/401.html');
-        }
-    }
 }
 
 class BlogPost {
-    function get($post_id = null) {
+    function get($post_id = null, $action = null) {
         if (is_null($post_id)) {
             include_once('admin-pages/404.html');
         } else if (checkPass() && !authNeeded()) {
             if ($post_id == 'new') $post_id = uniqid();
             else $postInfo = getPostData($post_id);
 
+            if ($action == 'publish') {
+                publishPost($post_id);
+                header('Location: /admin/blog/?updated=true');
+                die();
+            } else if ($action == 'unpublish') {
+                unpublishPost($post_id);
+                header('Location: /admin/blog/?updated=true');
+                die();
+            } else if ($action == 'trash') {
+                trashPost($post_id);
+                header('Location: /admin/blog/?updated=true');
+                die();
+            }
+
             include_once('admin-pages/post.php');
         } else {
             include_once('admin-pages/401.html');
         }
     }
-    function post($post_id = null) {
+    function post($post_id = null, $action = null) {
         if (is_null($post_id)) {
             include_once('admin-pages/404.html');
         } else if (checkPass() && !authNeeded()) {
 
-            updateBlogPost($post_id, $_POST, isset($_POST['publish']));
-            uploadFiles($post_id, true);
+            if ($action == 'update') {
+                updateBlogPost($post_id, $_POST, isset($_POST['publish']));
+                uploadFiles($post_id, true);
+            }
 
             header('Location: /admin/blog/?updated=true');
         } else {

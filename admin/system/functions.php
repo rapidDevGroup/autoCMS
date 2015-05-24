@@ -828,9 +828,9 @@ function updateBlogPost($post_id, $data, $publish = false) {
 
     $dataBlogFile = 'data/autocms-blog.json';
     $jsonBlog = json_decode(file_get_contents($dataBlogFile), true);
+    $externalTitle = preg_replace('/[^a-z0-9-]/i', '', str_replace(' ', '-', strtolower(trim($json['title']))));
 
-    if ($isNew) {
-        $externalTitle = preg_replace('/[^a-z0-9-]/i', '', str_replace(' ', '-', strtolower(trim($json['title']))));
+    if ($isNew || (isset($jsonBlog['posts'][$post_id]['external']) && $jsonBlog['posts'][$post_id]['external'] != $externalTitle)) {
         $externalTitleOriginal = $externalTitle;
 
         $count = 0;
@@ -840,7 +840,13 @@ function updateBlogPost($post_id, $data, $publish = false) {
             }
         }
 
-        $jsonBlog['posts'][$post_id] = Array('external' => $externalTitle, 'title' => $json['title'], 'creator' => $_SESSION["user"],'created' => $creationTime);
+        if ($isNew) {
+            $jsonBlog['posts'][$post_id] = Array('external' => $externalTitle, 'title' => $json['title'], 'creator' => $_SESSION["user"],'created' => $creationTime);
+        } else {
+            $jsonBlog['posts'][$post_id]['title'] = $json['title'];
+            $jsonBlog['posts'][$post_id]['external'] = $externalTitle;
+            $jsonBlog['posts'][$post_id]['last-updated'] = $updateTime;
+        }
     } else {
         $jsonBlog['posts'][$post_id]['last-updated'] = $updateTime;
     }
@@ -852,4 +858,39 @@ function updateBlogPost($post_id, $data, $publish = false) {
     $fp = fopen($dataBlogFile, 'w');
     fwrite($fp, json_encode($jsonBlog));
     fclose($fp);
+}
+
+function publishPost($post_id) {
+    $dataBlogFile = 'data/autocms-blog.json';
+    $jsonBlog = json_decode(file_get_contents($dataBlogFile), true);
+
+    $jsonBlog['posts'][$post_id]['published'] = time();
+
+    $fp = fopen($dataBlogFile, 'w');
+    fwrite($fp, json_encode($jsonBlog));
+    fclose($fp);
+}
+
+function unpublishPost($post_id) {
+    $dataBlogFile = 'data/autocms-blog.json';
+    $jsonBlog = json_decode(file_get_contents($dataBlogFile), true);
+
+    unset($jsonBlog['posts'][$post_id]['published']);
+
+    $fp = fopen($dataBlogFile, 'w');
+    fwrite($fp, json_encode($jsonBlog));
+    fclose($fp);
+}
+
+function trashPost($post_id) {
+    $dataBlogFile = 'data/autocms-blog.json';
+    $jsonBlog = json_decode(file_get_contents($dataBlogFile), true);
+
+    unset($jsonBlog['posts'][$post_id]);
+
+    $fp = fopen($dataBlogFile, 'w');
+    fwrite($fp, json_encode($jsonBlog));
+    fclose($fp);
+
+    unlink('data/blog/blog-' . $post_id . '.json');
 }

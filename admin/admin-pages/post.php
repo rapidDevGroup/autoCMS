@@ -24,7 +24,7 @@ $fields = getPostFields();
                                 </div>
                             <?php } else if ($key == 'title' || $key == 'author' || $key == 'keywords' || $key == 'description' || $key == 'image-alt-text' || $key == 'link-text') { ?>
                                 <div class="col-lg-9 col-sm-10">
-                                    <input name="<?=$key?>" class="form-control" value="<?php if(isset($postInfo[$key])) { print $postInfo[$key]; } ?>" autocomplete="off"<?php if($key == 'title' && isset($postInfo[$key])) { print ' disabled="disabled"'; } ?>>
+                                    <input name="<?=$key?>" class="form-control" value="<?php if(isset($postInfo[$key])) { print $postInfo[$key]; } ?>" autocomplete="off">
                                 </div>
                             <?php } else if ($key == 'image') { ?>
                                 <div class="col-lg-7 col-sm-7">
