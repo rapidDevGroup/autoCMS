@@ -788,7 +788,7 @@ function getBlogList() {
     $dataFile = 'data/autocms-blog.json';
     $json = json_decode(file_get_contents($dataFile), true);
 
-    return array_reverse($json['posts']);
+    return $json['posts'];
 }
 
 function updateBlogPost($post_id, $data, $publish = false) {
@@ -892,7 +892,7 @@ function orderBlog() {
     $dataBlogFile = 'data/autocms-blog.json';
     $jsonBlog = json_decode(file_get_contents($dataBlogFile), true);
 
-    $jsonBlog['posts'] = arrayMSort($jsonBlog['posts'], array('published'=>SORT_ASC));
+    $jsonBlog['posts'] = arrayMSort($jsonBlog['posts'], array('published'=>SORT_DESC));
 
     $fp = fopen($dataBlogFile, 'w');
     fwrite($fp, json_encode($jsonBlog));

@@ -10,8 +10,23 @@ function getPostID($external) {
     return null;
 }
 
+// todo: if blog get variable exist but not on the post page, also give 404
+
 // if request is a post, make sure file exists
 if (isset($_GET['blog']) && !file_exists($_SERVER['DOCUMENT_ROOT'] . '/admin/data/blog/blog-' . getPostID(strtolower($_GET['blog'])) . '.json')) {
+    make404();
+} else if (isset($_GET['blog'])) {
+    $dataBlogListFile = 'admin/data/autocms-blog.json';
+    $jsonBlog = json_decode(file_get_contents($dataBlogListFile), true);
+
+    // get base request
+    $baseCall = explode('/', $_SERVER['REQUEST_URI']);
+    if ($jsonBlog['post-page'] != $baseCall[1]) {
+        make404();
+    }
+}
+
+function make404() {
     header("HTTP/1.0 404 Not Found");
     if (file_exists($_SERVER['DOCUMENT_ROOT'] . '404.php')) {
         include_once('404.php');
@@ -58,9 +73,10 @@ function getBlog($key, $count = null) {
     } else {
         $post_id = getPostID(strtolower($_GET['blog']));
         $dataFile = 'admin/data/blog/blog-' . $post_id . '.json';
-        if (file_exists($dataFile)) $json = json_decode(file_get_contents($dataFile), true);
-
-        return $json[$key];
+        if (file_exists($dataFile)) {
+            $json = json_decode(file_get_contents($dataFile), true);
+            return $json[$key];
+        }
     }
     return '';
 }
@@ -73,6 +89,8 @@ function blogCount($file) {
     $countPub = 0;
     foreach ($jsonBlog['posts'] as $key => $data)
         if (isset($data['published'])) $countPub++;
+
+    if ($jsonBlog['list-pages'][$file] == 0) return $countPub;
 
     return ($jsonBlog['list-pages'][$file] < $countPub ? $jsonBlog['list-pages'][$file] : $countPub);
 }
