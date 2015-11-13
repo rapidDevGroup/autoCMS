@@ -23,7 +23,7 @@ include_once('header.php');
                             </div>
                         <?php } else if ($datum['type'] == 'text') { ?>
                             <div class="col-lg-9 col-sm-10">
-                                <input name="<?=$key?>" class="form-control" value="<?=$datum['text']?>" autocomplete="off">
+                                <input type="text" name="<?=$key?>" class="form-control" value="<?=$datum['text']?>" autocomplete="off">
                             </div>
                         <?php } else if ($datum['type'] == 'color') { ?>
                             <div class="col-lg-9 col-sm-10">
@@ -43,6 +43,13 @@ include_once('header.php');
                         <?php } else if ($datum['type'] == 'repeat') { ?>
                             <div class="col-lg-9 col-sm-10">
                                 <a href="/admin/page/<?=$page?>/repeat/<?=$key?>/" class="btn btn-success btn-block">Edit Repeat (<?=count($datum['repeat'])?>)</a>
+                            </div>
+                        <?php } else if ($datum['type'] == 'blog-count') { ?>
+                            <div class="col-lg-9 col-sm-10">
+                                <div class="input-group">
+                                    <span class="input-group-addon">Blog List Display Count</span>
+                                    <input type="number" name="<?=$key?>" class="form-control" value="<?=$datum['blog-count']?>" autocomplete="off">
+                                </div>
                             </div>
                         <?php } ?>
                     </div>

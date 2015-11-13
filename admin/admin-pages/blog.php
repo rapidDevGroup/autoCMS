@@ -47,7 +47,5 @@ $blogList = getBlogList();
 </div>
 <?php
 
-// todo: select how many blog posts to show for pages that contain the list
-
 include_once('footer.php');
 ?>

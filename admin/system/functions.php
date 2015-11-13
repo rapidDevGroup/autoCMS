@@ -266,11 +266,27 @@ function makeImageBGImage(&$edit, &$dataArr, $dataFile, $fieldID, $desc, $isBG =
     }
 }
 
+function addVariableToPage($file, $name, $value) {
+    $dataFile = 'page-' . str_replace(Array('.html', '.htm'), '.json', $file);
+
+    if (file_exists('data/' . $dataFile)) {
+        $data = json_decode(file_get_contents('data/' . $dataFile), true);
+    } else {
+        $data = Array();
+    }
+
+    $data[$name] = $value;
+
+    $fp = fopen('data/' . $dataFile, 'w');
+    fwrite($fp, json_encode($data));
+    fclose($fp);
+}
+
 function buildDataFilesByTags($files) {
-    if (!file_exists("data/autocms-pages.json")) {
+    if (!file_exists('data/autocms-pages.json')) {
         $pageArr = Array();
     } else {
-        $pageArr = json_decode(file_get_contents("data/autocms-pages.json"), true);
+        $pageArr = json_decode(file_get_contents('data/autocms-pages.json'), true);
     }
 
     foreach ($files as $file) {
@@ -278,7 +294,11 @@ function buildDataFilesByTags($files) {
 
         // create datafile to store stuff
         $dataFile = 'page-' . str_replace(Array('.html', '.htm'), '.json', $file);
-        $data = Array();
+        if (file_exists('data/' . $dataFile)) {
+            $data = json_decode(file_get_contents('data/' . $dataFile), true);
+        } else {
+            $data = Array();
+        }
 
         // start collecting fields to add to data
         $fileData = file_get_contents('../' . $file, true);
@@ -724,9 +744,13 @@ function processBlog($files) {
                     }
                     if (trim($list->class) === '') $list->class = null;
                 }
+                $fieldID = uniqid();
+
                 $blog->class = str_replace('auto-blog-list', '', $blog->class);
-                $blog->outertext = '<?php for ($x = 0; $x ' . '< blogCount("' . $file . '");' . ' $x++) { ?>' . $blog->outertext . "<?php } ?>";
-                $blogArr['list-pages'][$file] = 3;
+                $blog->outertext = '<?php for ($x = 0; $x ' . '< blogCount("' . $file . '", "' . $fieldID . '");' . ' $x++) { ?>' . $blog->outertext . "<?php } ?>";
+
+                addVariableToPage($file, $fieldID, Array('blog-count' => 3, 'description' => 'blog display count', 'type' => 'blog-count'));
+
             } else if (strpos($blog->class, 'auto-blog-post') !== false) {
                 $blogArr['post-page'] = str_replace(Array('.html', '.htm'), '', $file);
                 foreach($html->find('.auto-blog-post .auto-blog-title, .auto-blog-post .auto-blog-bg-img, .auto-blog-post .auto-blog-img, .auto-blog-post .auto-blog-short, .auto-blog-post .auto-blog-full') as $post) {

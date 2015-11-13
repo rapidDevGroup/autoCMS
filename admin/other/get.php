@@ -28,7 +28,7 @@ if (isset($_GET['blog']) && !file_exists($_SERVER['DOCUMENT_ROOT'] . '/admin/dat
 
 function make404() {
     header("HTTP/1.0 404 Not Found");
-    if (file_exists($_SERVER['DOCUMENT_ROOT'] . '404.php')) {
+    if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/404.php')) {
         include_once('404.php');
     } else {
         print "<!DOCTYPE html><html><head><title>404 Not Found</title></head><body><h1>Not Found</h1><p>The requested URL was not found on this server.</p></body></html>";
@@ -82,15 +82,22 @@ function getBlog($key, $count = null) {
 }
 
 // get how many blog list count to show on this page
-function blogCount($file) {
+function blogCount($file, $key) {
     $dataBlogListFile = 'admin/data/autocms-blog.json';
     $jsonBlog = json_decode(file_get_contents($dataBlogListFile), true);
 
     $countPub = 0;
-    foreach ($jsonBlog['posts'] as $key => $data)
+    foreach ($jsonBlog['posts'] as $data)
         if (isset($data['published'])) $countPub++;
 
-    if ($jsonBlog['list-pages'][$file] == 0) return $countPub;
+    $dataFile = 'page-' . str_replace(Array('.html', '.htm'), '.json', $file);
+    if (file_exists('admin/data/' . $dataFile)) {
+        $fromFile = json_decode(file_get_contents('admin/data/' . $dataFile), true);
+    } else {
+        return 0;
+    }
 
-    return ($jsonBlog['list-pages'][$file] < $countPub ? $jsonBlog['list-pages'][$file] : $countPub);
+    if ($fromFile[$key]['blog-count'] == 0) return $countPub;
+
+    return ($fromFile[$key]['blog-count'] < $countPub ? $fromFile[$key]['blog-count'] : $countPub);
 }
