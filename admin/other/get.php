@@ -28,8 +28,8 @@ if (isset($_GET['blog']) && !file_exists($_SERVER['DOCUMENT_ROOT'] . '/admin/dat
 
 function make404() {
     header("HTTP/1.0 404 Not Found");
-    if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/404.php')) {
-        include_once('404.php');
+    if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/error.php')) {
+        include_once('error.php');
     } else {
         print "<!DOCTYPE html><html><head><title>404 Not Found</title></head><body><h1>Not Found</h1><p>The requested URL was not found on this server.</p></body></html>";
     }

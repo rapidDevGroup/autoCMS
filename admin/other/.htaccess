@@ -78,8 +78,8 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^([a-zA-Z0-9-_]+)/$ $1.php [L]
 
 # redirect these errors
-ErrorDocument 400 /
-ErrorDocument 401 /
-ErrorDocument 403 /
-ErrorDocument 404 /
-ErrorDocument 500 /
+ErrorDocument 400 /error.php
+ErrorDocument 401 /error.php
+ErrorDocument 403 /error.php
+ErrorDocument 404 /error.php
+ErrorDocument 500 /error.php

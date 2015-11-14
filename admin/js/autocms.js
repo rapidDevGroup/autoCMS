@@ -105,6 +105,8 @@ $(function() {
     if (cp.exists()) {
         cp.colorpicker();
     }
+
+    $('.selectpicker').selectpicker();
 });
 
 function validateCreateAuth() {

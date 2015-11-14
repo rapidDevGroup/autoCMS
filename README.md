@@ -20,6 +20,8 @@ This is for people who do not wish to use a complicated site management system l
     * It will then bring you to a basic CMS to edit all your content that you added fields for.
 
 
+**NOTE:** Do not forget to create an error.html page for your 404 and other errors.
+
 ## Tags Descriptions and Examples
 
 **NOTE:** Do not use these classes for styling as they will be removed when processed.
