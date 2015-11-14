@@ -31,7 +31,7 @@ $blogList = getBlogList();
                     <?php } else { ?>
                         <a href="/admin/blog/<?=$key?>/publish/" class="btn btn-warning" title="Publish Post"><i class="fa fa-play"></i></a>
                     <?php } ?>
-                    <a href="/<?=$blog['external']?>/" class="btn btn-success" title="View Post" target="_blank"><i class="fa fa-eye"></i></a>
+                    <!--a href="/<?=$blog['external']?>/" class="btn btn-success" title="View Post" target="_blank"><i class="fa fa-eye"></i></a-->
                     <a href="/admin/blog/<?=$key?>/" class="btn btn-primary" title="Edit Post"><i class="fa fa-pencil-square-o"></i></a>
                 </div>
             </div>

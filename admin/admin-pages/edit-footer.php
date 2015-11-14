@@ -18,8 +18,8 @@ $data = getFooterData();
                         <?php $desc = $datum['description']; ?>
                         <label for="<?=$key?>" class="col-lg-2 col-sm-2 control-label"><a id="desc-<?=$key?>" class="desc-edit" data-type="text" data-pk="<?=$key?>" data-url="/admin/page/nav/desc/" data-title="edit description"><?=$desc?></a></label>
                         <?php if ($datum['type'] == 'html') { ?>
-                            <div class="col-lg-9 col-sm-10">
-                                <textarea name="<?=$key?>" class="form-control"><?=$datum['html']?></textarea>
+                            <div class="col-lg-9 col-sm-10 textarea">
+                                <textarea name="<?=$key?>" class="form-control editor"><?=$datum['html']?></textarea>
                             </div>
                         <?php } else if ($datum['type'] == 'color') { ?>
                             <div class="col-lg-9 col-sm-10">
