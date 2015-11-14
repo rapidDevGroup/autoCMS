@@ -15,10 +15,7 @@ $data = getFooterData();
             <form action="/admin/footer/update/" method="post" class="form-horizontal">
                 <?php foreach($data as $key => $datum) { ?>
                     <div class="form-group">
-                        <?php $desc = $datum['description'];
-                        if ($desc == '') {
-                            $desc = 'add description';
-                        } ?>
+                        <?php $desc = $datum['description']; ?>
                         <label for="<?=$key?>" class="col-lg-2 col-sm-2 control-label"><a id="desc-<?=$key?>" class="desc-edit" data-type="text" data-pk="<?=$key?>" data-url="/admin/page/nav/desc/" data-title="edit description"><?=$desc?></a></label>
                         <?php if ($datum['type'] == 'html') { ?>
                             <div class="col-lg-9 col-sm-10">
