@@ -215,10 +215,10 @@ function makeImageBGImage(&$edit, &$dataArr, $dataFile, $fieldID, $desc, $isBG =
         preg_match('~\bbackground(-image)?\s*:(.*?)\(\s*(\'|")?(?<image>.*?)\3?\s*\)~i', $source, $matches);
         $source = $matches[4];
         $tag = $matches[0];
-        if (substr($edit->src, 0, 1) == "/") $source = $_SERVER['DOCUMENT_ROOT'] . $edit->src;
+        if (substr($source, 0, 1) == "/") $source = $_SERVER['DOCUMENT_ROOT'] . $source;
     } else {
         $source = $edit->src;
-        if (substr($edit->src, 0, 1) == "/") $source = $_SERVER['DOCUMENT_ROOT'] . $edit->src;
+        if (substr($source, 0, 1) == "/") $source = $_SERVER['DOCUMENT_ROOT'] . $source;
     }
 
     $fileExt = pathinfo(parse_url($edit->src, PHP_URL_PATH), PATHINFO_EXTENSION);

@@ -4,7 +4,9 @@ $(function() {
         return this.length > 0;
     };
 
-    if (!$('.container').exists()) {
+    var $container = $('.container');
+
+    if (!$container.exists()) {
         $('#side-menu').metisMenu();
     }
 
@@ -32,10 +34,8 @@ $(function() {
         if (!$(this).hasClass('open-close') && $('.navbar-toggle').is(':visible') && $('.navbar-collapse').hasClass('in')) $('.navbar-toggle').trigger('click');
     });
 
-    if ($('.container').exists()) {
-        bkLib.onDomLoaded(function () {
-            nicEditors.allTextAreas({buttonList: ['bold', 'italic', 'underline', 'strikeThrough', 'removeformat', 'subscript', 'superscript', 'left', 'center', 'right', 'justified', 'ol', 'ul', 'subscript', 'superscript', 'indent', 'outdent', 'forecolor', 'bgcolor', 'link', 'unlink', 'fontFormat', 'fontFamily', 'fontSize', 'xhtml']});
-        });
+    if ($container.exists()) {
+        $('textarea').summernote();
 
         $('.desc-edit').editable({'emptytext': 'no description'});
     }

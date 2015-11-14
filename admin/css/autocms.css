@@ -424,3 +424,8 @@ table.dataTable thead .sorting:after {
 .panel-yellow a:hover {
     color: #df8a13;
 }
+
+
+.note-editing-area, .note-editor {
+    overflow: visible !important;
+}
