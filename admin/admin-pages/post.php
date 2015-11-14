@@ -34,6 +34,11 @@ $fields = getPostFields();
                                     <input type="file" name="<?=$key?>" id="<?=$key?>" style="display: none;" onchange="readURL(this, '<?=$key?>');">
                                     <button type="button" class="btn btn-info btn-block upload-button dirtyOK" data-trigger="<?=$key?>">Upload Image</button>
                                 </div>
+                            <?php } else if ($key == 'date') { ?>
+                                <div class="col-lg-6 col-sm-6">
+                                </div>
+                                <div class="col-lg-6 col-sm-6">
+                                </div>
                             <?php } ?>
                         </div>
                     <?php } ?>

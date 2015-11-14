@@ -692,7 +692,7 @@ function processBlog($files) {
         mkdir($blogFolder);
     }
 
-    $blogArr = Array('post-page' => null,'types' => Array('title' => false, 'keywords' => false, 'description' => false, 'author' => false, 'image' => false, 'image-alt-text' => false, 'short-blog' => false, 'full-blog' => false, 'link-text' => false), 'posts' => Array(), 'list-pages' => Array());
+    $blogArr = Array('post-page' => null,'types' => Array('title' => false, 'keywords' => false, 'description' => false, 'author' => false, 'image' => false, 'image-alt-text' => false, 'short-blog' => false, 'full-blog' => false, 'link-text' => false, 'date' => false), 'posts' => Array());
 
     foreach ($files as $file) {
         $fileData = file_get_contents('../' . $file, true);
@@ -736,6 +736,10 @@ function processBlog($files) {
                         $list->innertext = '<?=getBlog("full-blog", "$x")?>';
                         $list->class = str_replace('auto-blog-full', '', $list->class);
                         $blogArr['types']['full'] = true;
+                    } else if (strpos($list->class, 'auto-blog-date') !== false) {
+                        $list->innertext = '<?=getBlog("full-date", "$x")?>';
+                        $list->class = str_replace('auto-blog-date', '', $list->class);
+                        $blogArr['types']['date'] = true;
                     } else if (strpos($list->class, 'auto-blog-link') !== false) {
                         $list->href = '<?=getBlog("link", "$x")?>';
                         $list->innertext = '<?=getBlog("link-text", "$x")?>';
@@ -776,6 +780,10 @@ function processBlog($files) {
                         $post->innertext = '<?=getBlog("full-blog")?>';
                         $post->class = str_replace('auto-blog-full', '', $post->class);
                         $blogArr['types']['full-blog'] = true;
+                    } else if (strpos($post->class, 'auto-blog-date') !== false) {
+                        $post->innertext = '<?=getBlog("full-date", "$x")?>';
+                        $post->class = str_replace('auto-blog-date', '', $post->class);
+                        $blogArr['types']['date'] = true;
                     }
                     if (trim($post->class) === '') $post->class = null;
                 }

@@ -15,14 +15,14 @@ This is for people who do not wish to use a complicated site management system l
 3. Make sure that the admin folder and sub-folders are writable.
 4. Visit http://yoursite.com/admin/
 5. It will ask you to create a password, then scan your html files and ask you to process them and add to the CMS.
-6. autoCMS will rename files to .php (scan for links and rename those as well) and add the appropriate php tags.
+6. autoCMS will rename files to .php (scan for auto-nav links and rename those as well) and add the appropriate php tags.
     * It will scan and look for edit tags and create a data file structure (JSON).
-    * It will then bring you to a basic CMS to edit all your content.
+    * It will then bring you to a basic CMS to edit all your content that you added fields for.
 
 
 ## Tags Descriptions and Examples
 
-**NOTE:** Do not use these tags for styling as they will be removed.
+**NOTE:** Do not use these classes for styling as they will be removed when processed.
 
 * [Head Information Tag](#head-information-tag)
 * [Navigation Text Tags](#navigation-text-tags)
@@ -73,7 +73,6 @@ This will add information such as title, meta description, meta keywords, and me
 </footer>
 ```
 **NOTE:**
-* Cannot use autocms attribute on auto-footer tag.
 * All footer tags need to be identical, only one copy is kept and repeated.
 * auto-footer can be added to div, section, or anything. Doesn't have to be footer.
 
@@ -96,7 +95,7 @@ This will add information such as title, meta description, meta keywords, and me
 <h1 class="auto-edit-text">...</h1>
 <p class="auto-edit-text">...</p>
 ```
-**TIP:** Best practice is to use non-div tags, auto-edit-text preserves the intended style by only allowing adding text.
+**TIP:** Best practice is to use non-div tags, auto-edit-text preserves the intended style by only allowing adding text but no HTML.
 
 ---
 
@@ -127,7 +126,7 @@ For background images:
 </div>
 ```
 
-This would be the same as the following with one addition repeat added by autoCMS.
+This would produce the following with one addition repeat added in the CMS.
 
 ```HTML
 <div>
@@ -149,7 +148,6 @@ This would be the same as the following with one addition repeat added by autoCM
 
 
 #### Blog/News Feed Tags
-**(Being Worked On)**
 
 This works like auto-repeat but has special blog tags. Use this to list all your blog posts on a page.
 ```HTML
@@ -157,6 +155,7 @@ This works like auto-repeat but has special blog tags. Use this to list all your
     <div class="auto-blog-title"></div>
     <img class="auto-blog-img">
     <div class="auto-blog-short"></div>
+    <div class="auto-blog-date"></div>
     <a class="auto-blog-link"></a>
 </div>
 ```
@@ -171,7 +170,8 @@ Use these tags to display actual blog content.
 ```HTML
 <div class="auto-blog-post">
     <div class="auto-blog-title"></div>
-    <div src="" class="auto-blog-bg-img"></div>
+    <div class="auto-blog-date"></div>
+    <div class="auto-blog-bg-img"></div>
     <div class="auto-blog-full"></div>
 </div>
 ```
@@ -216,16 +216,11 @@ This data tag can be used to add an additional description to a field, also used
 ## Coming Soon and Planned Future Updates
 
 * Adding RSS Feed
-* Multi-Language
 * Blog Pagination
-* Check for Safe Files
 * Inline Editing
 * User Privilege Settings
 * Multiple auto-repeat on a Page
-* Commenting System
-* Social Media Integration
-* Add couchDB/SQL Database Options
-* Detect Tag Needs (Where a tag might be missing)
+* Commenting System (Perhaps)
 
 ---
 
@@ -234,7 +229,7 @@ This data tag can be used to add an additional description to a field, also used
 
 MIT License
 
-Copyright 2015 Rapid Dev Group Inc. http://rapiddevgroup.com
+Copyright 2015-2016 Rapid Dev Group Inc. http://rapiddevgroup.com
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
