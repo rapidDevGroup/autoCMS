@@ -67,7 +67,7 @@ $(function() {
             });
         }
     });
-    $('body').on('keydown', 'div.nicEdit-main', function () {
+    $('body').on('keydown', 'div.note-editable', function () {
         isDirty = true;
         $(window).on('beforeunload', function(){
             return 'You will lose unsaved changes.';
