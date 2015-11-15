@@ -692,7 +692,7 @@ function processBlog($files) {
         mkdir($blogFolder);
     }
 
-    $blogArr = Array('post-page' => null,'types' => Array('title' => false, 'keywords' => false, 'description' => false, 'author' => false, 'image' => false, 'image-alt-text' => false, 'short-blog' => false, 'full-blog' => false, 'link-text' => false, 'date' => false), 'posts' => Array());
+    $blogArr = Array('post-page' => null,'types' => Array('title' => false, 'keywords' => false, 'description' => false, 'author' => false, 'date' => false, 'image' => false, 'image-alt-text' => false, 'short-blog' => false, 'full-blog' => false, 'link-text' => false), 'posts' => Array());
 
     foreach ($files as $file) {
         $fileData = file_get_contents('../' . $file, true);
@@ -713,7 +713,7 @@ function processBlog($files) {
                 }
                 $blog->class = str_replace('auto-blog-head', '', $blog->class);
             } else if (strpos($blog->class, 'auto-blog-list') !== false) {
-                foreach($html->find('.auto-blog-list .auto-blog-title, .auto-blog-list .auto-blog-bg-img, .auto-blog-list .auto-blog-img, .auto-blog-list .auto-blog-short, .auto-blog-list .auto-blog-full, .auto-blog-list .auto-blog-link') as $list) {
+                foreach($html->find('.auto-blog-list .auto-blog-title, .auto-blog-list .auto-blog-date, .auto-blog-list .auto-blog-bg-img, .auto-blog-list .auto-blog-img, .auto-blog-list .auto-blog-short, .auto-blog-list .auto-blog-full, .auto-blog-list .auto-blog-link') as $list) {
                     if (strpos($list->class, 'auto-blog-title') !== false) {
                         $list->innertext = '<?=getBlog("title", "$x")?>';
                         $list->class = str_replace('auto-blog-title', '', $list->class);
@@ -737,7 +737,7 @@ function processBlog($files) {
                         $list->class = str_replace('auto-blog-full', '', $list->class);
                         $blogArr['types']['full'] = true;
                     } else if (strpos($list->class, 'auto-blog-date') !== false) {
-                        $list->innertext = '<?=getBlog("full-date", "$x")?>';
+                        $list->innertext = '<?=getBlog("date", "$x")?>';
                         $list->class = str_replace('auto-blog-date', '', $list->class);
                         $blogArr['types']['date'] = true;
                     } else if (strpos($list->class, 'auto-blog-link') !== false) {
@@ -757,7 +757,7 @@ function processBlog($files) {
 
             } else if (strpos($blog->class, 'auto-blog-post') !== false) {
                 $blogArr['post-page'] = str_replace(Array('.html', '.htm'), '', $file);
-                foreach($html->find('.auto-blog-post .auto-blog-title, .auto-blog-post .auto-blog-bg-img, .auto-blog-post .auto-blog-img, .auto-blog-post .auto-blog-short, .auto-blog-post .auto-blog-full') as $post) {
+                foreach($html->find('.auto-blog-post .auto-blog-title, .auto-blog-post .auto-blog-date, .auto-blog-post .auto-blog-bg-img, .auto-blog-post .auto-blog-img, .auto-blog-post .auto-blog-short, .auto-blog-post .auto-blog-full') as $post) {
                     if (strpos($post->class, 'auto-blog-title') !== false) {
                         $post->innertext = '<?=getBlog("title")?>';
                         $post->class = str_replace('auto-blog-title', '', $post->class);
@@ -781,7 +781,7 @@ function processBlog($files) {
                         $post->class = str_replace('auto-blog-full', '', $post->class);
                         $blogArr['types']['full-blog'] = true;
                     } else if (strpos($post->class, 'auto-blog-date') !== false) {
-                        $post->innertext = '<?=getBlog("full-date", "$x")?>';
+                        $post->innertext = '<?=getBlog("date")?>';
                         $post->class = str_replace('auto-blog-date', '', $post->class);
                         $blogArr['types']['date'] = true;
                     }

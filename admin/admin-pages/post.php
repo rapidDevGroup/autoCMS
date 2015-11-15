@@ -22,7 +22,7 @@ $fields = getPostFields();
                                 <div class="col-lg-9 col-sm-10 textarea">
                                     <textarea name="<?=$key?>" class="form-control editor"><?php if(isset($postInfo[$key])) { print $postInfo[$key]; } ?></textarea>
                                 </div>
-                            <?php } else if ($key == 'title' || $key == 'author' || $key == 'keywords' || $key == 'description' || $key == 'image-alt-text' || $key == 'link-text') { ?>
+                            <?php } else if ($key == 'title' || $key == 'author' || $key == 'keywords' || $key == 'description' || $key == 'image-alt-text' || $key == 'link-text' || $key == 'date') { ?>
                                 <div class="col-lg-9 col-sm-10">
                                     <input name="<?=$key?>" class="form-control" value="<?php if(isset($postInfo[$key])) { print $postInfo[$key]; } ?>" autocomplete="off">
                                 </div>
@@ -33,11 +33,6 @@ $fields = getPostFields();
                                 <div class="col-lg-2 col-sm-3">
                                     <input type="file" name="<?=$key?>" id="<?=$key?>" style="display: none;" onchange="readURL(this, '<?=$key?>');">
                                     <button type="button" class="btn btn-info btn-block upload-button dirtyOK" data-trigger="<?=$key?>">Upload Image</button>
-                                </div>
-                            <?php } else if ($key == 'date') { ?>
-                                <div class="col-lg-6 col-sm-6">
-                                </div>
-                                <div class="col-lg-6 col-sm-6">
                                 </div>
                             <?php } ?>
                         </div>
