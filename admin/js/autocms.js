@@ -106,7 +106,7 @@ $(function() {
         cp.colorpicker();
     }
 
-    $('.selectpicker').selectpicker();
+    //$('.selectpicker').selectpicker();
 });
 
 function validateCreateAuth() {
