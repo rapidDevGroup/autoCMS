@@ -102,6 +102,25 @@ function hasSettings() {
     return file_exists("data/autocms-settings.json");
 }
 
+function hasAnalytics() {
+    return file_exists("data/autocms-analytics.json");
+}
+
+function createAnalytics() {
+    $data = Array();
+    $data['analytics'] = Array('analytics' => '', 'description' => 'analytics code', 'type' => 'analytics');
+    $fp = fopen('data/autocms-analytics.json', 'w');
+    fwrite($fp, json_encode($data));
+    fclose($fp);
+}
+
+function getAnalyticsData() {
+    $dataFile = 'data/autocms-analytics.json';
+    $json = json_decode(file_get_contents($dataFile), true);
+
+    return $json;
+}
+
 function footerExists() {
     if (file_exists("data/autocms-footer.json")) return true;
 
@@ -323,6 +342,11 @@ function buildDataFilesByTags($files) {
             }
         }
 
+        foreach($html->find('.auto-head') as $pageHead) {
+            $pageHead->innertext .= "<?=get('autocms-analytics.json', 'analytics')?>";
+            $pageHead->class = str_replace('auto-head', '', $pageHead->class);
+        }
+
         foreach($html->find('.auto-color, .auto-edit, .auto-edit-text, .auto-edit-img, .auto-edit-bg-img, .auto-repeat') as $edit) {
             $fieldID = uniqid();
             $desc = '';
@@ -449,6 +473,31 @@ function updatePage($file, $data) {
     }
 
     if (count($changeLog) > 0) addToLog('has updated', $file . ' page', $changeLog);
+
+    $fp = fopen($dataFile, 'w');
+    fwrite($fp, json_encode($json));
+    fclose($fp);
+}
+
+function updateAnalytics($data) {
+    $dataFile = 'data/autocms-analytics.json';
+    $json = json_decode(file_get_contents($dataFile), true);
+    $changeLog = Array();
+
+    foreach ($data as $key => $datum) {
+        if ($key != 'key' && isset($json[$key]) && $json[$key][$json[$key]['type']] != trim($datum)) {
+            $changeLog[] = Array('key' => $key, 'change' => Array('original' => $json[$key][$json[$key]['type']], 'new' => trim($datum)));
+            $json[$key][$json[$key]['type']] = trim($datum);
+        } else {
+            list($repeatKey, $iteration, $itemKey) = explode("-", $key);
+            if (isset($json[$repeatKey]['repeat'][$iteration][$itemKey]) && $json[$repeatKey]['repeat'][$iteration][$itemKey][$json[$repeatKey]['repeat'][$iteration][$itemKey]['type']] != trim($datum)) {
+                $changeLog[] = Array('key' => $key, 'change' => Array('original' => $json[$repeatKey]['repeat'][$iteration][$itemKey][$json[$repeatKey]['repeat'][$iteration][$itemKey]['type']], 'new' => trim($datum)));
+                $json[$repeatKey]['repeat'][$iteration][$itemKey][$json[$repeatKey]['repeat'][$iteration][$itemKey]['type']] = trim($datum);
+            }
+        }
+    }
+
+    if (count($changeLog) > 0) addToLog('has updated', ' the analytics code', $changeLog);
 
     $fp = fopen($dataFile, 'w');
     fwrite($fp, json_encode($json));
@@ -750,7 +799,9 @@ function processBlog($files) {
                         $blogArr['types'][$pageMeta->name] = true;
                     }
                 }
+                $blog->innertext .= "<?=get('autocms-analytics.json', 'analytics')?>";
                 $blog->class = str_replace('auto-blog-head', '', $blog->class);
+
             } else if (strpos($blog->class, 'auto-blog-list') !== false) {
                 foreach($html->find('.auto-blog-list .auto-blog-title, .auto-blog-list .auto-blog-date, .auto-blog-list .auto-blog-bg-img, .auto-blog-list .auto-blog-img, .auto-blog-list .auto-blog-short, .auto-blog-list .auto-blog-full, .auto-blog-list .auto-blog-link') as $list) {
                     if (strpos($list->class, 'auto-blog-title') !== false) {
