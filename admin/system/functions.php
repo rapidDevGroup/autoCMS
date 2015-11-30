@@ -554,8 +554,16 @@ function copyApacheConfig() {
     if (file_exists('./other/robots.txt')) copy('./other/robots.txt', '../robots.txt');
 }
 
-function createXMLSitemap() {
+function createXMLSitemap()
+{
     $domain = str_ireplace('www.', '', $_SERVER["HTTP_HOST"]);
+
+    if (!file_exists("../sitemap.xml")) {
+        $file = '../robots.txt';
+        $sitemapLine = "\n\nSitemap: http://" . $domain . '/sitemap.xml';
+        file_put_contents($file, $sitemapLine, FILE_APPEND);
+    }
+
     $sitemap = new Sitemap('http://' . $domain . '/');
     $sitemap->setPath('../');
 
@@ -565,7 +573,7 @@ function createXMLSitemap() {
 
     $pages = getPageList();
     foreach ($pages as $page) {
-        if ($page != $postPageName && $page != 'error') {
+        if ($page != $postPageName && $page != 'error' && $page != 'index') {
             $sitemap->addItem($page . '/', '', 'daily');
         }
     }
