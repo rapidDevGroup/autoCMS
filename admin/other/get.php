@@ -12,18 +12,22 @@ function getPostID($external) {
 
 // todo: if blog get variable exist but not on the post page, also give 404
 
+
+$dataBlogListFile = 'admin/data/autocms-blog.json';
+if (file_exists($dataBlogListFile)) {
+    $jsonBlog = json_decode(file_get_contents($dataBlogListFile), true);
+    $baseCall = explode('/', $_SERVER['REQUEST_URI']);
+    if (!isset($_GET['blog']) && $jsonBlog['post-page'] == $baseCall[1]) {
+        make404();
+    }
+}
+
 // if request is a post, make sure file exists
 if (isset($_GET['blog']) && !file_exists($_SERVER['DOCUMENT_ROOT'] . '/admin/data/blog/blog-' . getPostID(strtolower($_GET['blog'])) . '.json')) {
     make404();
 } else if (isset($_GET['blog'])) {
     $dataBlogListFile = 'admin/data/autocms-blog.json';
     $jsonBlog = json_decode(file_get_contents($dataBlogListFile), true);
-
-    // get base request
-    $baseCall = explode('/', $_SERVER['REQUEST_URI']);
-    if ($jsonBlog['post-page'] != $baseCall[1]) {
-        make404();
-    }
 }
 
 function make404() {
@@ -39,12 +43,16 @@ function make404() {
 // get data
 function get($file, $key, $count = null, $secondary = null) {
     $dataFile = 'admin/data/' . $file;
-    $json = json_decode(file_get_contents($dataFile), true);
+    if (file_exists($dataFile)) {
+        $json = json_decode(file_get_contents($dataFile), true);
 
-    if (!is_null($secondary) && !is_null($count) && $json[$key]['type'] == 'repeat') {
-        return $json[$key]['repeat'][$count][$secondary][$json[$key]['repeat'][$count][$secondary]['type']];
+        if (!is_null($secondary) && !is_null($count) && $json[$key]['type'] == 'repeat') {
+            return $json[$key]['repeat'][$count][$secondary][$json[$key]['repeat'][$count][$secondary]['type']];
+        }
+        return $json[$key][$json[$key]['type']];
     }
-    return $json[$key][$json[$key]['type']];
+
+    return '';
 }
 
 // return count of the repeat
