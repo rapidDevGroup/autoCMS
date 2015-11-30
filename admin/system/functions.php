@@ -84,6 +84,12 @@ function getPageList() {
     return $json;
 }
 
+function getPostPageName() {
+    if (!file_exists("data/autocms-blog.json")) return '';
+    $json = json_decode(file_get_contents("data/autocms-blog.json"), true);
+    return $json['post-page'];
+}
+
 function hasNav() {
     return file_exists("data/autocms-nav.json");
 }
@@ -545,6 +551,31 @@ function getAllNavigationData($files) {
 
 function copyApacheConfig() {
     if (file_exists('./other/.htaccess')) copy('./other/.htaccess', '../.htaccess');
+    if (file_exists('./other/robots.txt')) copy('./other/robots.txt', '../robots.txt');
+}
+
+function createXMLSitemap() {
+    $domain = str_ireplace('www.', '', $_SERVER["HTTP_HOST"]);
+    $sitemap = new Sitemap('http://' . $domain . '/');
+    $sitemap->setPath('../');
+
+    $postPageName = getPostPageName();
+
+    $sitemap->addItem('', '', 'daily');
+
+    $pages = getPageList();
+    foreach ($pages as $page) {
+        if ($page != $postPageName && $page != 'error') {
+            $sitemap->addItem($page . '/', '', 'daily');
+        }
+    }
+
+    $blogs = getBlogList();
+    foreach ($blogs as $blog) {
+        $sitemap->addItem($postPageName . '/' . $blog['external'] . '/', '', 'monthly');
+    }
+
+    $sitemap->createSitemapIndex('http://' . $domain . '/', 'Today');
 }
 
 function uploadFiles($page, $isBlog = false) {
@@ -817,9 +848,8 @@ function getPostData($post_id) {
 }
 
 function getBlogList() {
-    $dataFile = 'data/autocms-blog.json';
-    $json = json_decode(file_get_contents($dataFile), true);
-
+    if (!file_exists("data/autocms-blog.json")) return [];
+    $json = json_decode(file_get_contents("data/autocms-blog.json"), true);
     return $json['posts'];
 }
 
@@ -883,6 +913,8 @@ function updateBlogPost($post_id, $data, $publish = false) {
     $fp = fopen($dataBlogFile, 'w');
     fwrite($fp, json_encode($jsonBlog));
     fclose($fp);
+
+    createXMLSitemap();
 }
 
 function publishPost($post_id) {
@@ -894,6 +926,8 @@ function publishPost($post_id) {
     $fp = fopen($dataBlogFile, 'w');
     fwrite($fp, json_encode($jsonBlog));
     fclose($fp);
+
+    createXMLSitemap();
 }
 
 function unpublishPost($post_id) {
@@ -905,6 +939,8 @@ function unpublishPost($post_id) {
     $fp = fopen($dataBlogFile, 'w');
     fwrite($fp, json_encode($jsonBlog));
     fclose($fp);
+
+    createXMLSitemap();
 }
 
 function trashPost($post_id) {

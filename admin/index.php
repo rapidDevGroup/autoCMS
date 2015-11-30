@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-define("VERSION", "0.2.12");
+define("VERSION", "0.2.14");
 define("_LOG_COUNT_MAX_", 20);
 
 require_once('system/Toro.php');
@@ -9,6 +9,7 @@ require_once('system/statusreturn.php');
 require_once('system/functions.php');
 require_once('system/handlers.php');
 require_once('system/simple_html_dom.php');
+require_once('system/sitemaps.php');
 
 ToroHook::add("404", function() {
     echo json_encode(StatusReturn::E404('404 Not Found!!'), JSON_NUMERIC_CHECK);
