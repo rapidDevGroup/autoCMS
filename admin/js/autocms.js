@@ -35,7 +35,7 @@ $(function() {
     });
 
     if ($container.exists()) {
-        $('textarea').summernote();
+        $('.editor').summernote();
 
         $('.note-toolbar button').addClass('dirtyOK');
 

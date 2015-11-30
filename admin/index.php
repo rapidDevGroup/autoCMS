@@ -31,6 +31,8 @@ Toro::serve(array(
     '/footer/update/'                           => 'Footer',
     '/settings/'                                => 'Settings',
     '/settings/update/'                         => 'Settings',
+    '/analytics/'                               => 'Analytics',
+    '/analytics/update/'                        => 'Analytics',
     '/blog/'                                    => 'Blog',
     '/blog/:alpha/:string/'                     => 'BlogPost',
     '/blog/:alpha/'                             => 'BlogPost',

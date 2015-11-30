@@ -80,6 +80,7 @@ class Dash {
             renameFiles($_POST['files']);
             copyApacheConfig();
             createXMLSitemap();
+            createAnalytics();
             addToLog('has initiate the CMS', 'on all pages');
 
             header('Location: /admin/');
@@ -118,6 +119,26 @@ class Settings {
             // todo: update settings
 
             header('Location: /admin/settings/?updated=true');
+        } else {
+            include_once('admin-pages/401.html');
+        }
+    }
+}
+
+class Analytics {
+    function get() {
+        if (checkPass() && !authNeeded()) {
+            include_once('admin-pages/analytics.php');
+        } else {
+            include_once('admin-pages/401.html');
+        }
+    }
+    function post() {
+        if (checkPass() && !authNeeded()) {
+
+            updateAnalytics($_POST);
+
+            header('Location: /admin/analytics/?updated=true');
         } else {
             include_once('admin-pages/401.html');
         }

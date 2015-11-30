@@ -73,7 +73,7 @@ $pages = getPageList();
                                 </li>
                             <?php } ?>
                             <?php if (hasBlog()) {?><li><a href="/admin/blog/" target="iframe"><i class="fa fa-pencil-square-o fa-fw"></i> Blog or News Feed</a></li><?php } ?>
-                            <?php if (false) {?><li><a href="/admin/languages/" target="iframe"><i class="fa fa-comments-o fa-fw"></i> Multi-Language</a></li><?php } ?>
+                            <?php if (hasAnalytics()) {?><li><a href="/admin/analytics/" target="iframe"><i class="fa fa-bar-chart fa-fw"></i> Analytics</a></li><?php } ?>
                             <?php if (hasSettings()) {?><li><a href="/admin/settings/" target="iframe"><i class="fa fa-cog fa-fw"></i> Settings</a></li><?php } ?>
                         </ul>
                     </div>
