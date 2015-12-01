@@ -606,12 +606,18 @@ function getAllNavigationData($files) {
                 $navigation->innertext = "<?=get('$dataFile', '$desc')?>";
                 $navigation->href = str_replace(Array('index.html', 'index.htm', '.html', '.htm'), '/', '/' . $navigation->href);
                 $navigation->href = str_replace('//', '/', $navigation->href);
+
+                $navigation->class = str_replace('auto-nav', '', $navigation->class);
+                if (trim($navigation->class) === '') $navigation->class = null;
             }
         }
 
         foreach($html->find('.auto-nav-internal') as $navigation) {
             $navigation->href = str_replace(Array('index.html', 'index.htm', '.html', '.htm'), '/', '/' . $navigation->href);
             $navigation->href = str_replace('//', '/', $navigation->href);
+
+            $navigation->class = str_replace('auto-nav-internal', '', $navigation->class);
+            if (trim($navigation->class) === '') $navigation->class = null;
         }
 
         // write html file
