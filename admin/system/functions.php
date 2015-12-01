@@ -148,6 +148,8 @@ function buildFooterDataFile($files) {
                         makeImageBGImage($edit, $footerArr, $dataFile, $fieldID, $desc);
                     } else if (strpos($edit->class, 'auto-edit-bg-img') !== false) {
                         makeImageBGImage($edit, $footerArr, $dataFile, $fieldID, $desc, true);
+                    } else if (strpos($edit->class, 'auto-link') !== false) {
+                        makeLink($edit, $footerArr, $dataFile, $fieldID, $desc);
                     } else if (strpos($edit->class, 'auto-edit-text') !== false) {
                         makeHTMLText($edit, $footerArr, $dataFile, $fieldID, $desc, 'text');
                     } else if (strpos($edit->class, 'auto-edit') !== false) {
@@ -184,6 +186,22 @@ function buildFooterDataFile($files) {
         fwrite($fp, json_encode($footerArr));
         fclose($fp);
     }
+}
+
+function makeLink(&$edit, &$dataArr, $dataFile, $fieldID, $desc, $count = null, $repeatFieldID = null) {
+    if (isset($edit->autocms)) $desc = $edit->autocms;
+
+    if (is_null($repeatFieldID)) {
+        $dataArr[$fieldID] = Array('link' => trim($edit->href), 'description' => $desc, 'type' => 'link');
+        $edit->href = "<?=get('$dataFile', '$fieldID')?>";
+    } else {
+        $dataArr[$fieldID]['repeat'][$count][$repeatFieldID] = Array('link' => trim($edit->href), 'description' => $desc, 'type' => 'link');
+        $edit->href = "<?=get('$dataFile', '$fieldID', " . '$x' . ", '$repeatFieldID')?>";
+    }
+
+    $edit->class = str_replace('auto-link', '', $edit->class);
+    if (trim($edit->class) === '') $edit->class = null;
+    $edit->autocms = null;
 }
 
 function makeHTMLText(&$edit, &$dataArr, $dataFile, $fieldID, $desc, $type = 'html', $count = null, $repeatFieldID = null) {
@@ -347,7 +365,7 @@ function buildDataFilesByTags($files) {
             $pageHead->class = str_replace('auto-head', '', $pageHead->class);
         }
 
-        foreach($html->find('.auto-color, .auto-edit, .auto-edit-text, .auto-edit-img, .auto-edit-bg-img, .auto-repeat') as $edit) {
+        foreach($html->find('.auto-color, .auto-edit, .auto-edit-text, .auto-link, .auto-edit-img, .auto-edit-bg-img, .auto-repeat') as $edit) {
             $fieldID = uniqid();
             $desc = '';
             if (strpos($edit->class, 'auto-repeat') !== false) {
@@ -365,6 +383,8 @@ function buildDataFilesByTags($files) {
                         makeImageBGImage($repeat, $data, $dataFile, $fieldID, $desc, false, $count, $repeatFieldID);
                     } else if (strpos($repeat->class, 'auto-edit-bg-img') !== false) {
                         makeImageBGImage($repeat, $data, $dataFile, $fieldID, $desc, true, $count, $repeatFieldID);
+                    } else if (strpos($repeat->class, 'auto-link') !== false) {
+                        makeLink($repeat, $data, $dataFile, $fieldID, $desc, $count, $repeatFieldID);
                     } else if (strpos($repeat->class, 'auto-edit-text') !== false) {
                         makeHTMLText($repeat, $data, $dataFile, $fieldID, $desc, 'text', $count, $repeatFieldID);
                     } else if (strpos($repeat->class, 'auto-edit') !== false) {
@@ -383,6 +403,8 @@ function buildDataFilesByTags($files) {
                 makeImageBGImage($edit, $data, $dataFile, $fieldID, $desc);
             } else if (strpos($edit->class, 'auto-edit-bg-img') !== false) {
                 makeImageBGImage($edit, $data, $dataFile, $fieldID, $desc, true);
+            } else if (strpos($edit->class, 'auto-link') !== false) {
+                makeLink($edit, $data, $dataFile, $fieldID, $desc);
             } else if (strpos($edit->class, 'auto-edit-text') !== false) {
                 makeHTMLText($edit, $data, $dataFile, $fieldID, $desc, 'text');
             } else if (strpos($edit->class, 'auto-edit') !== false) {
@@ -922,7 +944,7 @@ function updateBlogPost($post_id, $data, $publish = false) {
         $json = json_decode(file_get_contents($dataFile), true);
     } else {
         $isNew = true;
-        $json = Array('title' => null, 'keywords' => null, 'description' => null, 'author' => null, 'image' => null, 'image-alt-text' => null, 'short-blog' => null, 'full-blog' => null, 'link-text' => null);
+        $json = Array('title' => null, 'keywords' => null, 'description' => null, 'author' => null, 'image' => null, 'image-alt-text' => null, 'short-blog' => null, 'full-blog' => null, 'link-text' => null, 'link' => null);
     }
 
     foreach ($data as $key => $datum) {
@@ -936,12 +958,9 @@ function updateBlogPost($post_id, $data, $publish = false) {
         addToLog('has created', $data['title'] . ' blog', $changeLog);
     }
 
-    $fp = fopen($dataFile, 'w');
-    fwrite($fp, json_encode($json));
-    fclose($fp);
-
     $dataBlogFile = 'data/autocms-blog.json';
     $jsonBlog = json_decode(file_get_contents($dataBlogFile), true);
+
     $externalTitle = preg_replace('/[^a-z0-9-]/i', '', str_replace(' ', '-', strtolower(trim($json['title']))));
 
     if ($isNew || (isset($jsonBlog['posts'][$post_id]['external']) && $jsonBlog['posts'][$post_id]['external'] != $externalTitle)) {
@@ -968,6 +987,13 @@ function updateBlogPost($post_id, $data, $publish = false) {
     if ($publish) {
         $jsonBlog['posts'][$post_id]['published'] = $updateTime;
     }
+
+    $domain = str_ireplace('www.', '', $_SERVER["HTTP_HOST"]);
+    $json['link'] = 'http://' . $domain . '/' . $externalTitle . '/';
+
+    $fp = fopen($dataFile, 'w');
+    fwrite($fp, json_encode($json));
+    fclose($fp);
 
     $fp = fopen($dataBlogFile, 'w');
     fwrite($fp, json_encode($jsonBlog));

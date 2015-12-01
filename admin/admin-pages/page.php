@@ -25,6 +25,10 @@ include_once('header.php');
                             <div class="col-lg-9 col-sm-10">
                                 <input type="text" name="<?=$key?>" class="form-control" value="<?=$datum['text']?>" autocomplete="off">
                             </div>
+                        <?php } else if ($datum['type'] == 'link') { ?>
+                            <div class="col-lg-9 col-sm-10">
+                                <input type="text" name="<?=$key?>" class="form-control" value="<?=$datum['link']?>" autocomplete="off">
+                            </div>
                         <?php } else if ($datum['type'] == 'color') { ?>
                             <div class="col-lg-9 col-sm-10">
                                 <div class="input-group color-picker" data-align="left" data-format="rgba">

@@ -31,6 +31,7 @@ This is for people who do not wish to use a complicated site management system l
 * [Footer Tag](#footer-tag)
 * [Edit HTML Tag](#edit-html-tag)
 * [Edit Text Tag](#edit-text-tag)
+* [Edit Link Tag](#edit-link-tag)
 * [Image Tags](#image-tags)
 * [Repeating Tag](#repeating-tag)
 * [Blog/News Feed Tags](#blognews-feed-tags)
@@ -84,7 +85,7 @@ This will add information such as title, meta description, meta keywords, and me
 #### Edit HTML Tag
 
 ```HTML
-<div class="auto-edit">...</p>
+<div class="auto-edit">...</div>
 ```
 **TIP:** Best practice is to use div tags so multiple paragraphs can be added and style tags be seen in the CMS.
 
@@ -98,6 +99,16 @@ This will add information such as title, meta description, meta keywords, and me
 <p class="auto-edit-text">...</p>
 ```
 **TIP:** Best practice is to use non-div tags, auto-edit-text preserves the intended style by only allowing adding text but no HTML.
+
+---
+
+
+#### Edit Link Tag
+
+```HTML
+<a href="http://auto-cms.com/" class="auto-link">...</a>
+```
+**NOTE:** Cannot use two auto tags on the same element. To edit the link text, use a span with the class auto-edit inside the link tag.
 
 ---
 
