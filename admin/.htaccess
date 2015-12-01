@@ -1,6 +1,5 @@
 AddDefaultCharset UTF-8
 DirectoryIndex index.php
-AddHandler application/x-httpd-php55 .php
 
 <Files .htaccess>
     order allow,deny
