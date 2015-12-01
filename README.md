@@ -61,7 +61,12 @@ This will add information such as title, meta description, meta keywords, and me
 **NOTE:**
 * All auto-nav tags needs an autocms description attribute.
 * All navigation links that link to the same page and have the same text must have the same autocms description.
-* All internal site links require these tag.
+
+
+```HTML
+<a href="..." class="auto-nav-internal">...</a>
+```
+* All other internal site links require these tag.
 
 ---
 

@@ -609,6 +609,11 @@ function getAllNavigationData($files) {
             }
         }
 
+        foreach($html->find('.auto-nav-internal') as $navigation) {
+            $navigation->href = str_replace(Array('index.html', 'index.htm', '.html', '.htm'), '/', '/' . $navigation->href);
+            $navigation->href = str_replace('//', '/', $navigation->href);
+        }
+
         // write html file
         $fp = fopen('../' . $file, 'w');
         fwrite($fp, $html);
