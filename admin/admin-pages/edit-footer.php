@@ -32,6 +32,10 @@ $data = getFooterData();
                             <div class="col-lg-9 col-sm-10">
                                 <input name="<?=$key?>" class="form-control" value="<?=$datum['text']?>" autocomplete="off">
                             </div>
+                        <?php } else if ($datum['type'] == 'link') { ?>
+                            <div class="col-lg-9 col-sm-10">
+                                <input type="text" name="<?=$key?>" class="form-control" value="<?=$datum['link']?>" autocomplete="off">
+                            </div>
                         <?php } else if ($datum['type'] == 'image') { ?>
                             <div class="col-lg-7 col-sm-7">
                                 <img class="img-responsive img-thumbnail" src="<?=$datum['image']?>">

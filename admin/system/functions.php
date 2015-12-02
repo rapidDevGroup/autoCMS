@@ -139,7 +139,7 @@ function buildFooterDataFile($files) {
             $html = str_get_html($fileData);
 
             if (!$footerFound) {
-                foreach ($html->find('.auto-footer .auto-color, .auto-footer .auto-edit, .auto-footer .auto-edit-text, .auto-footer .auto-edit-img, .auto-footer .auto-edit-bg-img') as $edit) {
+                foreach ($html->find('.auto-footer .auto-color, .auto-footer .auto-edit, .auto-footer .auto-edit-text, .auto-footer .auto-link, .auto-footer .auto-edit-img, .auto-footer .auto-edit-bg-img') as $edit) {
                     $footerFound = true;
                     $fieldID = uniqid();
                     $desc = '';

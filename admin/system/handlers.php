@@ -81,7 +81,7 @@ class Dash {
             copyApacheConfig();
             createXMLSitemap();
             createAnalytics();
-            addToLog('has initiate the CMS', 'on all pages');
+            addToLog('has initiated the CMS', 'on all pages');
 
             header('Location: /admin/');
         } else {
