@@ -375,7 +375,7 @@ function buildDataFilesByTags($files) {
                 $count = 0;
                 $data[$fieldID]['repeat'][$count] = Array();
 
-                foreach($html->find('.auto-repeat .auto-color, .auto-repeat .auto-edit, .auto-repeat .auto-edit-text, .auto-repeat .auto-edit-img, .auto-repeat .auto-edit-bg-img') as $repeat) {
+                foreach($html->find('.auto-repeat .auto-color, .auto-repeat .auto-edit, .auto-repeat .auto-edit-text, .auto-repeat .auto-link, .auto-repeat .auto-edit-img, .auto-repeat .auto-edit-bg-img') as $repeat) {
                     $desc = '';
 
                     $repeatFieldID = uniqid();
@@ -1056,7 +1056,7 @@ function orderBlog() {
     $dataBlogFile = 'data/autocms-blog.json';
     $jsonBlog = json_decode(file_get_contents($dataBlogFile), true);
 
-    $jsonBlog['posts'] = arrayMSort($jsonBlog['posts'], array('published'=>SORT_DESC));
+    $jsonBlog['posts'] = arrayMSort($jsonBlog['posts'], array('created'=>SORT_DESC));
 
     $fp = fopen($dataBlogFile, 'w');
     fwrite($fp, json_encode($jsonBlog));
