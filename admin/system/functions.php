@@ -651,18 +651,18 @@ function createXMLSitemap()
 
     $postPageName = getPostPageName();
 
-    $sitemap->addItem('', '', 'daily');
+    $sitemap->addItem('', '1', 'daily');
 
     $pages = getPageList();
     foreach ($pages as $page) {
         if ($page != $postPageName && $page != 'error' && $page != 'index') {
-            $sitemap->addItem($page . '/', '', 'daily');
+            $sitemap->addItem($page . '/', '0.5', 'daily');
         }
     }
 
     $blogs = getBlogList();
     foreach ($blogs as $blog) {
-        $sitemap->addItem($postPageName . '/' . $blog['external'] . '/', '', 'monthly');
+        $sitemap->addItem($postPageName . '/' . $blog['external'] . '/', '1', 'monthly');
     }
 
     $sitemap->createSitemapIndex('http://' . $domain . '/', 'Today');
