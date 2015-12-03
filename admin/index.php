@@ -3,6 +3,7 @@ session_start();
 
 define("VERSION", "0.3.0");
 define("_LOG_COUNT_MAX_", 20);
+date_default_timezone_set('America/Toronto');
 
 require_once('system/Toro.php');
 require_once('system/statusreturn.php');

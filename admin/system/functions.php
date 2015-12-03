@@ -632,7 +632,7 @@ function getAllNavigationData($files) {
 }
 
 function copyApacheConfig() {
-    if (file_exists('./other/.htaccess')) copy('./other/.htaccess', '../.htaccess');
+    if (file_exists('./other/.htaccess2copy')) copy('./other/.htaccess2copy', '../.htaccess');
     if (file_exists('./other/robots.txt')) copy('./other/robots.txt', '../robots.txt');
 }
 
