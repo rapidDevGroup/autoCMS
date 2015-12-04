@@ -1,5 +1,6 @@
 <?php
 $post_id = null;
+$currentCount = 0;
 
 function getPostID($external) {
     $dataFile = 'admin/data/autocms-blog.json';
@@ -20,15 +21,15 @@ if (file_exists($dataBlogListFile)) {
     if (!isset($_GET['blog']) && $jsonBlog['post-page'] == $baseCall[1]) {
         make404();
     }
+    // if request is a post, make sure file exists
+    if (isset($_GET['blog']) && !file_exists($_SERVER['DOCUMENT_ROOT'] . '/admin/data/blog/blog-' . getPostID(strtolower($_GET['blog'])) . '.json')) {
+        make404();
+    }
+    if (isset($_GET['blog']) && !isset($jsonBlog['posts'][getPostID(strtolower($_GET['blog']))]['published'])) {
+        make404();
+    }
 }
 
-// if request is a post, make sure file exists
-if (isset($_GET['blog']) && !file_exists($_SERVER['DOCUMENT_ROOT'] . '/admin/data/blog/blog-' . getPostID(strtolower($_GET['blog'])) . '.json')) {
-    make404();
-} else if (isset($_GET['blog'])) {
-    $dataBlogListFile = 'admin/data/autocms-blog.json';
-    $jsonBlog = json_decode(file_get_contents($dataBlogListFile), true);
-}
 
 function make404() {
     header("HTTP/1.0 404 Not Found");
@@ -66,18 +67,28 @@ function repeatCount($file, $key) {
 // get the post data
 function getBlog($key, $count = null) {
     $dataBlogListFile = 'admin/data/autocms-blog.json';
-    $jsonBlog = json_decode(file_get_contents($dataBlogListFile), true);
+    if (file_exists($dataBlogListFile)) {
+        $jsonBlog = json_decode(file_get_contents($dataBlogListFile), true);
+    } else {
+        return '';
+    }
 
     if (!is_null($count)) {
-        $pageKey = array_keys($jsonBlog['posts'])[$count];
+        foreach ($jsonBlog['posts'] as $post) {
+            if (isset($post['published'])) {
+                break;
+            } else {
+                print "AHHHHH " . $currentCount;
+                $currentCount++;
+            }
+        }
+        $pageKey = array_keys($jsonBlog['posts'])[$count + $currentCount];
         $dataFile = 'admin/data/blog/blog-' . $pageKey . '.json';
         if (file_exists($dataFile)) $json = json_decode(file_get_contents($dataFile), true);
 
-        if ($key == 'link') {
-            return '/' . $jsonBlog['post-page'] . '/' . $jsonBlog['posts'][$pageKey]['external'] . '/';
-        } else if (isset($json[$key])) {
-            return $json[$key];
-        }
+        //if ($key != 'link') print_r($json);
+
+        return $json[$key];
     } else {
         $post_id = getPostID(strtolower($_GET['blog']));
         $dataFile = 'admin/data/blog/blog-' . $post_id . '.json';
@@ -92,8 +103,11 @@ function getBlog($key, $count = null) {
 // get how many blog list count to show on this page
 function blogCount($file, $key) {
     $dataBlogListFile = 'admin/data/autocms-blog.json';
-    $jsonBlog = json_decode(file_get_contents($dataBlogListFile), true);
-
+    if (file_exists($dataBlogListFile)) {
+        $jsonBlog = json_decode(file_get_contents($dataBlogListFile), true);
+    } else {
+        return false;
+    }
     $countPub = 0;
     foreach ($jsonBlog['posts'] as $data)
         if (isset($data['published'])) $countPub++;

@@ -363,6 +363,7 @@ function buildDataFilesByTags($files) {
         foreach($html->find('.auto-head') as $pageHead) {
             $pageHead->innertext .= "<?=get('autocms-analytics.json', 'analytics')?>";
             $pageHead->class = str_replace('auto-head', '', $pageHead->class);
+            if (trim($pageHead->class) === '') $pageHead->class = null;
         }
 
         foreach($html->find('.auto-color, .auto-edit, .auto-edit-text, .auto-link, .auto-edit-img, .auto-edit-bg-img, .auto-repeat') as $edit) {
@@ -636,8 +637,7 @@ function copyApacheConfig() {
     if (file_exists('./other/robots.txt')) copy('./other/robots.txt', '../robots.txt');
 }
 
-function createXMLSitemap()
-{
+function createXMLSitemap() {
     $domain = str_ireplace('www.', '', $_SERVER["HTTP_HOST"]);
 
     if (!file_exists("../sitemap.xml")) {
@@ -813,7 +813,7 @@ function processBlog($files) {
         mkdir($blogFolder);
     }
 
-    $blogArr = Array('post-page' => null,'types' => Array('title' => false, 'keywords' => false, 'description' => false, 'author' => false, 'date' => false, 'image' => false, 'image-alt-text' => false, 'short-blog' => false, 'full-blog' => false, 'link-text' => false), 'posts' => Array());
+    $blogArr = Array('post-page' => null,'types' => Array('title' => false, 'keywords' => false, 'description' => false, 'author' => false, 'date' => false, 'image' => false, 'image-alt-text' => false, 'short-blog' => false, 'full-blog' => false, 'link-text' => false, 'link-href' => false), 'posts' => Array());
 
     foreach ($files as $file) {
         $fileData = file_get_contents('../' . $file, true);
@@ -836,7 +836,7 @@ function processBlog($files) {
                 $blog->class = str_replace('auto-blog-head', '', $blog->class);
 
             } else if (strpos($blog->class, 'auto-blog-list') !== false) {
-                foreach($html->find('.auto-blog-list .auto-blog-title, .auto-blog-list .auto-blog-date, .auto-blog-list .auto-blog-bg-img, .auto-blog-list .auto-blog-img, .auto-blog-list .auto-blog-short, .auto-blog-list .auto-blog-full, .auto-blog-list .auto-blog-link') as $list) {
+                foreach($html->find('.auto-blog-list .auto-blog-title, .auto-blog-list .auto-blog-date, .auto-blog-list .auto-blog-bg-img, .auto-blog-list .auto-blog-img, .auto-blog-list .auto-blog-short, .auto-blog-list .auto-blog-full, .auto-blog-list .auto-blog-link, .auto-blog-list .auto-blog-link-href') as $list) {
                     if (strpos($list->class, 'auto-blog-title') !== false) {
                         $list->innertext = '<?=getBlog("title", "$x")?>';
                         $list->class = str_replace('auto-blog-title', '', $list->class);
@@ -868,6 +868,10 @@ function processBlog($files) {
                         $list->innertext = '<?=getBlog("link-text", "$x")?>';
                         $list->class = str_replace('auto-blog-link', '', $list->class);
                         $blogArr['types']['link-text'] = true;
+                    } else if (strpos($list->class, 'auto-blog-link-href') !== false) {
+                        $list->href = '<?=getBlog("link-href", "$x")?>';
+                        $list->class = str_replace('auto-blog-link-href', '', $list->class);
+                        $blogArr['types']['link-href'] = true;
                     }
                     if (trim($list->class) === '') $list->class = null;
                 }
@@ -955,7 +959,7 @@ function updateBlogPost($post_id, $data, $publish = false) {
         $json = json_decode(file_get_contents($dataFile), true);
     } else {
         $isNew = true;
-        $json = Array('title' => null, 'keywords' => null, 'description' => null, 'author' => null, 'image' => null, 'image-alt-text' => null, 'short-blog' => null, 'full-blog' => null, 'link-text' => null, 'link' => null);
+        $json = Array('title' => null, 'keywords' => null, 'description' => null, 'author' => null, 'image' => null, 'image-alt-text' => null, 'short-blog' => null, 'full-blog' => null, 'link-text' => null, 'link-href' => null);
     }
 
     foreach ($data as $key => $datum) {
@@ -1000,7 +1004,8 @@ function updateBlogPost($post_id, $data, $publish = false) {
     }
 
     $domain = str_ireplace('www.', '', $_SERVER["HTTP_HOST"]);
-    $json['link'] = 'http://' . $domain . '/' . $externalTitle . '/';
+    $postPage = $jsonBlog['post-page'];
+    $json['link-href'] = 'http://' . $domain . '/' . $postPage . '/' . $externalTitle . '/';
 
     $fp = fopen($dataFile, 'w');
     fwrite($fp, json_encode($json));
@@ -1056,7 +1061,7 @@ function orderBlog() {
     $dataBlogFile = 'data/autocms-blog.json';
     $jsonBlog = json_decode(file_get_contents($dataBlogFile), true);
 
-    $jsonBlog['posts'] = arrayMSort($jsonBlog['posts'], array('created'=>SORT_DESC));
+    $jsonBlog['posts'] = arrayMSort($jsonBlog['posts'], array('published'=>SORT_DESC));
 
     $fp = fopen($dataBlogFile, 'w');
     fwrite($fp, json_encode($jsonBlog));

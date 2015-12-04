@@ -42,7 +42,7 @@ deny from all
 
 <IfModule mod_deflate.c>
 	#The following line also enables compression by file content type, for the following list of Content-Type:s
-	AddOutputFilterByType DEFLATE text/html text/plain text/xml application/xml text/javascript text/css text/plain application/json
+	AddOutputFilterByType DEFLATE text/html text/plain text/xml application/xml text/javascript application/javascript text/css text/plain application/json
 
 	#The following lines are to avoid bugs with some browsers
 	BrowserMatch ^Mozilla/4 gzip-only-text/html

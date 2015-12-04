@@ -37,7 +37,7 @@ $(function() {
     if ($container.exists()) {
         $('.editor').summernote();
 
-        $('.note-toolbar button').addClass('dirtyOK');
+        $('.note-toolbar button, .note-toolbar a').addClass('dirtyOK');
 
         $('.desc-edit').editable({'emptytext': 'no description'});
     }
