@@ -170,10 +170,14 @@ This would produce the following with one addition repeat added in the CMS.
 This works like auto-repeat but has special blog tags. Use this to list all your blog posts on a page.
 ```HTML
 <div class="auto-blog-list">
-    <div class="auto-blog-title"></div>
-    <img class="auto-blog-img">
-    <div class="auto-blog-short"></div>
-    <div class="auto-blog-date"></div>
+    <a class="auto-blog-link-href">
+        <div class="auto-blog-title"></div>
+        <img class="auto-blog-img">
+        <div class="auto-blog-short"></div>
+        <div class="auto-blog-date"></div>
+    </a>
+
+    <!-- Optional: this does the link and link text if you wish to use a different link text then the above options -->
     <a class="auto-blog-link"></a>
 </div>
 ```

@@ -662,7 +662,9 @@ function createXMLSitemap() {
 
     $blogs = getBlogList();
     foreach ($blogs as $blog) {
-        $sitemap->addItem($postPageName . '/' . $blog['external'] . '/', '1', 'monthly');
+        if (isset($blog['published'])) {
+            $sitemap->addItem($postPageName . '/' . $blog['external'] . '/', '1', 'monthly');
+        }
     }
 
     $sitemap->createSitemapIndex('http://' . $domain . '/', 'Today');
