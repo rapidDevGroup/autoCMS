@@ -1,33 +1,170 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head class="auto-blog-head">
-    <title>Test content management</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="keywords" content="">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <style>
-        .small-bg {
-            width: 200px;
-            height: 100px;
-        }
-    </style>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <meta property="og:title" content="Auto-CMS | Template" />
+  <meta property="og:site_name" content="Auto CMS Template"/>
+  <meta property="og:url" content="http://auto-cms.com/" />
+  <meta property="og:description" content="This tool allows you to create a content management system from HTML, CSS, and Javascript, without knowing back end programing." />
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="" />
+  <meta property="article:author" content="https://www.facebook.com/mgodard3" />
+
+  <title>Auto-CMS | Template</title>
+
+  <!-- Bootstrap Core CSS -->
+  <link href="/assets/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link href="/assets/css/common.css" rel="stylesheet">
+
+  <!-- Custom Fonts -->
+  <link href="/assets/libs/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+  <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
 </head>
 <body>
-    <nav>
-        <a href="/" class="auto-nav" autocms="withTags navigation">Home</a> | <a href="blog.html" class="auto-nav" autocms="withoutTags navigation">Blog</a>
-    </nav>
-    <br><br>
 
-    <div class="auto-blog-post">
-        <div class="auto-blog-title"></div>
-        <div class="auto-blog-date"></div>
-        <div class="auto-blog-bg-img small-bg"></div>
-        <div class="auto-blog-full"></div>
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+  <div class="container">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header page-scroll">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand auto-nav" href="index.html" autocms="top left corner">Auto-CMS.com</a>
     </div>
 
-    <div class="auto-footer">
-        <div class="auto-edit-text" autocms="footer copyright">&copy; auto-CMS.com</div>
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          <a href="index.html" class="auto-nav" autocms="Home Nav">Blog</a>
+        </li>
+        <li>
+          <a href="about.html" class="auto-nav" autocms="About Nav">About Me</a>
+        </li>
+      </ul>
     </div>
+    <!-- /.navbar-collapse -->
+  </div>
+  <!-- /.container -->
+</nav>
+
+<div class="auto-blog-post">
+  <!-- Page Header -->
+  <!-- Set your background image for this header on the line below. -->
+  <header class="intro-header auto-blog-bg-img" style="background-image: url('/assets/img/post-bg.jpg')">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+          <div class="post-heading">
+            <h1 class="auto-blog-title">Man must explore, and this is exploration at its greatest</h1>
+            <h2 class="subheading auto-blog-short">Problems look mighty small from 150 miles up</h2>
+            <span class="meta auto-blog-date">August 24, 2014</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Post Content -->
+  <article>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+          <div class="auto-blog-full">
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras viverra libero vel molestie commodo. Ut fringilla leo purus, quis finibus nibh rhoncus non. Sed enim magna, condimentum sit amet pellentesque ac, dapibus id ipsum. Vivamus et massa ullamcorper, molestie magna quis, commodo turpis. Integer tempus urna lorem, in commodo enim varius ac. Suspendisse luctus vel augue vitae tempus. Praesent a nulla placerat, tincidunt felis non, tincidunt dui. Curabitur felis quam, luctus sodales dui non, rhoncus bibendum diam. Sed ac vulputate turpis. Nam vitae est eu lorem rutrum tristique. Etiam dictum condimentum condimentum. Vestibulum id velit eget quam tempus dapibus et non enim. Aliquam dolor lorem, lacinia a facilisis at, semper porta augue. Nulla facilisis venenatis elit quis fermentum. Donec viverra mauris purus. Mauris sodales lorem non tempor ultricies.</p>
+
+            <p>Nullam a auctor nisi. Pellentesque dictum, odio ac varius consectetur, arcu mauris venenatis est, ac pulvinar odio odio et dolor. Vestibulum id sem vitae felis dignissim interdum. Sed ac lobortis ante. Nulla non aliquet lorem. In rutrum mi eget fringilla hendrerit. Nunc nisl nisi, semper venenatis ante ut, sodales aliquam felis.</p>
+
+            <p>Sed porta rutrum ex eget dictum. Ut vel dignissim velit. Aliquam sed porttitor magna. Sed ultrices dictum eros eu sodales. Vivamus laoreet arcu orci. Donec in nulla at justo ornare semper ac sit amet velit. Mauris maximus dapibus nisi, non vehicula nisi convallis eu. Fusce consectetur posuere mattis. Curabitur sollicitudin tempor purus, id tempor erat convallis non. Etiam nec urna eu erat ultrices mollis. In viverra consequat turpis, sed ultricies quam scelerisque eget. Proin congue mi lectus, ut convallis massa accumsan vel. Curabitur scelerisque arcu vel porttitor ornare.</p>
+
+            <p>Suspendisse eros arcu, dignissim eu mauris vel, bibendum faucibus nibh. Sed cursus libero neque, bibendum mollis ante vestibulum ac. Phasellus auctor hendrerit sem tincidunt elementum. Proin ac nibh nec lectus iaculis posuere et lacinia libero. Maecenas quis eros facilisis magna ornare semper. Aliquam erat volutpat. Sed finibus venenatis elit, non auctor nulla sodales non. Suspendisse a orci sed ligula gravida cursus at vulputate eros.</p>
+
+            <p>Cras tristique risus eget iaculis fermentum. Sed consectetur lacus eu elit pellentesque egestas. Nunc tempus risus augue, id luctus tellus aliquam ac. Nunc eu vulputate risus, non faucibus libero. Vivamus in felis non ex semper pellentesque. Donec vitae condimentum lacus. Phasellus dapibus eleifend dolor vitae condimentum. Aenean ac sagittis risus. Pellentesque neque magna, dignissim eget egestas eu, porta vel ligula. Vivamus nec orci vitae justo laoreet aliquam. Mauris in egestas ex. Sed pellentesque quam in augue ultricies vulputate. Cras eget tristique libero, in ultrices leo. Vivamus in vulputate augue, vel sodales magna</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+</div>
+
+<hr>
+
+<!-- Footer -->
+<footer class="auto-footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center">
+          <li>
+            <a href="https://github.com/rapidDevGroup/autoCMS" target="_blank" class="auto-link" autocms="github link">
+                <span class="fa-stack fa-lg">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                </span>
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com/rapidDevGroup/autoCMS" target="_blank" class="auto-link" autocms="facebook link">
+                <span class="fa-stack fa-lg">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                </span>
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com/rapidDevGroup/autoCMS" target="_blank" class="auto-link" autocms="twitter link">
+                <span class="fa-stack fa-lg">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                </span>
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com/rapidDevGroup/autoCMS" target="_blank" class="auto-link" autocms="gplus link">
+                <span class="fa-stack fa-lg">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                </span>
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com/rapidDevGroup/autoCMS" target="_blank" class="auto-link" autocms="youtube link">
+                <span class="fa-stack fa-lg">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-youtube fa-stack-1x fa-inverse"></i>
+                </span>
+            </a>
+          </li>
+        </ul>
+        <p class="copyright text-muted auto-edit-text">Copyright &copy; Auto-CMS.com 2015</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/assets/libs/jquery/jquery-2.1.4.min.js"></script>
+<!-- Bootstrap Core JavaScript -->
+<script src="/assets/libs/bootstrap/js/bootstrap.min.js"></script>
+<!-- Custom Theme JavaScript -->
+<script src="/assets/js/common.js"></script>
 </body>
 </html>
