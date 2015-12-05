@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-define("VERSION", "0.3.3");
+define("VERSION", "0.3.4");
 define("_LOG_COUNT_MAX_", 20);
 date_default_timezone_set('America/Toronto');
 
@@ -17,7 +17,7 @@ ToroHook::add("404", function() {
 });
 
 ToroHook::add("404Web", function() {
-    include_once('admin-pages/404.html');
+    include_once('404.html');
 });
 
 Toro::serve(array(
