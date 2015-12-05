@@ -11,9 +11,6 @@ function getPostID($external) {
     return null;
 }
 
-// todo: if blog get variable exist but not on the post page, also give 404
-
-
 $dataBlogListFile = 'admin/data/autocms-blog.json';
 if (file_exists($dataBlogListFile)) {
     $jsonBlog = json_decode(file_get_contents($dataBlogListFile), true);
@@ -30,13 +27,12 @@ if (file_exists($dataBlogListFile)) {
     }
 }
 
-
 function make404() {
     header("HTTP/1.0 404 Not Found");
     if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/error.php')) {
         include_once('error.php');
     } else {
-        print "<!DOCTYPE html><html><head><title>404 Not Found</title></head><body><h1>Not Found</h1><p>The requested URL was not found on this server.</p></body></html>";
+        print "<!DOCTYPE html><html><head><title>404 Not Found</title></head><body><h1>Not Found</h1><p>The requested URL was not found on this server..</p></body></html>";
     }
     die();
 }

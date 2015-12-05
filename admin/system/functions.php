@@ -107,11 +107,13 @@ function hasAnalytics() {
 }
 
 function createAnalytics() {
-    $data = Array();
-    $data['analytics'] = Array('analytics' => '', 'description' => 'analytics code', 'type' => 'analytics');
-    $fp = fopen('data/autocms-analytics.json', 'w');
-    fwrite($fp, json_encode($data));
-    fclose($fp);
+    if (!file_exists("data/autocms-analytics.json")) {
+        $data = Array();
+        $data['analytics'] = Array('analytics' => '', 'description' => 'analytics code', 'type' => 'analytics');
+        $fp = fopen('data/autocms-analytics.json', 'w');
+        fwrite($fp, json_encode($data));
+        fclose($fp);
+    }
 }
 
 function getAnalyticsData() {
@@ -131,57 +133,61 @@ function buildFooterDataFile($files) {
     if (!footerExists()) {
         $footerArr = Array();
         $footerFound = false;
+    } else {
+        $footerFound = true;
+    }
 
-        foreach ($files as $file) {
-            $fileData = file_get_contents('../' . $file, true);
-            $dataFile = 'autocms-footer.json';
+    foreach ($files as $file) {
+        $fileData = file_get_contents('../' . $file, true);
+        $dataFile = 'autocms-footer.json';
 
-            $html = str_get_html($fileData);
+        $html = str_get_html($fileData);
 
-            if (!$footerFound) {
-                foreach ($html->find('.auto-footer .auto-color, .auto-footer .auto-edit, .auto-footer .auto-edit-text, .auto-footer .auto-link, .auto-footer .auto-edit-img, .auto-footer .auto-edit-bg-img') as $edit) {
-                    $footerFound = true;
-                    $fieldID = uniqid();
-                    $desc = '';
+        if (!$footerFound) {
+            foreach ($html->find('.auto-footer .auto-color, .auto-footer .auto-edit, .auto-footer .auto-edit-text, .auto-footer .auto-link, .auto-footer .auto-edit-img, .auto-footer .auto-edit-bg-img') as $edit) {
+                $footerFound = true;
+                $fieldID = uniqid();
+                $desc = '';
 
-                    if (strpos($edit->class, 'auto-edit-img') !== false) {
-                        makeImageBGImage($edit, $footerArr, $dataFile, $fieldID, $desc);
-                    } else if (strpos($edit->class, 'auto-edit-bg-img') !== false) {
-                        makeImageBGImage($edit, $footerArr, $dataFile, $fieldID, $desc, true);
-                    } else if (strpos($edit->class, 'auto-link') !== false) {
-                        makeLink($edit, $footerArr, $dataFile, $fieldID, $desc);
-                    } else if (strpos($edit->class, 'auto-edit-text') !== false) {
-                        makeHTMLText($edit, $footerArr, $dataFile, $fieldID, $desc, 'text');
-                    } else if (strpos($edit->class, 'auto-edit') !== false) {
-                        makeHTMLText($edit, $footerArr, $dataFile, $fieldID, $desc);
-                    } else if (strpos($edit->class, 'auto-color') !== false) {
-                        makeColor($edit, $footerArr, $dataFile, $fieldID, $desc);
-                    }
-                }
-
-                $footerHTML = '';
-                foreach ($html->find('.auto-footer') as $edit) {
-                    $edit->class = str_replace('auto-footer', '', $edit->class);
-                    if (trim($edit->class) === '') $edit->class = null;
-                    $footerHTML = clone $edit;
-                    $edit->outertext = '<?php require_once("admin/other/autocms-footer.php") ?>';
-                }
-
-                $fp = fopen('other/autocms-footer.php', 'w');
-                fwrite($fp, $footerHTML);
-                fclose($fp);
-
-            } else {
-                foreach ($html->find('.auto-footer') as $edit) {
-                    $edit->outertext = '<?php require_once("admin/other/autocms-footer.php") ?>';
+                if (strpos($edit->class, 'auto-edit-img') !== false) {
+                    makeImageBGImage($edit, $footerArr, $dataFile, $fieldID, $desc);
+                } else if (strpos($edit->class, 'auto-edit-bg-img') !== false) {
+                    makeImageBGImage($edit, $footerArr, $dataFile, $fieldID, $desc, true);
+                } else if (strpos($edit->class, 'auto-link') !== false) {
+                    makeLink($edit, $footerArr, $dataFile, $fieldID, $desc);
+                } else if (strpos($edit->class, 'auto-edit-text') !== false) {
+                    makeHTMLText($edit, $footerArr, $dataFile, $fieldID, $desc, 'text');
+                } else if (strpos($edit->class, 'auto-edit') !== false) {
+                    makeHTMLText($edit, $footerArr, $dataFile, $fieldID, $desc);
+                } else if (strpos($edit->class, 'auto-color') !== false) {
+                    makeColor($edit, $footerArr, $dataFile, $fieldID, $desc);
                 }
             }
 
-            $fp = fopen('../' . $file, 'w');
-            fwrite($fp, $html);
+            $footerHTML = '';
+            foreach ($html->find('.auto-footer') as $edit) {
+                $edit->class = str_replace('auto-footer', '', $edit->class);
+                if (trim($edit->class) === '') $edit->class = null;
+                $footerHTML = clone $edit;
+                $edit->outertext = '<?php require_once("admin/other/autocms-footer.php") ?>';
+            }
+
+            $fp = fopen('other/autocms-footer.php', 'w');
+            fwrite($fp, $footerHTML);
             fclose($fp);
+
+        } else {
+            foreach ($html->find('.auto-footer') as $edit) {
+                $edit->outertext = '<?php require_once("admin/other/autocms-footer.php") ?>';
+            }
         }
 
+        $fp = fopen('../' . $file, 'w');
+        fwrite($fp, $html);
+        fclose($fp);
+    }
+
+    if (!footerExists()) {
         $fp = fopen('data/autocms-footer.json', 'w');
         fwrite($fp, json_encode($footerArr));
         fclose($fp);
@@ -634,13 +640,13 @@ function getAllNavigationData($files) {
 
 function copyApacheConfig() {
     if (file_exists('./other/.htaccess2copy')) copy('./other/.htaccess2copy', '../.htaccess');
-    if (file_exists('./other/robots.txt')) copy('./other/robots.txt', '../robots.txt');
+    if (file_exists('./other/robots.txt') && !file_exists('../robots.txt')) copy('./other/robots.txt', '../robots.txt');
 }
 
 function createXMLSitemap() {
     $domain = str_ireplace('www.', '', $_SERVER["HTTP_HOST"]);
 
-    if (!file_exists("../sitemap.xml")) {
+    if (!file_exists("../sitemap.xml") && file_exists("../robots.txt")) {
         $file = '../robots.txt';
         $sitemapLine = "\n\nSitemap: http://" . $domain . '/sitemap.xml';
         file_put_contents($file, $sitemapLine, FILE_APPEND);
@@ -815,7 +821,11 @@ function processBlog($files) {
         mkdir($blogFolder);
     }
 
-    $blogArr = Array('post-page' => null,'types' => Array('title' => false, 'keywords' => false, 'description' => false, 'author' => false, 'date' => false, 'image' => false, 'image-alt-text' => false, 'short-blog' => false, 'full-blog' => false, 'link-text' => false, 'link-href' => false), 'posts' => Array());
+    if (!file_exists($dataFile)) {
+        $blogArr = Array('post-page' => null,'types' => Array('title' => false, 'keywords' => false, 'description' => false, 'author' => false, 'date' => false, 'image' => false, 'image-alt-text' => false, 'short-blog' => false, 'full-blog' => false, 'link-text' => false, 'link-href' => false), 'posts' => Array());
+    } else {
+        $blogArr = json_decode(file_get_contents($dataFile), true);
+    }
 
     foreach ($files as $file) {
         $fileData = file_get_contents('../' . $file, true);
