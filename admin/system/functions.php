@@ -364,6 +364,16 @@ function buildDataFilesByTags($files) {
                 $data[$pageMeta->name] = Array('text' => $pageMeta->content, 'description' => $pageMeta->name, 'type' => 'text');
                 $pageMeta->content = "<?=get('$dataFile', '$pageMeta->name')?>";
             }
+            if (isset($pageMeta->property) && isset($pageMeta->content)) {
+                $property = preg_replace("/[^a-z^A-Z^0-9_-]/", "", $pageMeta->property);
+                if ($pageMeta->property == "og:image") {
+                    $data[$property] = Array('image' => $pageMeta->content, 'description' => $pageMeta->property, 'type' => 'image');
+                    $pageMeta->content = "<?=get('$dataFile', '$property')?>";
+                } else {
+                    $data[$property] = Array('text' => $pageMeta->content, 'description' => $pageMeta->property, 'type' => 'text');
+                    $pageMeta->content = "<?=get('$dataFile', '$property')?>";
+                }
+            }
         }
 
         foreach($html->find('.auto-head') as $pageHead) {
@@ -802,16 +812,22 @@ function getLogData($num = 0, $get = null, $user = null) {
 }
 
 function makeDateFolders() {
+    if (!is_dir($_SERVER['DOCUMENT_ROOT'] . '/assets/')) {
+        mkdir($_SERVER['DOCUMENT_ROOT'] . '/assets/');
+    }
+    if (!is_dir($_SERVER['DOCUMENT_ROOT'] . '/assets/auto-images/')) {
+        mkdir($_SERVER['DOCUMENT_ROOT'] . '/assets/auto-images/');
+    }
     $year = date("Y", time());
-    if (!is_dir($_SERVER['DOCUMENT_ROOT'] . '/admin/images/'.$year.'/')) {
-        mkdir($_SERVER['DOCUMENT_ROOT'] . '/admin/images/'.$year.'/');
+    if (!is_dir($_SERVER['DOCUMENT_ROOT'] . '/assets/auto-images/'.$year.'/')) {
+        mkdir($_SERVER['DOCUMENT_ROOT'] . '/assets/auto-images/'.$year.'/');
     }
     $month = date("m", time());
-    if (!is_dir($_SERVER['DOCUMENT_ROOT'] . '/admin/images/'.$year.'/'.$month.'/')) {
-        mkdir($_SERVER['DOCUMENT_ROOT'] . '/admin/images/'.$year.'/'.$month.'/');
+    if (!is_dir($_SERVER['DOCUMENT_ROOT'] . '/assets/auto-images/'.$year.'/'.$month.'/')) {
+        mkdir($_SERVER['DOCUMENT_ROOT'] . '/assets/auto-images/'.$year.'/'.$month.'/');
     }
 
-    return '/admin/images/'.$year.'/'.$month.'/';
+    return '/assets/auto-images/'.$year.'/'.$month.'/';
 }
 
 function processBlog($files) {
@@ -822,7 +838,7 @@ function processBlog($files) {
     }
 
     if (!file_exists($dataFile)) {
-        $blogArr = Array('post-page' => null,'types' => Array('title' => false, 'keywords' => false, 'description' => false, 'author' => false, 'date' => false, 'image' => false, 'image-alt-text' => false, 'short-blog' => false, 'full-blog' => false, 'link-text' => false, 'link-href' => false), 'posts' => Array());
+        $blogArr = Array('post-page' => null, 'og-types' => Array(), 'types' => Array('title' => false, 'keywords' => false, 'description' => false, 'author' => false, 'date' => false, 'image' => false, 'image-alt-text' => false, 'short-blog' => false, 'full-blog' => false, 'link-text' => false, 'link-href' => false, 'open-graph'), 'posts' => Array());
     } else {
         $blogArr = json_decode(file_get_contents($dataFile), true);
     }
@@ -842,6 +858,20 @@ function processBlog($files) {
                     if ($pageMeta->name == 'keywords' || $pageMeta->name == 'description' || $pageMeta->name == 'author') {
                         $pageMeta->content = "<?=getBlog('$pageMeta->name')?>";
                         $blogArr['types'][$pageMeta->name] = true;
+                    }
+                    if (isset($pageMeta->property) && isset($pageMeta->content)) {
+                        $property = preg_replace("/[^a-z^A-Z^0-9_-]/", "", $pageMeta->property);
+                        if ($pageMeta->property == "og:image") {
+                            $data[$property] = Array('image' => $pageMeta->content, 'description' => $pageMeta->property, 'type' => 'image');
+                            $pageMeta->content = "<?=get('$dataFile', '$property')?>";
+                            $blogArr['types']['open-graph'] = true;
+                            $blogArr['og-types'][$property] = $pageMeta->property;
+                        } else {
+                            $data[$property] = Array('text' => $pageMeta->content, 'description' => $pageMeta->property, 'type' => 'text');
+                            $pageMeta->content = "<?=get('$dataFile', '$property')?>";
+                            $blogArr['types']['open-graph'] = true;
+                            $blogArr['og-types'][$property] = $pageMeta->property;
+                        }
                     }
                 }
                 $blog->innertext .= "<?=get('autocms-analytics.json', 'analytics')?>";
@@ -875,15 +905,15 @@ function processBlog($files) {
                         $list->innertext = '<?=getBlog("date", "$x")?>';
                         $list->class = str_replace('auto-blog-date', '', $list->class);
                         $blogArr['types']['date'] = true;
+                    } else if (strpos($list->class, 'auto-blog-link-href') !== false) {
+                        $list->href = '<?=getBlog("link-href", "$x")?>';
+                        $list->class = str_replace('auto-blog-link-href', '', $list->class);
+                        $blogArr['types']['link-href'] = true;
                     } else if (strpos($list->class, 'auto-blog-link') !== false) {
                         $list->href = '<?=getBlog("link", "$x")?>';
                         $list->innertext = '<?=getBlog("link-text", "$x")?>';
                         $list->class = str_replace('auto-blog-link', '', $list->class);
                         $blogArr['types']['link-text'] = true;
-                    } else if (strpos($list->class, 'auto-blog-link-href') !== false) {
-                        $list->href = '<?=getBlog("link-href", "$x")?>';
-                        $list->class = str_replace('auto-blog-link-href', '', $list->class);
-                        $blogArr['types']['link-href'] = true;
                     }
                     if (trim($list->class) === '') $list->class = null;
                 }
@@ -946,6 +976,13 @@ function getPostFields() {
     $json = json_decode(file_get_contents($dataFile), true);
 
     return $json['types'];
+}
+
+function getPostOGTypes() {
+    $dataFile = 'data/autocms-blog.json';
+    $json = json_decode(file_get_contents($dataFile), true);
+
+    return $json['og-types'];
 }
 
 function getPostData($post_id) {
