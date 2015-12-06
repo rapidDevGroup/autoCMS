@@ -17,8 +17,9 @@ $openGraphTypes = getPostOGTypes();
                     <div class="form-group">
                         <label class="col-lg-2 col-sm-2 control-label">
                             <?=$key?>
+                            <?php $key = str_replace(':', '', $key); ?>
                         </label>
-                        <?php if ($key == 'og:image') { ?>
+                        <?php if ($key == 'ogimage') { ?>
                             <div class="col-lg-7 col-sm-7">
                                 <img id="<?=$key?>-image" class="img-responsive img-thumbnail" src="<?php if(isset($postInfo[$key])) { print $postInfo[$key]; } ?>">
                             </div>
