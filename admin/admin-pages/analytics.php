@@ -1,6 +1,7 @@
 <?php
 include_once('header.php');
-$data = getAnalyticsData();
+$analyticsData = new AnalyticsData();
+$data = $analyticsData->getData();
 ?>
 <div class="container">
     <div class="row">

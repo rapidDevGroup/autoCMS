@@ -1,11 +1,12 @@
 <?php
 session_start();
 
-define("VERSION", "0.3.5");
+define("VERSION", "0.3.6");
 define("_LOG_COUNT_MAX_", 20);
 date_default_timezone_set('America/Toronto');
 
 require_once('system/Toro.php');
+require_once('system/classes.php');
 require_once('system/statusreturn.php');
 require_once('system/functions.php');
 require_once('system/handlers.php');
@@ -40,8 +41,8 @@ Toro::serve(array(
     '/blog/:alpha/:string/'                     => 'BlogPost',
     '/blog/:alpha/'                             => 'BlogPost',
     '/dash/:alpha/'                             => 'Dash',
-    '/page/:alpha/'                             => 'Page',
-    '/page/:alpha/update/'                      => 'Page',
+    '/page/:alpha/'                             => 'Pages',
+    '/page/:alpha/update/'                      => 'Pages',
     '/page/:alpha/desc/'                        => 'Description',
     '/page/:alpha/repeat/:key/'                 => 'Repeat',
     '/page/:alpha/repeat/:key/update/'          => 'Repeat',

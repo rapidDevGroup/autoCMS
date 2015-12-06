@@ -1,6 +1,7 @@
 <?php
 include_once('header.php');
-$data = getNavData();
+$navigationData = new NavigationData();
+$data = $navigationData->getData();
 ?>
 <div class="container">
     <div class="row">

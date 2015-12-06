@@ -1,5 +1,6 @@
 <?php
-$pages = getPageList();
+$pagesData = new PagesData();
+$pages = $pagesData->getData();
 ?>
 <!DOCTYPE html>
 <html lang="en" style="overflow: hidden;">
@@ -58,7 +59,7 @@ $pages = getPageList();
                     <div class="sidebar-nav navbar-collapse">
                         <ul class="nav" id="side-menu">
                             <li><a href="/admin/dash/" target="iframe"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a></li>
-                            <?php if (hasNav()) {?><li><a href="/admin/nav/" target="iframe"><i class="fa fa-bars fa-fw"></i> Navigation</a></li><?php } ?>
+                            <?php if (file_exists('data/autocms-nav.json')) {?><li><a href="/admin/nav/" target="iframe"><i class="fa fa-bars fa-fw"></i> Navigation</a></li><?php } ?>
                             <?php if (count($pages) > 0) {?>
                                 <li>
                                     <a href="#" class="open-close"><i class="fa fa-files-o fa-fw"></i> Pages<span class="fa arrow"></span></a>
@@ -71,11 +72,11 @@ $pages = getPageList();
                                     </ul>
                                 </li>
                             <?php } ?>
-                            <?php if (footerExists()) {?><li><a href="/admin/footer/" target="iframe"><i class="fa fa-file-code-o fa-fw"></i> Site Footer</a></li><?php } ?>
+                            <?php if (file_exists('data/autocms-footer.json')) {?><li><a href="/admin/footer/" target="iframe"><i class="fa fa-file-code-o fa-fw"></i> Site Footer</a></li><?php } ?>
                             <?php if (hasBlog()) {?><li><a href="/admin/blog/" target="iframe"><i class="fa fa-pencil-square-o fa-fw"></i> Blog or News Feed</a></li><?php } ?>
-                            <?php if (hasAnalytics()) {?><li><a href="/admin/analytics/" target="iframe"><i class="fa fa-bar-chart fa-fw"></i> Analytics</a></li><?php } ?>
-                            <?php if (hasMedia()) {?><li><a href="/admin/media/" target="iframe"><i class="fa fa-file-image-o fa-fw"></i> Media Library</a></li><?php } ?>
-                            <?php if (hasSettings()) {?><li><a href="/admin/settings/" target="iframe"><i class="fa fa-cog fa-fw"></i> Settings</a></li><?php } ?>
+                            <?php if (file_exists('data/autocms-analytics.json')) {?><li><a href="/admin/analytics/" target="iframe"><i class="fa fa-bar-chart fa-fw"></i> Analytics</a></li><?php } ?>
+                            <?php if (file_exists('data/autocms-media.json')) {?><li><a href="/admin/media/" target="iframe"><i class="fa fa-file-image-o fa-fw"></i> Media Library</a></li><?php } ?>
+                            <?php if (file_exists('data/autocms-settings.json')) {?><li><a href="/admin/settings/" target="iframe"><i class="fa fa-cog fa-fw"></i> Settings</a></li><?php } ?>
                         </ul>
                     </div>
                 </div>

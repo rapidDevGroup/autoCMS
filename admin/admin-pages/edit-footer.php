@@ -1,6 +1,7 @@
 <?php
 include_once('header.php');
-$data = getFooterData();
+$footerData = new FooterData();
+$data = $footerData->getData();
 ?>
 <div class="container">
     <div class="row">

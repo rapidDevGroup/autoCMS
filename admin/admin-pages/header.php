@@ -1,5 +1,6 @@
 <?php
-$pages = getPageList();
+$pagesData = new PagesData();
+$pages = $pagesData->getData();
 ?>
 
 <!DOCTYPE html>

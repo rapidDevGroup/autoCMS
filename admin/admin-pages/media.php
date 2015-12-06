@@ -1,6 +1,7 @@
 <?php
 include_once('header.php');
-$data = getMediaData();
+$mediaData = new MediaData();
+$data = $mediaData->getData();
 ?>
 <div class="container">
     <div class="row">
