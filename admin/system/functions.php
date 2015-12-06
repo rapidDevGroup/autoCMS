@@ -106,6 +106,10 @@ function hasAnalytics() {
     return file_exists("data/autocms-analytics.json");
 }
 
+function hasMedia() {
+    return file_exists("data/autocms-media.json");
+}
+
 function createAnalytics() {
     if (!file_exists("data/autocms-analytics.json")) {
         $data = Array();
@@ -116,8 +120,27 @@ function createAnalytics() {
     }
 }
 
+function createMedia() {
+    if (!file_exists("data/autocms-media.json")) {
+        $data = Array();
+        $data['images'] = Array();
+        $data['videos'] = Array();
+        $data['audios'] = Array();
+        $fp = fopen('data/autocms-media.json', 'w');
+        fwrite($fp, json_encode($data));
+        fclose($fp);
+    }
+}
+
 function getAnalyticsData() {
     $dataFile = 'data/autocms-analytics.json';
+    $json = json_decode(file_get_contents($dataFile), true);
+
+    return $json;
+}
+
+function getMediaData() {
+    $dataFile = 'data/autocms-media.json';
     $json = json_decode(file_get_contents($dataFile), true);
 
     return $json;
@@ -274,9 +297,14 @@ function makeImageBGImage(&$edit, &$dataArr, $dataFile, $fieldID, $desc, $isBG =
     $fileExt = getImageType($fileExt, $source);
 
     if ($fileExt != 'error') {
-        $imgFileName = makeDateFolders() . uniqid() . '.' . $fileExt;
+        if (!checkMediaLibrary('images', $source)) {
+            $imgFileName = makeDateFolders() . uniqid() . '.' . $fileExt;
 
-        copy($source, $_SERVER['DOCUMENT_ROOT'] . $imgFileName);
+            copy($source, $_SERVER['DOCUMENT_ROOT'] . $imgFileName);
+            addToMediaLibrary('images', $imgFileName, $source);
+        } else {
+            $imgFileName = getFromMediaLibrary('images', $source);
+        }
 
         if (!is_null($repeatFieldID)) {
             $dataArr[$fieldID]['repeat'][$count][$repeatFieldID] = Array('image' => $imgFileName, 'description' => $desc, 'type' => 'image');
@@ -313,6 +341,36 @@ function makeImageBGImage(&$edit, &$dataArr, $dataFile, $fieldID, $desc, $isBG =
         if (trim($edit->class) === '') $edit->class = null;
         $edit->autocms = null;
     }
+}
+
+function addToMediaLibrary($type, $location, $originalLocation = null) {
+    $data = getMediaData();
+
+    $data[$type][] = Array('original-location' => $originalLocation, 'location' => $location);
+
+    $fp = fopen('data/autocms-media.json', 'w');
+    fwrite($fp, json_encode($data));
+    fclose($fp);
+}
+
+function checkMediaLibrary($type, $originalLocation) {
+    $data = getMediaData();
+
+    foreach ($data[$type] as $entry) {
+        if ($entry['original-location'] == $originalLocation) return true;
+    }
+
+    return false;
+}
+
+function getFromMediaLibrary($type, $originalLocation) {
+    $data = getMediaData();
+
+    foreach ($data[$type] as $entry) {
+        if ($entry['original-location'] == $originalLocation) return $entry['location'];
+    }
+
+    return '';
 }
 
 function addVariableToPage($file, $name, $value) {
@@ -708,6 +766,7 @@ function uploadFiles($page, $isBlog = false) {
             if ($fileExt != 'error') {
                 $imgFileName = makeDateFolders() . uniqid() . '.' . $fileExt;
                 move_uploaded_file($_FILES[$key]['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . $imgFileName);
+                addToMediaLibrary('images', $imgFileName);
 
                 $dataFile = null;
                 $json = null;

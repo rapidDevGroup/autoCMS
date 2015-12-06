@@ -72,6 +72,9 @@ class Dash {
     function post($action = null) {
         if ($action == 'process' && checkPass() && !authNeeded()) {
 
+            createAnalytics();
+            createMedia();
+
             getAllNavigationData($_POST['files']);
             processBlog($_POST['files']);
             buildFooterDataFile($_POST['files']);
@@ -80,7 +83,6 @@ class Dash {
             renameFiles($_POST['files']);
             copyApacheConfig();
             createXMLSitemap();
-            createAnalytics();
             addToLog('has initiated the CMS', implode(" ", $_POST['files']));
 
             header('Location: /admin/');
@@ -139,6 +141,26 @@ class Analytics {
             updateAnalytics($_POST);
 
             header('Location: /admin/analytics/?updated=true');
+        } else {
+            include_once('admin-pages/401.html');
+        }
+    }
+}
+
+class Media {
+    function get() {
+        if (checkPass() && !authNeeded()) {
+            include_once('admin-pages/media.php');
+        } else {
+            include_once('admin-pages/401.html');
+        }
+    }
+    function post() {
+        if (checkPass() && !authNeeded()) {
+
+            //updateAMedia($_POST);
+
+            header('Location: /admin/media/?updated=true');
         } else {
             include_once('admin-pages/401.html');
         }

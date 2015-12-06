@@ -25,6 +25,8 @@ $openGraphTypes = getPostOGTypes();
                             <div class="col-lg-2 col-sm-3">
                                 <input type="file" name="<?=$key?>" id="<?=$key?>" style="display: none;" onchange="readURL(this, '<?=$key?>');">
                                 <button type="button" class="btn btn-info btn-block upload-button dirtyOK" data-trigger="<?=$key?>">Upload Image</button>
+                                <br>
+                                <button type="button" class="btn btn-success btn-block upload-button dirtyOK">Select Media</button>
                             </div>
                         <?php } else { ?>
                             <div class="col-lg-9 col-sm-10">
@@ -35,28 +37,32 @@ $openGraphTypes = getPostOGTypes();
                 <?php } ?>
                 <?php foreach($fields as $key => $field) { ?>
                     <?php if ($field) { ?>
-                        <div class="form-group">
-                            <label class="col-lg-2 col-sm-2 control-label">
-                                <?=ucwords(str_replace("-", " ", $key))?>
-                            </label>
-                            <?php if ($key == 'full-blog' || $key == 'short-blog') { ?>
-                                <div class="col-lg-9 col-sm-10 textarea">
-                                    <textarea name="<?=$key?>" class="form-control editor"><?php if(isset($postInfo[$key])) { print $postInfo[$key]; } ?></textarea>
-                                </div>
-                            <?php } else if ($key == 'title' || $key == 'author' || $key == 'keywords' || $key == 'description' || $key == 'image-alt-text' || $key == 'link-text' || $key == 'date') { ?>
-                                <div class="col-lg-9 col-sm-10">
-                                    <input name="<?=$key?>" class="form-control" value="<?php if(isset($postInfo[$key])) { print $postInfo[$key]; } ?>" autocomplete="off">
-                                </div>
-                            <?php } else if ($key == 'image') { ?>
-                                <div class="col-lg-7 col-sm-7">
-                                    <img id="<?=$key?>-image" class="img-responsive img-thumbnail" src="<?php if(isset($postInfo[$key])) { print $postInfo[$key]; } ?>">
-                                </div>
-                                <div class="col-lg-2 col-sm-3">
-                                    <input type="file" name="<?=$key?>" id="<?=$key?>" style="display: none;" onchange="readURL(this, '<?=$key?>');">
-                                    <button type="button" class="btn btn-info btn-block upload-button dirtyOK" data-trigger="<?=$key?>">Upload Image</button>
-                                </div>
-                            <?php } ?>
-                        </div>
+                        <?php if ($key != 'link-href' && $key != 'open-graph') { ?>
+                            <div class="form-group">
+                                <label class="col-lg-2 col-sm-2 control-label">
+                                    <?=ucwords(str_replace("-", " ", $key))?>
+                                </label>
+                                <?php if ($key == 'full-blog' || $key == 'short-blog') { ?>
+                                    <div class="col-lg-9 col-sm-10 textarea">
+                                        <textarea name="<?=$key?>" class="form-control editor"><?php if(isset($postInfo[$key])) { print $postInfo[$key]; } ?></textarea>
+                                    </div>
+                                <?php } else if ($key == 'title' || $key == 'author' || $key == 'keywords' || $key == 'description' || $key == 'image-alt-text' || $key == 'link-text' || $key == 'date') { ?>
+                                    <div class="col-lg-9 col-sm-10">
+                                        <input name="<?=$key?>" class="form-control" value="<?php if(isset($postInfo[$key])) { print $postInfo[$key]; } ?>" autocomplete="off">
+                                    </div>
+                                <?php } else if ($key == 'image') { ?>
+                                    <div class="col-lg-7 col-sm-7">
+                                        <img id="<?=$key?>-image" class="img-responsive img-thumbnail" src="<?php if(isset($postInfo[$key])) { print $postInfo[$key]; } ?>">
+                                    </div>
+                                    <div class="col-lg-2 col-sm-3">
+                                        <input type="file" name="<?=$key?>" id="<?=$key?>" style="display: none;" onchange="readURL(this, '<?=$key?>');">
+                                        <button type="button" class="btn btn-info btn-block upload-button dirtyOK" data-trigger="<?=$key?>">Upload Image</button>
+                                        <br>
+                                        <button type="button" class="btn btn-success btn-block upload-button dirtyOK">Select Media</button>
+                                    </div>
+                                <?php } ?>
+                            </div>
+                         <?php } ?>
                     <?php } ?>
                 <?php } ?>
                 <hr>

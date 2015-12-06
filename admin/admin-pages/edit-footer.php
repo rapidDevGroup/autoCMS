@@ -38,10 +38,13 @@ $data = getFooterData();
                             </div>
                         <?php } else if ($datum['type'] == 'image') { ?>
                             <div class="col-lg-7 col-sm-7">
-                                <img class="img-responsive img-thumbnail" src="<?=$datum['image']?>">
+                                <img id="<?=$key?>-image" class="img-responsive img-thumbnail" src="<?=$datum['image']?>">
                             </div>
                             <div class="col-lg-2 col-sm-3">
-                                <button type="button" class="btn btn-default btn-block dirtyOK">Upload New Image</button>
+                                <input type="file" name="<?=$key?>" id="<?=$key?>" style="display: none;" onchange="readURL(this, '<?=$key?>');">
+                                <button type="button" class="btn btn-info btn-block upload-button dirtyOK" data-trigger="<?=$key?>">Upload Image</button>
+                                <br>
+                                <button type="button" class="btn btn-success btn-block upload-button dirtyOK">Select Media</button>
                             </div>
                         <?php } ?>
                     </div>
