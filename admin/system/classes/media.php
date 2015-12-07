@@ -38,7 +38,7 @@ class MediaData extends Data {
     public function deleteImage($type, $id) {
         foreach ($this->data[$type] as $key => $entry) {
             if ($key == $id) {
-                unlink($_SERVER['DOCUMENT_ROOT'] . $entry['location']);
+                if (file_exists($_SERVER['DOCUMENT_ROOT'] . $entry['location'])) unlink($_SERVER['DOCUMENT_ROOT'] . $entry['location']);
             }
         }
         unset($this->data[$type][$id]);

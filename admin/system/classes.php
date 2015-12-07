@@ -134,7 +134,7 @@ class DataBuild extends Data {
             if (!$media->checkMediaLibrary('images', $source)) {
                 $imgFileName = $media->makeDateFolders() . uniqid() . '.' . $fileExt;
 
-                copy($source, $_SERVER['DOCUMENT_ROOT'] . $imgFileName);
+                if (file_exists($source)) copy($source, $_SERVER['DOCUMENT_ROOT'] . $imgFileName);
                 $media->addToMediaLibrary('images', $imgFileName, $source);
             } else {
                 $imgFileName = $media->getFromMediaLibrary('images', $source);
