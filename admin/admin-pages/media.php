@@ -30,9 +30,9 @@ $data = $mediaData->getData();
                                     <?php if ($key == 'images') { ?>
                                         <?php foreach ($datum as $image) { ?>
                                             <div class="row">
-                                                <div class="col-xs-12">
-                                                    <img src="<?=$image['location']?>" class="img-responsive">
-                                                    <br>
+                                                <div class="col-md-12 col-lg-8">
+                                                    <img src="<?=$image['location']?>" class="img-responsive img-thumbnail">
+                                                    <br><br>
                                                 </div>
                                             </div>
                                         <?php } ?>

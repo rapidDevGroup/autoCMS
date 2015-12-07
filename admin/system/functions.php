@@ -71,14 +71,15 @@ function saveDescription($file, $editKey, $editDesc) {
     $dataFile = 'data/' . $file . '.json';
     $json = json_decode(file_get_contents($dataFile), true);
 
+    $logsData = new LogsData();
     if (strpos($editKey, '-') !== false) {
         list($repeatKey, $iteration, $itemKey) = explode("-", $editKey);
         if (isset($json[$repeatKey]['repeat'][$iteration][$itemKey])) {
-            addToLog('has changes a description on', str_replace('page-', '', $file) . ' page', Array('key' => $editKey, 'change' => Array('original' => $json[$editKey]['description'], 'new' => $editDesc)));
+            $logsData->addToLog('has changes a description on', str_replace('page-', '', $file) . ' page', Array('key' => $editKey, 'change' => Array('original' => $json[$editKey]['description'], 'new' => $editDesc)));
             $json[$repeatKey]['repeat'][$iteration][$itemKey]['description'] = trim($editDesc);
         }
     } else if (isset($json[$editKey])) {
-        addToLog('has changes a description on', str_replace('page-', '', $file) . ' page', Array('key' => $editKey, 'change' => Array('original' => $json[$editKey]['description'], 'new' => $editDesc)));
+        $logsData->addToLog('has changes a description on', str_replace('page-', '', $file) . ' page', Array('key' => $editKey, 'change' => Array('original' => $json[$editKey]['description'], 'new' => $editDesc)));
         $json[$editKey]['description'] = $editDesc;
     }
 
@@ -125,46 +126,6 @@ function createXMLSitemap() {
     }
 
     $sitemap->createSitemapIndex('http://' . $domain . '/', 'Today');
-}
-
-function addToLog($action, $page, $details = null) {
-    $dataFile = 'data/autocms-log.json';
-
-    if (!file_exists($dataFile)) {
-        $logArr = Array();
-    } else {
-        $logArr = json_decode(file_get_contents($dataFile), true);
-    }
-
-    $logArr[] = Array('user' => $_SESSION["user"], 'action' => $action, 'page' => $page, 'timestamp' => time(), 'details' => $details);
-
-    if (count($logArr) > _LOG_COUNT_MAX_) {
-        $logArr = array_slice($logArr, -_LOG_COUNT_MAX_);
-    }
-
-    $fp = fopen($dataFile, 'w');
-    fwrite($fp, json_encode($logArr));
-    fclose($fp);
-}
-
-function getLogData($num = 0, $get = null, $user = null) {
-    $dataFile = 'data/autocms-log.json';
-    if (file_exists($dataFile)) {
-        $json = json_decode(file_get_contents($dataFile), true);
-
-        if (!is_null($user)) {
-            $userArr = Array();
-            foreach ($json as $key => $data) {
-                if ($json[$key]['user'] == $user) $userArr[] = $json[$key];
-            }
-
-            return array_reverse($userArr);
-        }
-
-        return array_reverse(array_slice($json, $num, $get));
-    } else {
-        return Array();
-    }
 }
 
 function processBlog($files) {
@@ -361,10 +322,11 @@ function updateBlogPost($post_id, $data, $publish = false) {
         $json[$key] = trim($datum);
     }
 
+    $logsData = new LogsData();
     if (count($changeLog) > 0 && !$isNew) {
-        addToLog('has updated', $data['title'] . ' blog', $changeLog);
+        $logsData->addToLog('has updated', $data['title'] . ' blog', $changeLog);
     } else if (count($changeLog) > 0 && $isNew) {
-        addToLog('has created', $data['title'] . ' blog', $changeLog);
+        $logsData->addToLog('has created', $data['title'] . ' blog', $changeLog);
     }
 
     $dataBlogFile = 'data/autocms-blog.json';

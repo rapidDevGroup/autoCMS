@@ -42,7 +42,8 @@ class UsersData extends Data {
             }
         }
 
-        addToLog('has changed', 'his/her password', null);
+        $logsData = new LogsData();
+        $logsData->addToLog('has changed', 'his/her password', null);
     }
 
     public function search($array, $key, $value) {

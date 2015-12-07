@@ -37,8 +37,34 @@ class PagesData extends DataBuild {
                 if (isset($pageMeta->property) && isset($pageMeta->content)) {
                     $property = preg_replace("/[^a-z^A-Z^0-9_-]/", "", $pageMeta->property);
                     if ($pageMeta->property == "og:image") {
-                        $data[$property] = Array('image' => $pageMeta->content, 'description' => $pageMeta->property, 'type' => 'image');
+                        $imgFileName = '';
+                        $source = $pageMeta->content;
+                        $source = parse_url($source, PHP_URL_PATH);
+                        $fileExt = pathinfo(parse_url($source, PHP_URL_PATH), PATHINFO_EXTENSION);
+                        $fileExt = getImageType($fileExt, $source);
+
+                        if ($fileExt != 'error') {
+                            $media = new MediaData();
+                            if (!$media->checkMediaLibrary('images', $source)) {
+                                $imgFileName = $media->makeDateFolders() . uniqid() . '.' . $fileExt;
+
+                                copy($source, $_SERVER['DOCUMENT_ROOT'] . $imgFileName);
+                                $media->addToMediaLibrary('images', $imgFileName, $source);
+                            } else {
+                                $imgFileName = $media->getFromMediaLibrary('images', $source);
+                            }
+                        }
+
+                        $data[$property] = Array('image' => $imgFileName, 'description' => $pageMeta->property, 'type' => 'image');
                         $pageMeta->content = "<?=get('$dataFile', '$property')?>";
+                    } else if ($pageMeta->property == "og:url") {
+                        $pageMeta->content = '<?="http://".$_SERVER["HTTP_HOST"].$_SERVER["REQUEST_URI"]?>';
+                    } else if ($pageMeta->property == "og:title") {
+                        $pageMeta->content = "<?=get('$dataFile', 'title')?>";
+                    } else if ($pageMeta->property == "og:description") {
+                        $pageMeta->content = "<?=get('$dataFile', 'description')?>";
+                    } else if ($pageMeta->property == "og:site_name") {
+                        $pageMeta->content = "<?=get('autocms-settings.json', 'site-name')?>";
                     } else {
                         $data[$property] = Array('text' => $pageMeta->content, 'description' => $pageMeta->property, 'type' => 'text');
                         $pageMeta->content = "<?=get('$dataFile', '$property')?>";
@@ -138,7 +164,10 @@ class PagesData extends DataBuild {
             }
         }
 
-        if (count($changeLog) > 0) addToLog('has updated', $file . ' page', $changeLog);
+        if (count($changeLog) > 0) {
+            $logsData = new LogsData();
+            $logsData->addToLog('has updated', $file . ' page', $changeLog);
+        }
 
         $fp = fopen($dataFile, 'w');
         fwrite($fp, json_encode($json));
@@ -151,7 +180,8 @@ class PagesData extends DataBuild {
 
         foreach ($json as $jsonKey => $datum) {
             if ($key != 'key' && $jsonKey == $key && isset($json[$key]) && $json[$key]['type'] == 'repeat' && count($json[$key]['repeat']) > $num && isset($json[$key]['repeat'][$num])) {
-                addToLog('has duplicated repeat on', $page . ' page', Array('key' => $key, 'change' => Array('duplicated' => $json[$key]['repeat'][$num])));
+                $logsData = new LogsData();
+                $logsData->addToLog('has duplicated repeat on', $page . ' page', Array('key' => $key, 'change' => Array('duplicated' => $json[$key]['repeat'][$num])));
                 $json[$key]['repeat'][] = $json[$key]['repeat'][$num];
             }
         }
@@ -167,7 +197,8 @@ class PagesData extends DataBuild {
 
         foreach ($json as $jsonKey => $datum) {
             if ($key != 'key' && $jsonKey == $key && isset($json[$key]) && $json[$key]['type'] == 'repeat' && count($json[$key]['repeat']) > $num && isset($json[$key]['repeat'][$num])) {
-                addToLog('has deleted repeat on', $page . ' page', Array('key' => $key, 'change' => Array('deleted' => $json[$key]['repeat'][$num])));
+                $logsData = new LogsData();
+                $logsData->addToLog('has deleted repeat on', $page . ' page', Array('key' => $key, 'change' => Array('deleted' => $json[$key]['repeat'][$num])));
                 array_splice($json[$key]['repeat'], $num, 1);
             }
         }

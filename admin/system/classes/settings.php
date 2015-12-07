@@ -24,7 +24,10 @@ class SettingsData extends Data {
             }
         }
 
-        if (count($changeLog) > 0) addToLog('has updated', ' the settings', $changeLog);
+        if (count($changeLog) > 0) {
+            $logsData = new LogsData();
+            $logsData->addToLog('has updated', ' the settings', $changeLog);
+        }
     }
 }
 

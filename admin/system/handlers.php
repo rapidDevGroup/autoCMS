@@ -28,7 +28,9 @@ class Dash {
             renameFiles($_POST['files']);
             copyApacheConfig();
             createXMLSitemap();
-            addToLog('has initiated the CMS', implode(" ", $_POST['files']));
+
+            $logsData = new LogsData();
+            $logsData->addToLog('has initiated the CMS', implode(" ", $_POST['files']));
 
             header('Location: /admin/');
         } else {
@@ -110,17 +112,6 @@ class BlogPost {
             orderBlog();
 
             header('Location: /admin/blog/?updated=true');
-        } else {
-            include_once('401.html');
-        }
-    }
-}
-
-class Logs {
-    function get() {
-        $users = new UsersData();
-        if ($users->checkPass() && !$users->authNeeded()) {
-            include_once('admin-pages/logs.php');
         } else {
             include_once('401.html');
         }

@@ -23,7 +23,10 @@ class AnalyticsData extends Data {
             }
         }
 
-        if (count($changeLog) > 0) addToLog('has updated', ' the analytics code', $changeLog);
+        if (count($changeLog) > 0) {
+            $logsData = new LogsData();
+            $logsData->addToLog('has updated', ' the analytics code', $changeLog);
+        }
     }
 }
 

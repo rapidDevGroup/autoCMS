@@ -2,6 +2,7 @@
 
 include_once('classes/analytics.php');
 include_once('classes/footer.php');
+include_once('classes/logs.php');
 include_once('classes/media.php');
 include_once('classes/navigation.php');
 include_once('classes/pages.php');
@@ -184,6 +185,9 @@ class DataBuild extends Data {
             }
         }
 
-        if (count($changeLog) > 0) addToLog('has updated', $this->sectionName, $changeLog);
+        if (count($changeLog) > 0) {
+            $logsData = new LogsData();
+            $logsData->addToLog('has updated', $this->sectionName, $changeLog);
+        }
     }
 }
