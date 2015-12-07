@@ -1,38 +1,9 @@
 <?php
 
-function scanFiles($endsWith) {
-    $files = scandir('../');
-    $arr = Array();
-    foreach ($files as $file) {
-        if (endsWith($file, $endsWith)) $arr[] = $file;
-    }
-    return $arr;
-}
-
-function endsWith($string, $test) {
-    $strLen = strlen($string);
-    $testLen = strlen($test);
-    if ($testLen > $strLen) return false;
-    return substr_compare($string, $test, $strLen - $testLen, $testLen) === 0;
-}
-
-function renameFiles($files) {
-    if (!file_exists ($_SERVER['DOCUMENT_ROOT'] . '/admin/originals/')) mkdir($_SERVER['DOCUMENT_ROOT'] . '/admin/originals/', 0755);
-    foreach ($files as $file) {
-        copy('../' . $file, './originals/' . $file);
-        $newName = str_replace(Array('.html', '.htm'), '.php', $file);
-        rename('../' . $file, '../' . $newName);
-    }
-}
-
 function getPostPageName() {
     if (!file_exists("data/autocms-blog.json")) return '';
     $json = json_decode(file_get_contents("data/autocms-blog.json"), true);
     return $json['post-page'];
-}
-
-function hasBlog() {
-    return file_exists("data/autocms-blog.json");
 }
 
 function addVariableToPage($file, $name, $value) {
@@ -49,22 +20,6 @@ function addVariableToPage($file, $name, $value) {
     $fp = fopen('data/' . $dataFile, 'w');
     fwrite($fp, json_encode($data));
     fclose($fp);
-}
-
-function getImageType($fileExt, $source) {
-    if ($fileExt === '') {
-        $detect = exif_imagetype($source);
-        if ($detect == IMAGETYPE_GIF) {
-            $fileExt = 'gif';
-        } else if ($detect == IMAGETYPE_JPEG) {
-            $fileExt = 'jpg';
-        } else if ($detect == IMAGETYPE_PNG) {
-            $fileExt = 'jpg';
-        } else {
-            $fileExt = 'error';
-        }
-    }
-    return $fileExt;
 }
 
 function saveDescription($file, $editKey, $editDesc) {
@@ -86,46 +41,6 @@ function saveDescription($file, $editKey, $editDesc) {
     $fp = fopen($dataFile, 'w');
     fwrite($fp, json_encode($json));
     fclose($fp);
-}
-
-
-function copyApacheConfig() {
-    if (file_exists('./other/.htaccess2copy')) copy('./other/.htaccess2copy', '../.htaccess');
-    if (file_exists('./other/robots.txt') && !file_exists('../robots.txt')) copy('./other/robots.txt', '../robots.txt');
-}
-
-function createXMLSitemap() {
-    $domain = str_ireplace('www.', '', $_SERVER["HTTP_HOST"]);
-
-    if (!file_exists("../sitemap.xml") && file_exists("../robots.txt")) {
-        $file = '../robots.txt';
-        $sitemapLine = "\n\nSitemap: http://" . $domain . '/sitemap.xml';
-        file_put_contents($file, $sitemapLine, FILE_APPEND);
-    }
-
-    $sitemap = new Sitemap('http://' . $domain . '/');
-    $sitemap->setPath('../');
-
-    $postPageName = getPostPageName();
-
-    $sitemap->addItem('', '1', 'daily');
-
-    $pagesData = new PagesData();
-    $pages = $pagesData->getData();
-    foreach ($pages as $page) {
-        if ($page != $postPageName && $page != 'error' && $page != 'index') {
-            $sitemap->addItem($page . '/', '0.5', 'daily');
-        }
-    }
-
-    $blogs = getBlogList();
-    foreach ($blogs as $blog) {
-        if (isset($blog['published'])) {
-            $sitemap->addItem($postPageName . '/' . $blog['external'] . '/', '1', 'monthly');
-        }
-    }
-
-    $sitemap->createSitemapIndex('http://' . $domain . '/', 'Today');
 }
 
 function processBlog($files) {
@@ -371,7 +286,7 @@ function updateBlogPost($post_id, $data, $publish = false) {
     fwrite($fp, json_encode($jsonBlog));
     fclose($fp);
 
-    createXMLSitemap();
+    DashboardUtils::createXMLSitemap();
 }
 
 function publishPost($post_id) {
@@ -384,7 +299,7 @@ function publishPost($post_id) {
     fwrite($fp, json_encode($jsonBlog));
     fclose($fp);
 
-    createXMLSitemap();
+    DashboardUtils::createXMLSitemap();
 }
 
 function unpublishPost($post_id) {
@@ -397,7 +312,7 @@ function unpublishPost($post_id) {
     fwrite($fp, json_encode($jsonBlog));
     fclose($fp);
 
-    createXMLSitemap();
+    DashboardUtils::createXMLSitemap();
 }
 
 function trashPost($post_id) {
@@ -417,33 +332,9 @@ function orderBlog() {
     $dataBlogFile = 'data/autocms-blog.json';
     $jsonBlog = json_decode(file_get_contents($dataBlogFile), true);
 
-    $jsonBlog['posts'] = arrayMSort($jsonBlog['posts'], array('published'=>SORT_DESC));
+    $jsonBlog['posts'] = DashboardUtils::arrayMSort($jsonBlog['posts'], array('published'=>SORT_DESC));
 
     $fp = fopen($dataBlogFile, 'w');
     fwrite($fp, json_encode($jsonBlog));
     fclose($fp);
-}
-
-function arrayMSort($array, $cols) {
-    $colArr = array();
-    foreach ($cols as $col => $order) {
-        $colArr[$col] = array();
-        foreach ($array as $k => $row) { $colArr[$col]['_'.$k] = strtolower($row[$col]); }
-    }
-    $eval = 'array_multisort(';
-    foreach ($cols as $col => $order) {
-        $eval .= '$colArr[\''.$col.'\'],'.$order.',';
-    }
-    $eval = substr($eval,0,-1).');';
-    eval($eval);
-    $ret = array();
-    foreach ($colArr as $col => $arr) {
-        foreach ($arr as $k => $v) {
-            $k = substr($k,1);
-            if (!isset($ret[$k])) $ret[$k] = $array[$k];
-            $ret[$k][$col] = $array[$k][$col];
-        }
-    }
-    return $ret;
-
 }

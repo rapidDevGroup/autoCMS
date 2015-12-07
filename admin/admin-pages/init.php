@@ -73,7 +73,7 @@ $pages = $pagesData->getData();
                                 </li>
                             <?php } ?>
                             <?php if (file_exists('data/autocms-footer.json')) {?><li><a href="/admin/footer/" target="iframe"><i class="fa fa-file-code-o fa-fw"></i> Site Footer</a></li><?php } ?>
-                            <?php if (hasBlog()) {?><li><a href="/admin/blog/" target="iframe"><i class="fa fa-pencil-square-o fa-fw"></i> Blog or News Feed</a></li><?php } ?>
+                            <?php if (file_exists('data/autocms-blog.json')) {?><li><a href="/admin/blog/" target="iframe"><i class="fa fa-pencil-square-o fa-fw"></i> Blog or News Feed</a></li><?php } ?>
                             <?php if (file_exists('data/autocms-analytics.json')) {?><li><a href="/admin/analytics/" target="iframe"><i class="fa fa-bar-chart fa-fw"></i> Analytics</a></li><?php } ?>
                             <?php if (file_exists('data/autocms-media.json')) {?><li><a href="/admin/media/" target="iframe"><i class="fa fa-file-image-o fa-fw"></i> Media Library</a></li><?php } ?>
                             <?php if (file_exists('data/autocms-settings.json')) {?><li><a href="/admin/settings/" target="iframe"><i class="fa fa-cog fa-fw"></i> Settings</a></li><?php } ?>

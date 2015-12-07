@@ -1,6 +1,8 @@
 <?php
 
 include_once('classes/analytics.php');
+include_once('classes/blog.php');
+include_once('classes/dashboard.php');
 include_once('classes/footer.php');
 include_once('classes/logs.php');
 include_once('classes/media.php');
@@ -125,7 +127,7 @@ class DataBuild extends Data {
         }
 
         $fileExt = pathinfo(parse_url($edit->src, PHP_URL_PATH), PATHINFO_EXTENSION);
-        $fileExt = getImageType($fileExt, $source);
+        $fileExt = MediaData::getImageType($fileExt, $source);
 
         if ($fileExt != 'error') {
             $media = new MediaData();

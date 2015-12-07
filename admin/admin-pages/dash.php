@@ -1,7 +1,8 @@
 <?php
 include_once('header.php');
-$files = scanFiles('.html');
-$logs = getLogData(-5);
+$files = DashboardUtils::scanFiles('.html');
+$logsData = new LogsData();
+$logs = $logsData->getLogData(-5);
 ?>
 <div class="container">
     <div class="row">

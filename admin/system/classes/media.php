@@ -116,6 +116,22 @@ class MediaData extends Data {
 
         return '/assets/auto-images/'.$year.'/'.$month.'/';
     }
+
+    static public function getImageType($fileExt, $source) {
+        if ($fileExt === '' && file_exists($source)) {
+            $detect = exif_imagetype($source);
+            if ($detect == IMAGETYPE_GIF) {
+                $fileExt = 'gif';
+            } else if ($detect == IMAGETYPE_JPEG) {
+                $fileExt = 'jpg';
+            } else if ($detect == IMAGETYPE_PNG) {
+                $fileExt = 'jpg';
+            } else {
+                $fileExt = 'error';
+            }
+        }
+        return $fileExt;
+    }
 }
 
 class Media {

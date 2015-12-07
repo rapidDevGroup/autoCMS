@@ -37,11 +37,13 @@ class PagesData extends DataBuild {
                 if (isset($pageMeta->property) && isset($pageMeta->content)) {
                     $property = preg_replace("/[^a-z^A-Z^0-9_-]/", "", $pageMeta->property);
                     if ($pageMeta->property == "og:image") {
-                        $imgFileName = '';
+                        //todo: fix this
+
+                        /*$imgFileName = '';
                         $source = $pageMeta->content;
                         $source = parse_url($source, PHP_URL_PATH);
                         $fileExt = pathinfo(parse_url($source, PHP_URL_PATH), PATHINFO_EXTENSION);
-                        $fileExt = getImageType($fileExt, $source);
+                        $fileExt = MediaData::getImageType($fileExt, $source);
 
                         if ($fileExt != 'error') {
                             $media = new MediaData();
@@ -54,8 +56,8 @@ class PagesData extends DataBuild {
                                 $imgFileName = $media->getFromMediaLibrary('images', $source);
                             }
                         }
-
-                        $data[$property] = Array('image' => $imgFileName, 'description' => $pageMeta->property, 'type' => 'image');
+                        */
+                        $data[$property] = Array('image' => $pageMeta->content, 'description' => $pageMeta->property, 'type' => 'image');
                         $pageMeta->content = "<?=get('$dataFile', '$property')?>";
                     } else if ($pageMeta->property == "og:url") {
                         $pageMeta->content = '<?="http://".$_SERVER["HTTP_HOST"].$_SERVER["REQUEST_URI"]?>';

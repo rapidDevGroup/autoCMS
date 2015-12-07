@@ -2,7 +2,8 @@
 include_once('header.php');
 $getUserLogs = null;
 if (isset($_GET['user-logs'])) $getUserLogs = $_GET['user-logs'];
-$logs = getLogData(0, null, $getUserLogs);
+$logsData = new LogsData();
+$logs = $logsData->getLogData(0, null, $getUserLogs);
 ?>
 <div class="container">
     <div class="row">

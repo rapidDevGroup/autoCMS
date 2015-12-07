@@ -13,18 +13,20 @@ $openGraphTypes = getPostOGTypes();
     <div class="row">
         <div class="col-lg-12">
             <form action="/admin/blog/<?=$post_id?>/update/" method="post" class="form-horizontal" enctype="multipart/form-data">
-                <?php foreach($openGraphTypes as $key) { ?>
-                    <div class="form-group">
-                        <label class="col-lg-2 col-sm-2 control-label">
-                            <?=$key?>
-                            <?php $key = str_replace(':', '', $key); ?>
-                        </label>
-                        <?php if ($key != 'ogimage') { ?>
-                            <div class="col-lg-9 col-sm-10">
-                                <input name="<?=$key?>" class="form-control" value="<?php if(isset($postInfo[$key])) { print $postInfo[$key]; } ?>" autocomplete="off">
-                            </div>
-                        <?php } ?>
-                    </div>
+                <?php if (!empty($openGraphTypes)) { ?>
+                    <?php foreach($openGraphTypes as $key) { ?>
+                        <div class="form-group">
+                            <label class="col-lg-2 col-sm-2 control-label">
+                                <?=$key?>
+                                <?php $key = str_replace(':', '', $key); ?>
+                            </label>
+                            <?php if ($key != 'ogimage') { ?>
+                                <div class="col-lg-9 col-sm-10">
+                                    <input name="<?=$key?>" class="form-control" value="<?php if(isset($postInfo[$key])) { print $postInfo[$key]; } ?>" autocomplete="off">
+                                </div>
+                            <?php } ?>
+                        </div>
+                    <?php } ?>
                 <?php } ?>
                 <?php foreach($fields as $key => $field) { ?>
                     <?php if ($field) { ?>
