@@ -18,7 +18,7 @@ class DashboardUtils {
     }
 
     static public function renameFiles($files) {
-        if (!file_exists ($_SERVER['DOCUMENT_ROOT'] . '/admin/originals/')) mkdir($_SERVER['DOCUMENT_ROOT'] . '/admin/originals/', 0755);
+        if (!is_dir($_SERVER['DOCUMENT_ROOT'] . '/admin/originals/')) mkdir($_SERVER['DOCUMENT_ROOT'] . '/admin/originals/');
         foreach ($files as $file) {
             copy('../' . $file, './originals/' . $file);
             $newName = str_replace(Array('.html', '.htm'), '.php', $file);
@@ -102,6 +102,8 @@ class Dashboard {
         $users = new UsersData();
         if ($action == 'process' && $users->checkPass() && !$users->authNeeded()) {
 
+            DashboardUtils::renameFiles($_POST['files']);
+            
             new AnalyticsData();
             new MediaData();
             new SettingsData();
@@ -117,7 +119,6 @@ class Dashboard {
             $pages = new PagesData();
             $pages->buildDataFile($_POST['files']);
 
-            DashboardUtils::renameFiles($_POST['files']);
             DashboardUtils::copyApacheConfig();
             DashboardUtils::createXMLSiteMap();
 

@@ -24,23 +24,24 @@ $data = $mediaData->getData();
                 <div class="tab-content">
                     <br>
                     <?php $count = 0; foreach($data as $key => $datum) { ?>
-                        <?php if (!empty($datum)) { ?>
-                            <div role="tabpanel" class="tab-pane<?php if ($count == 0) { ?> active<?php } ?>" id="<?=$key?>">
-                                <?php if ($key == 'images') { ?>
-                                    <div class="row">
-                                        <div class="col-sm-12 col-md-9">
-                                            <img id="media-upload-image" class="img-responsive img-thumbnail" src="">
-                                        </div>
-                                        <div class="col-sm-12 col-md-3">
-                                            <form action="/admin/media/update/" method="post" class="form-horizontal" enctype="multipart/form-data">
-                                                <input type="file" name="media-upload" id="media-upload" style="display: none;" onchange="readURL(this, 'media-upload');">
-                                                <button type="button" class="btn btn-info btn-block upload-button dirtyOK" data-trigger="media-upload">Upload New Image</button>
-                                                <br>
-                                                <button type="submit" id="media-upload-save" class="btn btn-primary btn-block upload-button dirtyOK" style="display: none">Save New Media</button>
-                                            </form>
-                                        </div>
+                        <div role="tabpanel" class="tab-pane<?php if ($count == 0) { ?> active<?php } ?>" id="<?=$key?>">
+                            <?php if ($key == 'images') { ?>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-9">
+                                        <img id="media-upload-image" class="img-responsive img-thumbnail" src="">
                                     </div>
-                                    <hr>
+                                    <div class="col-sm-12 col-md-3">
+                                        <form action="/admin/media/update/" method="post" class="form-horizontal" enctype="multipart/form-data">
+                                            <input type="file" name="media-upload" id="media-upload" style="display: none;" onchange="readURL(this, 'media-upload');">
+                                            <button type="button" class="btn btn-info btn-block upload-button dirtyOK" data-trigger="media-upload">Upload New Image</button>
+                                            <br>
+                                            <button type="submit" id="media-upload-save" class="btn btn-primary btn-block upload-button dirtyOK" style="display: none">Save New Media</button>
+                                        </form>
+                                    </div>
+                                </div>
+                                <hr>
+
+                                <?php if (!empty($datum)) { ?>
                                     <?php foreach ($datum as $id => $image) { ?>
                                         <div class="row">
                                             <div class="col-sm-12 col-md-9">
@@ -60,8 +61,8 @@ $data = $mediaData->getData();
                                         </div>
                                     <?php } ?>
                                 <?php } ?>
-                            </div>
-                        <?php } ?>
+                            <?php } ?>
+                        </div>
                     <?php $count++; } ?>
                 </div>
 
