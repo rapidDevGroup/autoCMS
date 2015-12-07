@@ -6,18 +6,14 @@ class AnalyticsData extends Data {
     public function createFile() {
         if (!file_exists($this->dataLoc . $this->dataFile)) {
             $this->data = Array();
-            $this->data['analytics'] = Array('analytics' => '', 'description' => 'analytics code', 'type' => 'analytics');
+            $this->data['analytics'] = Array('analytics' => '', 'description' => 'analytics code', 'type' => 'analytics', 'placeholder' => '&lt;script&gt; tag from google or other source...');
             $fp = fopen($this->dataLoc . $this->dataFile, 'w');
             fwrite($fp, json_encode($this->data));
             fclose($fp);
         }
     }
 
-    public function getAnalyticsData() {
-        return $this->data;
-    }
-
-    public function updateAnalytics($data) {
+    public function updateData($data) {
         $changeLog = Array();
 
         foreach ($data as $key => $datum) {
@@ -29,7 +25,6 @@ class AnalyticsData extends Data {
 
         if (count($changeLog) > 0) addToLog('has updated', ' the analytics code', $changeLog);
     }
-
 }
 
 class Analytics {
@@ -46,7 +41,7 @@ class Analytics {
         if ($users->checkPass() && !$users->authNeeded()) {
 
             $analytics = new AnalyticsData();
-            $analytics->updateAnalytics($_POST);
+            $analytics->updateData($_POST);
 
             header('Location: /admin/analytics/?updated=true');
         } else {
