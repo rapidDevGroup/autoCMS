@@ -117,6 +117,7 @@ function validateCreateAuth() {
 
 function readURL(input, imgID) {
     if (input.files && input.files[0]) {
+        console.log(input.files);
         $.each(input.files, function(key, element) {
             // if supported type
             var ext = input.files[key].name.split('.').pop().toLowerCase();
@@ -128,5 +129,7 @@ function readURL(input, imgID) {
                 reader.readAsDataURL(input.files[key]);
             }
         });
+        var $saveBtn = $('#' + imgID + '-save');
+        if ($saveBtn.exists()) $saveBtn.show();
     }
 }

@@ -38,7 +38,7 @@ class MediaData extends Data {
     public function deleteImage($type, $id) {
         foreach ($this->data[$type] as $key => $entry) {
             if ($key == $id) {
-                unlink($entry['location']);
+                unlink($_SERVER['DOCUMENT_ROOT'] . $entry['location']);
             }
         }
         unset($this->data[$type][$id]);
@@ -70,7 +70,7 @@ class MediaData extends Data {
 
                     $dataFile = null;
                     $json = null;
-                    if (!$isBlog) {
+                    if (!$isBlog && $page != 'media') {
                         $dataFile = 'data/page-' . $page . '.json';
                         $json = json_decode(file_get_contents($dataFile), true);
 
@@ -84,15 +84,17 @@ class MediaData extends Data {
                                 }
                             }
                         }
-                    } else {
+                    } else if ($isBlog) {
                         $dataFile = 'data/blog/blog-' . $page . '.json';
                         $json = json_decode(file_get_contents($dataFile), true);
                         $json['image'] = $imgFileName;
                     }
 
-                    $fp = fopen($dataFile, 'w');
-                    fwrite($fp, json_encode($json));
-                    fclose($fp);
+                    if ($page != 'media') {
+                        $fp = fopen($dataFile, 'w');
+                        fwrite($fp, json_encode($json));
+                        fclose($fp);
+                    }
                 }
             }
         }
@@ -147,7 +149,14 @@ class Media {
         $users = new UsersData();
         if ($users->checkPass() && !$users->authNeeded()) {
 
-            //updateAMedia($_POST);
+            $media = new MediaData();
+            if (isset($_POST['delete'])) {
+                $media->deleteImage('images', $_POST['delete']);
+            }
+
+            if (!empty($_FILES)) {
+                $media->uploadFiles('media');
+            }
 
             header('Location: /admin/media/?updated=true');
         } else {
