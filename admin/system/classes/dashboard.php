@@ -18,11 +18,16 @@ class DashboardUtils {
     }
 
     static public function renameFiles($files) {
+        foreach ($files as $file) {
+            $newName = str_replace(Array('.html', '.htm'), '.php', $file);
+            rename('../' . $file, '../' . $newName);
+        }
+    }
+
+    static public function backupFiles($files) {
         if (!is_dir($_SERVER['DOCUMENT_ROOT'] . '/admin/originals/')) mkdir($_SERVER['DOCUMENT_ROOT'] . '/admin/originals/');
         foreach ($files as $file) {
             copy('../' . $file, './originals/' . $file);
-            $newName = str_replace(Array('.html', '.htm'), '.php', $file);
-            rename('../' . $file, '../' . $newName);
         }
     }
 
@@ -102,8 +107,8 @@ class Dashboard {
         $users = new UsersData();
         if ($action == 'process' && $users->checkPass() && !$users->authNeeded()) {
 
-            DashboardUtils::renameFiles($_POST['files']);
-            
+            DashboardUtils::backupFiles($_POST['files']);
+
             new AnalyticsData();
             new MediaData();
             new SettingsData();
@@ -119,6 +124,7 @@ class Dashboard {
             $pages = new PagesData();
             $pages->buildDataFile($_POST['files']);
 
+            DashboardUtils::renameFiles($_POST['files']);
             DashboardUtils::copyApacheConfig();
             DashboardUtils::createXMLSiteMap();
 
