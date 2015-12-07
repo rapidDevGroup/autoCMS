@@ -50,6 +50,9 @@ $data = $mediaData->getData();
                                             <div class="col-sm-12 col-md-3">
                                                 <form action="/admin/media/update/" method="post" class="form-horizontal">
                                                     <input type="hidden" name="delete" value="<?=$id?>">
+                                                    <!--button type="button" class="btn btn-info btn-block upload-button dirtyOK">Crop Image</button>
+                                                    <button type="button" class="btn btn-info btn-block upload-button dirtyOK">Resize Image</button>
+                                                    <hr class="hidden-xs hidden-sm"-->
                                                     <button type="submit" class="btn btn-danger btn-block upload-button dirtyOK">Delete Image</button>
                                                 </form>
                                                 <br>

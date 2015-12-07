@@ -154,6 +154,7 @@ class PagesData extends DataBuild {
         $changeLog = Array();
 
         foreach ($data as $key => $datum) {
+            if (DashboardUtils::endsWith($key, '-loaded')) $key = str_replace('-loaded', '', $key);
             if ($key != 'key' && isset($json[$key]) && $json[$key][$json[$key]['type']] != trim($datum)) {
                 $changeLog[] = Array('key' => $key, 'change' => Array('original' => $json[$key][$json[$key]['type']], 'new' => trim($datum)));
                 $json[$key][$json[$key]['type']] = trim($datum);
