@@ -233,7 +233,7 @@ function updateBlogPost($post_id, $data, $publish = false) {
     }
 
     foreach ($data as $key => $datum) {
-        if (DashboardUtils::endsWith($key, '-loaded')) $key = str_replace('-loaded', '', $key);
+        if (DashboardUtils::endsWith($key, '-loaded') && trim($datum) != '') $key = str_replace('-loaded', '', $key);
         $changeLog[] = Array('key' => $key, 'change' => Array('original' => $json[$key], 'new' => trim($datum)));
         $json[$key] = trim($datum);
     }
