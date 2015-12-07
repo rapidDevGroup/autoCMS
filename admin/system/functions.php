@@ -199,13 +199,21 @@ function processBlog($files) {
                     if (isset($pageMeta->property) && isset($pageMeta->content)) {
                         $property = preg_replace("/[^a-z^A-Z^0-9_-]/", "", $pageMeta->property);
                         if ($pageMeta->property == "og:image") {
-                            $data[$property] = Array('image' => $pageMeta->content, 'description' => $pageMeta->property, 'type' => 'image');
-                            $pageMeta->content = "<?=get('$dataFile', '$property')?>";
-                            $blogArr['types']['open-graph'] = true;
-                            $blogArr['og-types'][$property] = $pageMeta->property;
+                            $pageMeta->content = "<?=get('autocms-settings.json', 'site-host')?><?=getBlog('image')?>";
+                        } else if ($pageMeta->property == "og:title") {
+                            $pageMeta->content = "<?=getBlog('title')?>";
+                        } else if ($pageMeta->property == "og:description") {
+                            $pageMeta->content = "<?=getBlog('description')?>";
+                        } else if ($pageMeta->property == "og:author" || $pageMeta->property == 'article:author') {
+                            $pageMeta->content = "<?=getBlog('author')?>";
+                        } else if ($pageMeta->property == "og:url") {
+                            $pageMeta->content = "<?=getBlog('link-href')?>";
+                        } else if ($pageMeta->property == "og:type") {
+                            $pageMeta->content = "article";
+                        } else if ($pageMeta->property == "og:site_name") {
+                            $pageMeta->content = "<?=get('autocms-settings.json', 'site-name')?>";
                         } else {
-                            $data[$property] = Array('text' => $pageMeta->content, 'description' => $pageMeta->property, 'type' => 'text');
-                            $pageMeta->content = "<?=get('$dataFile', '$property')?>";
+                            $pageMeta->content = "<?=getBlog('$property')?>";
                             $blogArr['types']['open-graph'] = true;
                             $blogArr['og-types'][$property] = $pageMeta->property;
                         }

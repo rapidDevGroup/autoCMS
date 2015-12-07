@@ -19,17 +19,7 @@ $openGraphTypes = getPostOGTypes();
                             <?=$key?>
                             <?php $key = str_replace(':', '', $key); ?>
                         </label>
-                        <?php if ($key == 'ogimage') { ?>
-                            <div class="col-lg-7 col-sm-7">
-                                <img id="<?=$key?>-image" class="img-responsive img-thumbnail" src="<?php if(isset($postInfo[$key])) { print $postInfo[$key]; } ?>">
-                            </div>
-                            <div class="col-lg-2 col-sm-3">
-                                <input type="file" name="<?=$key?>" id="<?=$key?>" style="display: none;" onchange="readURL(this, '<?=$key?>');">
-                                <button type="button" class="btn btn-info btn-block upload-button dirtyOK" data-trigger="<?=$key?>">Upload Image</button>
-                                <br>
-                                <button type="button" class="btn btn-success btn-block upload-button dirtyOK">Select Media</button>
-                            </div>
-                        <?php } else { ?>
+                        <?php if ($key != 'ogimage') { ?>
                             <div class="col-lg-9 col-sm-10">
                                 <input name="<?=$key?>" class="form-control" value="<?php if(isset($postInfo[$key])) { print $postInfo[$key]; } ?>" autocomplete="off">
                             </div>

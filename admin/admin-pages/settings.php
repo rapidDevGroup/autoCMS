@@ -1,6 +1,7 @@
 <?php
 include_once('header.php');
-$data = getNavData();
+$settingsData = new SettingsData();
+$data = $settingsData->getData();
 ?>
 <div class="container">
     <div class="row">

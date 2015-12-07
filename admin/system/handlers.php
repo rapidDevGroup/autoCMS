@@ -15,6 +15,7 @@ class Dash {
 
             new AnalyticsData();
             new MediaData();
+            new SettingsData();
 
             $nav = new NavigationData();
             $nav->buildDataFile($_POST['files']);
