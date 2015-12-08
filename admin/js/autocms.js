@@ -108,18 +108,24 @@ $(function() {
 
     //$('.selectpicker').selectpicker();
 
-    $('#imageSelectModal').on('show.bs.modal', function (event) {
+    var $imgSelectModal = $('#imageSelectModal');
+    $imgSelectModal.on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget);
         var recipient = button.data('key');
 
-        var modal = $(this);
-        modal.find('img').each(function() {
-            $(this).click(function() {
-                var imgSrc = $(this).attr('src');
-                $('#' + recipient + '-image').attr('src', imgSrc);
-                $('#' + recipient + '-loaded').attr('value', imgSrc);
-                $('#imageSelectModal').modal('hide');
-            });
+        $(this).data('key', recipient);
+    });
+
+    $imgSelectModal.find('img').each(function() {
+        $(this).click(function() {
+            var recipient = $imgSelectModal.data('key');
+            var imgSrc = $(this).attr('src');
+            $('#' + recipient + '-image').attr('src', imgSrc);
+            $('#' + recipient + '-loaded').attr('value', imgSrc);
+
+            console.log('same ' + recipient);
+
+            $('#imageSelectModal').modal('hide');
         });
     });
 
