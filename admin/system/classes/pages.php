@@ -143,6 +143,43 @@ class PagesData extends DataBuild {
         }
     }
 
+    static public function addVariableToPage($file, $name, $value) {
+        $dataFile = 'page-' . str_replace(Array('.html', '.htm'), '.json', $file);
+
+        if (file_exists('data/' . $dataFile)) {
+            $data = json_decode(file_get_contents('data/' . $dataFile), true);
+        } else {
+            $data = Array();
+        }
+
+        $data[$name] = $value;
+
+        $fp = fopen('data/' . $dataFile, 'w');
+        fwrite($fp, json_encode($data));
+        fclose($fp);
+    }
+
+    static public function saveDescription($file, $editKey, $editDesc) {
+        $dataFile = 'data/' . $file . '.json';
+        $json = json_decode(file_get_contents($dataFile), true);
+
+        $logsData = new LogsData();
+        if (strpos($editKey, '-') !== false) {
+            list($repeatKey, $iteration, $itemKey) = explode("-", $editKey);
+            if (isset($json[$repeatKey]['repeat'][$iteration][$itemKey])) {
+                $logsData->addToLog('has changes a description on', str_replace('page-', '', $file) . ' page', Array('key' => $editKey, 'change' => Array('original' => $json[$editKey]['description'], 'new' => $editDesc)));
+                $json[$repeatKey]['repeat'][$iteration][$itemKey]['description'] = trim($editDesc);
+            }
+        } else if (isset($json[$editKey])) {
+            $logsData->addToLog('has changes a description on', str_replace('page-', '', $file) . ' page', Array('key' => $editKey, 'change' => Array('original' => $json[$editKey]['description'], 'new' => $editDesc)));
+            $json[$editKey]['description'] = $editDesc;
+        }
+
+        $fp = fopen($dataFile, 'w');
+        fwrite($fp, json_encode($json));
+        fclose($fp);
+    }
+
     static public function getPageData($file) {
         $dataFile = 'data/page-' . $file . '.json';
         return json_decode(file_get_contents($dataFile), true);
@@ -310,6 +347,27 @@ class Repeat {
 
         } else {
             include_once('401.html');
+        }
+    }
+}
+
+class Description {
+    function post_xhr($page = null) {
+        $users = new UsersData();
+        if (is_null($page)) {
+            echo json_encode(StatusReturn::E400('400 Missing Required Data!'), JSON_NUMERIC_CHECK);
+        } else if ($page != 'nav' && $users->checkPass() && !$users->authNeeded()) {
+
+            PagesData::saveDescription('page-' . $page, $_POST['pk'], $_POST['value']);
+
+            echo json_encode(StatusReturn::S200('Description Saved!'), JSON_NUMERIC_CHECK);
+        } else if ($users->checkPass() && !$users->authNeeded()) {
+
+            PagesData::saveDescription('autocms-' . $page, $_POST['pk'], $_POST['value']);
+
+            echo json_encode(StatusReturn::S200('Description Saved!'), JSON_NUMERIC_CHECK);
+        } else {
+            echo json_encode(StatusReturn::E401('401 Not Authorized!'), JSON_NUMERIC_CHECK);
         }
     }
 }

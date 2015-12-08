@@ -1,6 +1,7 @@
 <?php
 include_once('header.php');
-$blogList = getBlogList();
+$blogData = new BlogData();
+$blogList = $blogData->getBlogList();
 ?>
 <div class="container">
     <div class="row">

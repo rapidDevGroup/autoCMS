@@ -1,7 +1,9 @@
 <?php
 include_once('header.php');
-$fields = getPostFields();
-$openGraphTypes = getPostOGTypes();
+
+$blogData = new BlogData();
+$fields = $blogData->getPostFields();
+$openGraphTypes = $blogData->getPostOGTypes();
 ?>
 <div class="container">
     <div class="row">

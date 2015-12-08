@@ -48,7 +48,8 @@ class DashboardUtils {
         $siteMap = new Sitemap('http://' . $domain . '/');
         $siteMap->setPath('../');
 
-        $postPageName = getPostPageName();
+        $blogData = new BlogData();
+        $postPageName = $blogData->getPostPageName();
 
         $siteMap->addItem('', '1', 'daily');
 
@@ -60,7 +61,7 @@ class DashboardUtils {
             }
         }
 
-        $blogList = getBlogList();
+        $blogList = $blogData->getBlogList();
         foreach ($blogList as $blog) {
             if (isset($blog['published'])) {
                 $siteMap->addItem($postPageName . '/' . $blog['external'] . '/', '1', 'monthly');

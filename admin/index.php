@@ -8,8 +8,6 @@ date_default_timezone_set('America/Toronto');
 require_once('system/Toro.php');
 require_once('system/classes.php');
 require_once('system/statusreturn.php');
-require_once('system/functions.php');
-require_once('system/handlers.php');
 require_once('system/simple_html_dom.php');
 require_once('system/sitemaps.php');
 
