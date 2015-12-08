@@ -17,7 +17,7 @@ $pages = $pagesData->getData();
         <!-- MetisMenu CSS -->
         <link href="//cdnjs.cloudflare.com/ajax/libs/metisMenu/2.0.0/metisMenu.min.css" rel="stylesheet" type="text/css">
         <!-- Custom CSS -->
-        <link href="/admin/css/autocms.css" rel="stylesheet">
+        <link href="/admin/css/autocms.css?v=<?=VERSION?>" rel="stylesheet">
         <!-- Custom Fonts -->
         <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
         <!-- Other -->

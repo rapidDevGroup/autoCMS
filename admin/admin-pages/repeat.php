@@ -39,7 +39,10 @@ include_once('header.php');
                                 </div>
                                 <div class="col-lg-2 col-sm-3">
                                     <input type="file" name="<?=$key?>-<?=$x?>-<?=$repeatItemKey?>" data-key="<?=$repeatItemKey?>" id="<?=$key?>-<?=$x?>-<?=$repeatItemKey?>" style="display: none;" onchange="readURL(this, '<?=$key?>-<?=$x?>-<?=$repeatItemKey?>');">
+                                    <input type="hidden" name="<?=$key?>-<?=$x?>-<?=$repeatItemKey?>-loaded" id="<?=$key?>-<?=$x?>-<?=$repeatItemKey?>-loaded" value="">
                                     <button type="button" class="btn btn-info btn-block upload-button dirtyOK" data-key="<?=$repeatItemKey?>" data-trigger="<?=$key?>-<?=$x?>-<?=$repeatItemKey?>">Upload Image</button>
+                                    <br>
+                                    <button type="button" class="btn btn-success btn-block upload-button dirtyOK" data-toggle="modal" data-target="#imageSelectModal" data-key="<?=$key?>-<?=$x?>-<?=$repeatItemKey?>">Select Media</button>
                                 </div>
                             <?php } ?>
                         </div>
@@ -66,6 +69,30 @@ include_once('header.php');
         </div>
     </div>
     <br><br>
+
+    <!-- Modal -->
+    <?php
+    $mediaData = new MediaData();
+    $dataImages = $mediaData->getData();
+    ?>
+    <div class="modal fade" id="imageSelectModal" tabindex="-1" role="dialog" aria-labelledby="imageSelectModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Select Image</h4>
+                </div>
+                <div class="modal-body" style="height: 400px; overflow: scroll;">
+                    <?php foreach($dataImages['images'] as $key => $datum) { ?>
+                        <img src="<?=$datum['location']?>" class="img-responsive img-thumbnail">
+                        <br><br>
+                    <?php } ?>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <?php
 include_once('footer.php');

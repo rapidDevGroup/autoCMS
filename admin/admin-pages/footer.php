@@ -9,6 +9,6 @@
         <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.5/js/bootstrap-select.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/summernote/0.6.16/summernote.min.js"></script>
 
-        <script src="/admin/js/autocms.js"></script>
+        <script src="/admin/js/autocms.js?v=<?=VERSION?>"></script>
     </body>
 </html>
