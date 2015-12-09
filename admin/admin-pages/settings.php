@@ -25,6 +25,10 @@ $data = $settingsData->getData();
                             <div class="col-lg-9 col-sm-10">
                                 <input name="<?=$key?>" class="form-control" value="<?=$datum['text']?>" autocomplete="off" placeholder="<?=$datum['placeholder']?>">
                             </div>
+                        <?php } else if ($datum['type'] == 'number') { ?>
+                            <div class="col-lg-9 col-sm-10">
+                                <input name="<?=$key?>" type="number" class="form-control" value="<?=$datum['number']?>" autocomplete="off" placeholder="<?=$datum['placeholder']?>">
+                            </div>
                         <?php } ?>
                     </div>
                 <?php } ?>

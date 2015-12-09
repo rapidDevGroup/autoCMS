@@ -114,6 +114,9 @@ class Dashboard {
             new MediaData();
             new SettingsData();
 
+            $rss = new RSSFeed();
+            $rss->buildDataFile($_POST['files']);
+
             $nav = new NavigationData();
             $nav->buildDataFile($_POST['files']);
 

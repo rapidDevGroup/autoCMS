@@ -74,17 +74,15 @@ function getBlog($key, $count = null) {
             if (isset($post['published'])) {
                 break;
             } else {
-                print "AHHHHH " . $currentCount;
                 $currentCount++;
             }
         }
         $pageKey = array_keys($jsonBlog['posts'])[$count + $currentCount];
         $dataFile = 'admin/data/blog/blog-' . $pageKey . '.json';
-        if (file_exists($dataFile)) $json = json_decode(file_get_contents($dataFile), true);
-
-        //if ($key != 'link') print_r($json);
-
-        return $json[$key];
+        if (file_exists($dataFile)) {
+            $json = json_decode(file_get_contents($dataFile), true);
+            return $json[$key];
+        }
     } else {
         $post_id = getPostID(strtolower($_GET['blog']));
         $dataFile = 'admin/data/blog/blog-' . $post_id . '.json';
@@ -108,14 +106,24 @@ function blogCount($file, $key) {
     foreach ($jsonBlog['posts'] as $data)
         if (isset($data['published'])) $countPub++;
 
-    $dataFile = 'page-' . str_replace(Array('.html', '.htm'), '.json', $file);
-    if (file_exists('admin/data/' . $dataFile)) {
-        $fromFile = json_decode(file_get_contents('admin/data/' . $dataFile), true);
+    if ($key == 'rss-count') {
+        if (file_exists('admin/data/' . $file)) {
+            $fromFile = json_decode(file_get_contents('admin/data/' . $file), true);
+        } else {
+            return 0;
+        }
+        $maxCount = $fromFile['rss-count']['number'];
     } else {
-        return 0;
+        $dataFile = 'page-' . str_replace(Array('.html', '.htm'), '.json', $file);
+        if (file_exists('admin/data/' . $dataFile)) {
+            $fromFile = json_decode(file_get_contents('admin/data/' . $dataFile), true);
+        } else {
+            return 0;
+        }
+        $maxCount = $fromFile[$key]['blog-count'];
     }
 
-    if ($fromFile[$key]['blog-count'] == 0) return $countPub;
+    if ($maxCount == 0) return $countPub;
 
-    return ($fromFile[$key]['blog-count'] < $countPub ? $fromFile[$key]['blog-count'] : $countPub);
+    return ($maxCount < $countPub ? $maxCount : $countPub);
 }

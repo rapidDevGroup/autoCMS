@@ -120,7 +120,7 @@ class BlogData extends Data {
                     PagesData::addVariableToPage($file, $fieldID, Array('blog-count' => 3, 'description' => 'blog display count', 'type' => 'blog-count'));
 
                 } else if (strpos($blog->class, 'auto-blog-post') !== false) {
-                    $blogArr['post-page'] = str_replace(Array('.html', '.htm'), '', $file);
+                    $this->data['post-page'] = str_replace(Array('.html', '.htm'), '', $file);
                     foreach($html->find('.auto-blog-post .auto-blog-title, .auto-blog-post .auto-blog-date, .auto-blog-post .auto-blog-cats, .auto-blog-post .auto-blog-bg-img, .auto-blog-post .auto-blog-img, .auto-blog-post .auto-blog-short, .auto-blog-post .auto-blog-full') as $post) {
                         if (strpos($post->class, 'auto-blog-title') !== false) {
                             $post->innertext = '<?=getBlog("title")?>';
@@ -246,9 +246,9 @@ class BlogData extends Data {
             $this->data['posts'][$post_id]['published'] = $updateTime;
         }
 
-        $domain = str_ireplace('www.', '', $_SERVER["HTTP_HOST"]);
+        $settingsData = new SettingsData();
         $postPage = $this->data['post-page'];
-        $json['link-href'] = 'http://' . $domain . '/' . $postPage . '/' . $externalTitle . '/';
+        $json['link-href'] = $settingsData->getHost() . $postPage . '/' . $externalTitle . '/';
 
         $fp = fopen($dataFile, 'w');
         fwrite($fp, json_encode($json));

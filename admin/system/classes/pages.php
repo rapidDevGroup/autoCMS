@@ -24,12 +24,20 @@ class PagesData extends DataBuild {
 
             $html = str_get_html($fileData);
 
-            foreach($html->find('.auto-head title') as $pageTitle) {
+            foreach ($html->find('html') as $htmlTag) {
+                if (isset($htmlTag->lang)) {
+                    $settingsData = new SettingsData();
+                    $settingsData->setLang($htmlTag->lang);
+                }
+                $htmlTag->lang = "<?=get('autocms-settings.json', 'site-lang')?>";
+            }
+
+            foreach ($html->find('.auto-head title') as $pageTitle) {
                 $data['title'] = Array('text' => $pageTitle->innertext, 'description' => 'title', 'type' => 'text');
                 $pageTitle->innertext = "<?=get('$dataFile', 'title')?>";
             }
 
-            foreach($html->find('.auto-head meta') as $pageMeta) {
+            foreach ($html->find('.auto-head meta') as $pageMeta) {
                 if ($pageMeta->name == 'keywords' || $pageMeta->name == 'description' || $pageMeta->name == 'author') {
                     $data[$pageMeta->name] = Array('text' => $pageMeta->content, 'description' => $pageMeta->name, 'type' => 'text');
                     $pageMeta->content = "<?=get('$dataFile', '$pageMeta->name')?>";

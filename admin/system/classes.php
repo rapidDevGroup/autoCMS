@@ -8,6 +8,7 @@ include_once('classes/logs.php');
 include_once('classes/media.php');
 include_once('classes/navigation.php');
 include_once('classes/pages.php');
+include_once('classes/rss.php');
 include_once('classes/settings.php');
 include_once('classes/users.php');
 
@@ -126,7 +127,7 @@ class DataBuild extends Data {
 
         if ($source[0] != '/') $source = '/' . $source;
         if ($source[0] == '/') $source = $_SERVER['DOCUMENT_ROOT'] . $source;
-        
+
         $fileExt = pathinfo(parse_url($edit->src, PHP_URL_PATH), PATHINFO_EXTENSION);
         $fileExt = MediaData::getImageType($fileExt, $source);
 

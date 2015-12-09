@@ -7,8 +7,10 @@ class SettingsData extends Data {
         if (!file_exists($this->dataLoc . $this->dataFile)) {
             $this->data = Array();
             $this->data['site-name'] = Array('text' => '', 'description' => 'name of site', 'type' => 'text');
-            $this->data['site-description'] = Array('html' => '', 'description' => 'describe your site', 'type' => 'text');
-            $this->data['site-host'] = Array('text' => '', 'description' => 'host of the site', 'type' => 'text', 'placeholder' => 'http://yourdomain.com/');
+            $this->data['site-lang'] = Array('text' => 'en-US', 'description' => 'site locale', 'type' => 'text');
+            $this->data['site-description'] = Array('text' => '', 'description' => 'describe your site', 'type' => 'text');
+            $this->data['site-host'] = Array('text' => 'http://' . $_SERVER['HTTP_HOST'] . '/', 'description' => 'host of the site', 'type' => 'text', 'placeholder' => 'http://yourdomain.com/');
+            $this->data['rss-count'] = Array('number' => '10', 'description' => 'num of posts in rss', 'type' => 'number');
             $fp = fopen($this->dataLoc . $this->dataFile, 'w');
             fwrite($fp, json_encode($this->data));
             fclose($fp);
@@ -29,6 +31,19 @@ class SettingsData extends Data {
             $logsData = new LogsData();
             $logsData->addToLog('has updated', ' the settings', $changeLog);
         }
+    }
+
+    public function setLang($lang) {
+        $this->data['site-lang']['text'] = $lang;
+    }
+
+    public function getHost() {
+        if (!DashboardUtils::endsWith($this->data['site-host']['text'], '/')) $this->data['site-host']['text'] .= '/';
+        return $this->data['site-host']['text'];
+    }
+
+    public function getSiteName() {
+        return $this->data['site-name'];
     }
 }
 
