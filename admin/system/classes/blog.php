@@ -7,13 +7,13 @@ class BlogData extends Data {
     public $blogDataLocation;
 
     function __construct() {
+        $this->blogDataLocation = $this->dataLoc . 'blog/';
         parent::__construct();
-        $this->blogDataLocation = $_SERVER['DOCUMENT_ROOT'] . '/admin/data/blog/';
     }
 
     public function createFile() {
         if (!file_exists($this->dataLoc . $this->dataFile)) {
-            $this->data = Array('post-page' => null, 'og-types' => Array(), 'types' => Array('title' => false, 'keywords' => false, 'description' => false, 'author' => false, 'date' => false, 'image' => false, 'image-alt-text' => false, 'short-blog' => false, 'full-blog' => false, 'link-text' => false, 'link-href' => false, 'open-graph'), 'posts' => Array());
+            $this->data = Array('post-page' => null, 'og-types' => Array(), 'types' => Array('title' => false, 'keywords' => false, 'description' => false, 'author' => false, 'date' => false, 'categories' => false, 'image' => false, 'image-alt-text' => false, 'short-blog' => false, 'full-blog' => false, 'link-text' => false, 'link-href' => false, 'open-graph' => false), 'posts' => Array());
             $fp = fopen($this->dataLoc . $this->dataFile, 'w');
             fwrite($fp, json_encode($this->data));
             fclose($fp);
@@ -69,9 +69,9 @@ class BlogData extends Data {
                     $blog->class = str_replace('auto-blog-head', '', $blog->class);
 
                 } else if (strpos($blog->class, 'auto-blog-list') !== false) {
-                    foreach($html->find('.auto-blog-list .auto-blog-title, .auto-blog-list .auto-blog-date, .auto-blog-list .auto-blog-bg-img, .auto-blog-list .auto-blog-img, .auto-blog-list .auto-blog-short, .auto-blog-list .auto-blog-full, .auto-blog-list .auto-blog-link, .auto-blog-list .auto-blog-link-href') as $list) {
+                    foreach($html->find('.auto-blog-list .auto-blog-title, .auto-blog-list .auto-blog-date, .auto-blog-list .auto-blog-cats, .auto-blog-list .auto-blog-bg-img, .auto-blog-list .auto-blog-img, .auto-blog-list .auto-blog-short, .auto-blog-list .auto-blog-full, .auto-blog-list .auto-blog-link, .auto-blog-list .auto-blog-link-href') as $list) {
                         if (strpos($list->class, 'auto-blog-title') !== false) {
-                            $list->innertext = '<?=getBlog("title", "$x")?>';
+                            $list->innertext = '<?=getBlog("title", $x)?>';
                             $list->class = str_replace('auto-blog-title', '', $list->class);
                             $this->data['types']['title'] = true;
                         } else if (strpos($list->class, 'auto-blog-bg-img') !== false) {
@@ -79,30 +79,34 @@ class BlogData extends Data {
                             $list->class = str_replace('auto-blog-bg-img', '', $list->class);
                             $this->data['types']['image'] = true;
                         } else if (strpos($list->class, 'auto-blog-img') !== false) {
-                            $list->src = '<?=getBlog("image", "$x")?>';
-                            $list->alt = '<?=getBlog("image-alt-text", "$x")?>';
+                            $list->src = '<?=getBlog("image", $x)?>';
+                            $list->alt = '<?=getBlog("image-alt-text", $x)?>';
                             $list->class = str_replace('auto-blog-img', '', $list->class);
                             $this->data['types']['image'] = true;
                             $this->data['types']['image-alt-text'] = true;
                         } else if (strpos($list->class, 'auto-blog-short') !== false) {
-                            $list->innertext = '<?=getBlog("short-blog", "$x")?>';
+                            $list->innertext = '<?=getBlog("short-blog", $x)?>';
                             $list->class = str_replace('auto-blog-short', '', $list->class);
                             $this->data['types']['short-blog'] = true;
                         } else if (strpos($list->class, 'auto-blog-full') !== false) {
-                            $list->innertext = '<?=getBlog("full-blog", "$x")?>';
+                            $list->innertext = '<?=getBlog("full-blog", $x)?>';
                             $list->class = str_replace('auto-blog-full', '', $list->class);
                             $this->data['types']['full'] = true;
                         } else if (strpos($list->class, 'auto-blog-date') !== false) {
-                            $list->innertext = '<?=getBlog("date", "$x")?>';
+                            $list->innertext = '<?=getBlog("date", $x)?>';
                             $list->class = str_replace('auto-blog-date', '', $list->class);
                             $this->data['types']['date'] = true;
+                        } else if (strpos($list->class, 'auto-blog-cats') !== false) {
+                            $list->innertext = '<?=getBlog("cats", $x)?>';
+                            $list->class = str_replace('auto-blog-cats', '', $list->class);
+                            $this->data['types']['categories'] = true;
                         } else if (strpos($list->class, 'auto-blog-link-href') !== false) {
-                            $list->href = '<?=getBlog("link-href", "$x")?>';
+                            $list->href = '<?=getBlog("link-href", $x)?>';
                             $list->class = str_replace('auto-blog-link-href', '', $list->class);
                             $this->data['types']['link-href'] = true;
                         } else if (strpos($list->class, 'auto-blog-link') !== false) {
-                            $list->href = '<?=getBlog("link", "$x")?>';
-                            $list->innertext = '<?=getBlog("link-text", "$x")?>';
+                            $list->href = '<?=getBlog("link", $x)?>';
+                            $list->innertext = '<?=getBlog("link-text", $x)?>';
                             $list->class = str_replace('auto-blog-link', '', $list->class);
                             $this->data['types']['link-text'] = true;
                         }
@@ -117,7 +121,7 @@ class BlogData extends Data {
 
                 } else if (strpos($blog->class, 'auto-blog-post') !== false) {
                     $blogArr['post-page'] = str_replace(Array('.html', '.htm'), '', $file);
-                    foreach($html->find('.auto-blog-post .auto-blog-title, .auto-blog-post .auto-blog-date, .auto-blog-post .auto-blog-bg-img, .auto-blog-post .auto-blog-img, .auto-blog-post .auto-blog-short, .auto-blog-post .auto-blog-full') as $post) {
+                    foreach($html->find('.auto-blog-post .auto-blog-title, .auto-blog-post .auto-blog-date, .auto-blog-post .auto-blog-cats, .auto-blog-post .auto-blog-bg-img, .auto-blog-post .auto-blog-img, .auto-blog-post .auto-blog-short, .auto-blog-post .auto-blog-full') as $post) {
                         if (strpos($post->class, 'auto-blog-title') !== false) {
                             $post->innertext = '<?=getBlog("title")?>';
                             $post->class = str_replace('auto-blog-title', '', $post->class);
@@ -144,6 +148,10 @@ class BlogData extends Data {
                             $post->innertext = '<?=getBlog("date")?>';
                             $post->class = str_replace('auto-blog-date', '', $post->class);
                             $this->data['types']['date'] = true;
+                        } else if (strpos($post->class, 'auto-blog-cats') !== false) {
+                            $post->innertext = '<?=getBlog("cats", "$x")?>';
+                            $post->class = str_replace('auto-blog-cats', '', $post->class);
+                            $this->data['types']['categories'] = true;
                         }
                         if (trim($post->class) === '') $post->class = null;
                     }

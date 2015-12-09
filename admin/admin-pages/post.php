@@ -41,7 +41,7 @@ $openGraphTypes = $blogData->getPostOGTypes();
                                     <div class="col-lg-9 col-sm-10 textarea">
                                         <textarea name="<?=$key?>" class="form-control editor"><?php if(isset($postInfo[$key])) { print $postInfo[$key]; } ?></textarea>
                                     </div>
-                                <?php } else if ($key == 'title' || $key == 'author' || $key == 'keywords' || $key == 'description' || $key == 'image-alt-text' || $key == 'link-text' || $key == 'date') { ?>
+                                <?php } else if ($key == 'title' || $key == 'author' || $key == 'keywords' || $key == 'description' || $key == 'image-alt-text' || $key == 'link-text' || $key == 'date' || $key == 'categories') { ?>
                                     <div class="col-lg-9 col-sm-10">
                                         <input name="<?=$key?>" class="form-control" value="<?php if(isset($postInfo[$key])) { print $postInfo[$key]; } ?>" autocomplete="off">
                                     </div>

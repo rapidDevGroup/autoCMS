@@ -27,7 +27,7 @@ class DashboardUtils {
     static public function backupFiles($files) {
         if (!is_dir($_SERVER['DOCUMENT_ROOT'] . '/admin/originals/')) mkdir($_SERVER['DOCUMENT_ROOT'] . '/admin/originals/');
         foreach ($files as $file) {
-            copy('../' . $file, './originals/' . $file);
+            if (file_exists('../' . $file)) copy('../' . $file, './originals/' . $file);
         }
     }
 
@@ -117,7 +117,8 @@ class Dashboard {
             $nav = new NavigationData();
             $nav->buildDataFile($_POST['files']);
 
-            processBlog($_POST['files']);
+            $blog = new BlogData();
+            $blog->buildDataFile($_POST['files']);
 
             $footer = new FooterData();
             $footer->buildDataFile($_POST['files']);

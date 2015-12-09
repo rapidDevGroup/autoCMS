@@ -120,12 +120,13 @@ class DataBuild extends Data {
             preg_match('~\bbackground(-image)?\s*:(.*?)\(\s*(\'|")?(?<image>.*?)\3?\s*\)~i', $source, $matches);
             $source = $matches[4];
             $tag = $matches[0];
-            if (substr($source, 0, 1) == "/") $source = $_SERVER['DOCUMENT_ROOT'] . $source;
         } else {
             $source = $edit->src;
-            if (substr($source, 0, 1) == "/") $source = $_SERVER['DOCUMENT_ROOT'] . $source;
         }
 
+        if ($source[0] != '/') $source = '/' . $source;
+        if ($source[0] == '/') $source = $_SERVER['DOCUMENT_ROOT'] . $source;
+        
         $fileExt = pathinfo(parse_url($edit->src, PHP_URL_PATH), PATHINFO_EXTENSION);
         $fileExt = MediaData::getImageType($fileExt, $source);
 

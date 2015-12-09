@@ -7,6 +7,7 @@ class SettingsData extends Data {
         if (!file_exists($this->dataLoc . $this->dataFile)) {
             $this->data = Array();
             $this->data['site-name'] = Array('text' => '', 'description' => 'name of site', 'type' => 'text');
+            $this->data['site-description'] = Array('html' => '', 'description' => 'describe your site', 'type' => 'text');
             $this->data['site-host'] = Array('text' => '', 'description' => 'host of the site', 'type' => 'text', 'placeholder' => 'http://yourdomain.com/');
             $fp = fopen($this->dataLoc . $this->dataFile, 'w');
             fwrite($fp, json_encode($this->data));

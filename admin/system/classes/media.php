@@ -14,9 +14,11 @@ class MediaData extends Data {
     }
 
     public function addToMediaLibrary($type, $location, $originalLocation = null) {
-        $imgId = uniqid();
-        $this->data[$type][$imgId] = Array('original-location' => $originalLocation, 'location' => $location);
-        if ($originalLocation && file_exists($originalLocation)) unlink($originalLocation);
+        if (trim($originalLocation) != '') {
+            $imgId = uniqid();
+            $this->data[$type][$imgId] = Array('original-location' => $originalLocation, 'location' => $location);
+            if (file_exists($originalLocation)) unlink($originalLocation);
+        }
     }
 
     public function checkMediaLibrary($type, $originalLocation) {
