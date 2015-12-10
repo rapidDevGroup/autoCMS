@@ -11,25 +11,34 @@ class BlogData extends Data {
         parent::__construct();
     }
 
-    public function createFile() {
-        if (!file_exists($this->dataLoc . $this->dataFile)) {
-            $this->data = Array('post-page' => null, 'og-types' => Array(), 'types' => Array('title' => false, 'keywords' => false, 'description' => false, 'author' => false, 'date' => false, 'categories' => false, 'image' => false, 'image-alt-text' => false, 'short-blog' => false, 'full-blog' => false, 'link-text' => false, 'link-href' => false, 'open-graph' => false), 'posts' => Array());
-            $fp = fopen($this->dataLoc . $this->dataFile, 'w');
-            fwrite($fp, json_encode($this->data));
-            fclose($fp);
-        }
-
-        if (!is_dir($this->blogDataLocation)) {
-            mkdir($this->blogDataLocation);
-        }
-    }
-
     public function buildDataFile($files) {
 
         foreach ($files as $file) {
             $fileData = file_get_contents('../' . $file, true);
 
             $html = str_get_html($fileData);
+
+            foreach($html->find('.auto-blog-next, .auto-blog-prev, .auto-blog-has-prev, .auto-blog-has-next') as $pagination) {
+                if (strpos($pagination->class, 'auto-blog-next') !== false) {
+                    $pagination->href = '<?=getBlogPage("next")?>';
+                    $pagination->class = str_replace('auto-blog-next', '', $pagination->class);
+                    $this->data['types']['link-next'] = true;
+                    $this->data['list-pagination-pages'] = str_replace(Array('.html', '.htm'), '', $file);
+                } else if (strpos($pagination->class, 'auto-blog-prev') !== false) {
+                    $pagination->href = '<?=getBlogPage("prev")?>';
+                    $pagination->class = str_replace('auto-blog-prev', '', $pagination->class);
+                    $this->data['types']['link-prev'] = true;
+                    $this->data['list-pagination-pages'] = str_replace(Array('.html', '.htm'), '', $file);
+                } else if (strpos($pagination->class, 'auto-blog-has-next') !== false) {
+                    $this->data['pagination']['has-next'] = $pagination->style;
+                    $pagination->style = '<?=getBlogPage("has-next")?>';
+                    $pagination->class = str_replace('auto-blog-has-next', '', $pagination->class);
+                } else if (strpos($pagination->class, 'auto-blog-has-prev') !== false) {
+                    $this->data['pagination']['has-prev'] = $pagination->style;
+                    $pagination->style = '<?=getBlogPage("has-prev")?>';
+                    $pagination->class = str_replace('auto-blog-has-prev', '', $pagination->class);
+                }
+            }
 
             foreach($html->find('.auto-blog-head, .auto-blog-list, .auto-blog-post') as $blog) {
                 if (strpos($blog->class, 'auto-blog-head') !== false) {

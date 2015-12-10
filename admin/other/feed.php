@@ -17,8 +17,10 @@ $temp->addAttribute('rel', 'self');
 $baseXMLFeed->channel->addChild('link', get('autocms-settings.json', 'site-host'));
 
 $categories = explode(",", get('autocms-settings.json', 'site-categories'));
-foreach($categories as $category) {
-    $baseXMLFeed->channel->addChild('category', $category);
+if (!empty($categories)) {
+    foreach ($categories as $category) {
+        $baseXMLFeed->channel->addChild('category', $category);
+    }
 }
 
 $count = blogCount('autocms-settings.json', 'rss-count');

@@ -1,4 +1,7 @@
 <?php
+
+date_default_timezone_set('UTC');
+
 $post_id = null;
 $currentCount = 0;
 
@@ -94,14 +97,20 @@ function getBlog($key, $count = null) {
     return '';
 }
 
+function getBlogPage($type) {
+
+    return '';
+}
+
 // get how many blog list count to show on this page
 function blogCount($file, $key) {
     $dataBlogListFile = 'admin/data/autocms-blog.json';
     if (file_exists($dataBlogListFile)) {
         $jsonBlog = json_decode(file_get_contents($dataBlogListFile), true);
     } else {
-        return false;
+        return 0;
     }
+    if (empty($jsonBlog['posts'])) return 0;
     $countPub = 0;
     foreach ($jsonBlog['posts'] as $data)
         if (isset($data['published'])) $countPub++;

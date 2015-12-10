@@ -32,6 +32,34 @@ class PagesData extends DataBuild {
                 $htmlTag->lang = "<?=get('autocms-settings.json', 'site-lang')?>";
             }
 
+            foreach ($html->find('head link') as $pageLinks) {
+                $cssFile = strtolower($pageLinks->href);
+                if (!DashboardUtils::startsWith($cssFile, '//') && !DashboardUtils::startsWith($cssFile, 'http://') && !DashboardUtils::startsWith($cssFile, 'https://')) {
+                    if (!DashboardUtils::startsWith($cssFile, '/')) {
+                        $cssFile = '/' . $cssFile;
+                    }
+                    if (file_exists($_SERVER['DOCUMENT_ROOT'] . $cssFile) && strpos($cssFile, 'min') === false && strpos($cssFile, 'css') !== false) {
+                        if (!is_dir($_SERVER['DOCUMENT_ROOT'] . '/assets/')) {
+                            mkdir($_SERVER['DOCUMENT_ROOT'] . '/assets/');
+                        }
+                        if (!is_dir($_SERVER['DOCUMENT_ROOT'] . '/assets/auto-css/')) {
+                            mkdir($_SERVER['DOCUMENT_ROOT'] . '/assets/auto-css/');
+                        }
+                        $cssFileData = file_get_contents('../' . $cssFile, true);
+                        $cssFileData = MinimizeTools::minimize_css($cssFileData);
+
+                        $fileName = pathinfo($cssFile, PATHINFO_FILENAME);
+
+                        $fp = fopen($_SERVER['DOCUMENT_ROOT'] . '/assets/auto-css/' . $fileName . '.min.css', 'w');
+                        fwrite($fp, $cssFileData);
+                        fclose($fp);
+
+                        $pageLinks->href = '/assets/auto-css/' . $fileName . '.min.css';
+                    }
+                }
+            }
+
+
             foreach ($html->find('.auto-head title') as $pageTitle) {
                 $data['title'] = Array('text' => $pageTitle->innertext, 'description' => 'title', 'type' => 'text');
                 $pageTitle->innertext = "<?=get('$dataFile', 'title')?>";
@@ -45,7 +73,7 @@ class PagesData extends DataBuild {
                 if (isset($pageMeta->property) && isset($pageMeta->content)) {
                     $property = preg_replace("/[^a-z^A-Z^0-9_-]/", "", $pageMeta->property);
                     if ($pageMeta->property == "og:image") {
-                        //todo: fix this
+                        //todo: fix this (copy og:image and put in library if exist)
 
                         /*$imgFileName = '';
                         $source = $pageMeta->content;

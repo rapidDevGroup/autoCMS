@@ -17,6 +17,11 @@ class DashboardUtils {
         return substr_compare($string, $test, $strLen - $testLen, $testLen) === 0;
     }
 
+    static public function startsWith($haystack, $needle) {
+        // search backwards starting from haystack length characters from the end
+        return $needle === "" || strrpos($haystack, $needle, -strlen($haystack)) !== FALSE;
+    }
+
     static public function renameFiles($files) {
         foreach ($files as $file) {
             $newName = str_replace(Array('.html', '.htm'), '.php', $file);
@@ -62,9 +67,11 @@ class DashboardUtils {
         }
 
         $blogList = $blogData->getBlogList();
-        foreach ($blogList as $blog) {
-            if (isset($blog['published'])) {
-                $siteMap->addItem($postPageName . '/' . $blog['external'] . '/', '1', 'monthly');
+        if (!empty($blogList)) {
+            foreach ($blogList as $blog) {
+                if (isset($blog['published'])) {
+                    $siteMap->addItem($postPageName . '/' . $blog['external'] . '/', '1', 'monthly');
+                }
             }
         }
 

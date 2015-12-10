@@ -346,6 +346,10 @@ form .row:first-child .floating-label-form-group {
 }
 .pager {
     margin: 20px 0 0;
+    text-align: left;
+}
+.prev, .next {
+    display: none;
 }
 .pager li > a,
 .pager li > span {
