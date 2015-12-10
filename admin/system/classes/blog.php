@@ -206,11 +206,12 @@ class BlogData extends Data {
 
         foreach ($data as $key => $datum) {
             if (DashboardUtils::endsWith($key, '-loaded') && trim($datum) != '') $key = str_replace('-loaded', '', $key);
-            if ($key != 'save') {
+            if ($key != 'save' && $key != 'publish') {
                 $changeLog[] = Array('key' => $key, 'change' => Array('original' => $json[$key], 'new' => trim($datum)));
                 $json[$key] = trim($datum);
             }
         }
+        $json['published'] = $updateTime;
 
         $logsData = new LogsData();
         if (count($changeLog) > 0 && !$isNew) {

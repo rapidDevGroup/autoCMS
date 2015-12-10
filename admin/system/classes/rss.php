@@ -1,6 +1,6 @@
 <?php
 
-class RSSFeed extends Data {
+class RSSData extends Data {
     public $dataFile = 'autocms-rss.json';
     public $sectionName = 'rss';
 
@@ -26,6 +26,10 @@ class RSSFeed extends Data {
 
     public function hasFeed() {
         return isset($this->data['rss']);
+    }
+
+    public function getFeedLocation() {
+        return $this->data['rss']['rss'];
     }
 
     public function copyFeed() {

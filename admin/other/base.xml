@@ -2,27 +2,11 @@
 <rss version="2.0"
      xmlns:content="http://purl.org/rss/1.0/modules/content/"
      xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:atom="http://www.w3.org/2005/Atom"
      xmlns:sy="http://purl.org/rss/1.0/modules/syndication/">
 
     <channel>
-        <title></title>
-        <link></link>
-        <description></description>
-        <lastBuildDate></lastBuildDate>
-        <language></language>
         <sy:updatePeriod>daily</sy:updatePeriod>
         <sy:updateFrequency>1</sy:updateFrequency>
-        <generator>http://auto-cms.com/</generator>
-        <item>
-            <title></title>
-            <link></link>
-            <pubDate></pubDate>
-            <dc:creator><![CDATA[]]></dc:creator>
-            <category><![CDATA[]]></category>
-
-            <guid isPermaLink="true"></guid>
-            <description><![CDATA[]]></description>
-            <content:encoded><![CDATA[]]></content:encoded>
-        </item>
     </channel>
 </rss>

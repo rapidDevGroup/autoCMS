@@ -83,7 +83,10 @@ class PagesData extends DataBuild {
             }
 
             foreach($html->find('.auto-head') as $pageHead) {
-                $pageHead->innertext .= "<?=get('autocms-analytics.json', 'analytics')?>";
+                $rssData = new RSSData();
+                $rssFeed= '';
+                if ($rssData->hasFeed()) $rssFeed = '<link rel="alternate" type="application/rss+xml" href="' . $rssData->getFeedLocation() . '" title="RSS feed for My Page">';
+                $pageHead->innertext .= $rssFeed . "<?=get('autocms-analytics.json', 'analytics')?>";
                 $pageHead->class = str_replace('auto-head', '', $pageHead->class);
                 if (trim($pageHead->class) === '') $pageHead->class = null;
             }

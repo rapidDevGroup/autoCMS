@@ -9,6 +9,7 @@ class SettingsData extends Data {
             $this->data['site-name'] = Array('text' => '', 'description' => 'name of site', 'type' => 'text');
             $this->data['site-lang'] = Array('text' => 'en-US', 'description' => 'site locale', 'type' => 'text');
             $this->data['site-description'] = Array('text' => '', 'description' => 'describe your site', 'type' => 'text');
+            $this->data['site-categories'] = Array('text' => '', 'description' => 'your site categories', 'type' => 'text');
             $this->data['site-host'] = Array('text' => 'http://' . $_SERVER['HTTP_HOST'] . '/', 'description' => 'host of the site', 'type' => 'text', 'placeholder' => 'http://yourdomain.com/');
             $this->data['rss-count'] = Array('number' => '10', 'description' => 'num of posts in rss', 'type' => 'number');
             $fp = fopen($this->dataLoc . $this->dataFile, 'w');
@@ -43,7 +44,11 @@ class SettingsData extends Data {
     }
 
     public function getSiteName() {
-        return $this->data['site-name'];
+        return $this->data['site-name']['text'];
+    }
+
+    public function getSitCategories() {
+        return $this->data['site-categories']['text'];
     }
 }
 
