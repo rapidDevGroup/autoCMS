@@ -67,6 +67,16 @@ RewriteRule ^ http%3://%1%{REQUEST_URI} [L,R=301]
 RewriteCond s%{HTTPS} ^((s)on|s.*)$ [NC]
 RewriteRule ^/*(.+/)?([^.]*[^/])$ http%2://%{HTTP_HOST}/$1$2/ [L,R=301]
 
+# Find php file for missing directory plus blog list page
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([a-zA-Z0-9-_]+)/page/([0-9]+)/$ $1.php?page=$2 [L]
+
+# Find php file for missing directory plus blog category
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([a-zA-Z0-9-_]+)/category/([a-zA-Z0-9-_]+)/$ $1.php?category=$2 [L]
+
 # Find php file for missing directory plus blog if exists
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
