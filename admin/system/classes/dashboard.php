@@ -110,11 +110,13 @@ class Dashboard {
 
             DashboardUtils::backupFiles($_POST['files']);
 
+            MinimizeTools::minimizeHTMLFiles($_POST['files']);
+
             new AnalyticsData();
             new MediaData();
             new SettingsData();
 
-            $rss = new RSSFeed();
+            $rss = new RSSData();
             $rss->buildDataFile($_POST['files']);
 
             $nav = new NavigationData();

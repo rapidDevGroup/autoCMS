@@ -6,6 +6,7 @@ include_once('classes/dashboard.php');
 include_once('classes/footer.php');
 include_once('classes/logs.php');
 include_once('classes/media.php');
+include_once('classes/minimize.php');
 include_once('classes/navigation.php');
 include_once('classes/pages.php');
 include_once('classes/rss.php');
