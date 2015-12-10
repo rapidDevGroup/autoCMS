@@ -59,6 +59,33 @@ class PagesData extends DataBuild {
                 }
             }
 
+            foreach ($html->find('html script') as $pageScript) {
+                $scriptFile = strtolower($pageScript->src);
+                if (!DashboardUtils::startsWith($scriptFile, '//') && !DashboardUtils::startsWith($scriptFile, 'http://') && !DashboardUtils::startsWith($scriptFile, 'https://')) {
+                    if (!DashboardUtils::startsWith($scriptFile, '/')) {
+                        $scriptFile = '/' . $scriptFile;
+                    }
+                    if (file_exists($_SERVER['DOCUMENT_ROOT'] . $scriptFile) && strpos($scriptFile, 'min') === false && strpos($scriptFile, 'js') !== false) {
+                        if (!is_dir($_SERVER['DOCUMENT_ROOT'] . '/assets/')) {
+                            mkdir($_SERVER['DOCUMENT_ROOT'] . '/assets/');
+                        }
+                        if (!is_dir($_SERVER['DOCUMENT_ROOT'] . '/assets/auto-js/')) {
+                            mkdir($_SERVER['DOCUMENT_ROOT'] . '/assets/auto-js/');
+                        }
+                        $scriptFileData = file_get_contents('../' . $scriptFile, true);
+                        $scriptFileData = MinimizeTools::minimize_js($scriptFileData);
+
+                        $fileName = pathinfo($scriptFile, PATHINFO_FILENAME);
+
+                        $fp = fopen($_SERVER['DOCUMENT_ROOT'] . '/assets/auto-js/' . $fileName . '.min.js', 'w');
+                        fwrite($fp, $scriptFileData);
+                        fclose($fp);
+
+                        $pageScript->src = '/assets/auto-js/' . $fileName . '.min.js';
+                    }
+                }
+            }
+
 
             foreach ($html->find('.auto-head title') as $pageTitle) {
                 $data['title'] = Array('text' => $pageTitle->innertext, 'description' => 'title', 'type' => 'text');
