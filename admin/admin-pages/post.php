@@ -32,7 +32,7 @@ $openGraphTypes = $blogData->getPostOGTypes();
                 <?php } ?>
                 <?php foreach($fields as $key => $field) { ?>
                     <?php if ($field) { ?>
-                        <?php if ($key != 'link-href' && $key != 'open-graph') { ?>
+                        <?php if ($key != 'link-href' && $key != 'open-graph' && $key != 'link-next' && $key != 'link-prev') { ?>
                             <div class="form-group">
                                 <label class="col-lg-2 col-sm-2 control-label">
                                     <?=ucwords(str_replace("-", " ", $key))?>

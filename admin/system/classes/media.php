@@ -17,7 +17,6 @@ class MediaData extends Data {
         if (trim($originalLocation) != '') {
             $imgId = uniqid();
             $this->data[$type][$imgId] = Array('original-location' => $originalLocation, 'location' => $location);
-            if (file_exists($originalLocation)) unlink($originalLocation);
         }
     }
 

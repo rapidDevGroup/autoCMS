@@ -11,6 +11,19 @@ class BlogData extends Data {
         parent::__construct();
     }
 
+    public function createFile() {
+        if (!file_exists($this->dataLoc . $this->dataFile)) {
+            $this->data = Array('post-page' => null, 'og-types' => Array(), 'types' => Array('title' => false, 'keywords' => false, 'description' => false, 'author' => false, 'date' => false, 'categories' => false, 'image' => false, 'image-alt-text' => false, 'short-blog' => false, 'full-blog' => false, 'link-text' => false, 'link-href' => false, 'open-graph' => false), 'posts' => Array());
+            $fp = fopen($this->dataLoc . $this->dataFile, 'w');
+            fwrite($fp, json_encode($this->data));
+            fclose($fp);
+        }
+
+        if (!is_dir($this->blogDataLocation)) {
+            mkdir($this->blogDataLocation);
+        }
+    }
+
     public function buildDataFile($files) {
 
         foreach ($files as $file) {
