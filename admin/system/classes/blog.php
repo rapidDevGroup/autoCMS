@@ -248,9 +248,11 @@ class BlogData extends Data {
             $externalTitleOriginal = $externalTitle;
 
             $count = 0;
-            foreach ($this->data['posts'] as $key => $data) {
-                while ($data['external'] == $externalTitle) {
-                    $externalTitle = $externalTitleOriginal . '-' . $count++;
+            if (!empty($this->data['posts'])) {
+                foreach ($this->data['posts'] as $key => $data) {
+                    while ($data['external'] == $externalTitle) {
+                        $externalTitle = $externalTitleOriginal . '-' . $count++;
+                    }
                 }
             }
 
