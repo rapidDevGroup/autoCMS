@@ -348,7 +348,7 @@ form .row:first-child .floating-label-form-group {
     margin: 20px 0 0;
     text-align: left;
 }
-.prev, .next {
+.pager li.prev, .pager li.next {
     display: none;
 }
 .pager li > a,

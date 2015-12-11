@@ -12,7 +12,7 @@ class RSSData extends Data {
             foreach($html->find('.auto-rss-link') as $rssFeed) {
                 $settingsData = new SettingsData();
                 $this->data['rss'] = Array('rss' => $settingsData->getHost() . "feed/", 'type' => 'rss');
-                $this->data['rss-link'] = Array('text' => '<link rel="alternate" type="application/rss+xml" href="' . $this->data['rss']['rss'] . '" title="RSS feed for ' . $settingsData->getSiteName() . '">', 'type' => 'text');
+                $this->data['rss-link'] = Array('text' => '<link rel="alternate" type="application/rss+xml" href="' . $this->data['rss']['rss'] . '" title="RSS feed">', 'type' => 'text');
                 $rssFeed->href = "<?=get('$this->dataFile', 'rss')?>";
             }
 

@@ -137,7 +137,7 @@ class PagesData extends DataBuild {
                 }
             }
 
-            foreach($html->find('.auto-head') as $pageHead) {
+            foreach($html->find('head') as $pageHead) {
                 $pageHead->innertext .= "<?=get('autocms-rss.json', 'rss-link')?>" . "<?=get('autocms-analytics.json', 'analytics')?>";
                 $pageHead->class = str_replace('auto-head', '', $pageHead->class);
                 if (trim($pageHead->class) === '') $pageHead->class = null;
