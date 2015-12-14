@@ -96,6 +96,7 @@ class PagesData extends DataBuild {
                 if ($pageMeta->name == 'keywords' || $pageMeta->name == 'description' || $pageMeta->name == 'author') {
                     $data[$pageMeta->name] = Array('text' => $pageMeta->content, 'description' => $pageMeta->name, 'type' => 'text');
                     $pageMeta->content = "<?=get('$dataFile', '$pageMeta->name')?>";
+                    $pageMeta->outertext = "<?php if (has('$dataFile', '$pageMeta->name')) { ?>" . $pageMeta->outertext . "<?php } ?>";
                 }
                 if (isset($pageMeta->property) && isset($pageMeta->content)) {
                     $property = preg_replace("/[^a-z^A-Z^0-9_-]/", "", $pageMeta->property);
@@ -122,17 +123,22 @@ class PagesData extends DataBuild {
                         */
                         $data[$property] = Array('image' => $pageMeta->content, 'description' => $pageMeta->property, 'type' => 'image');
                         $pageMeta->content = "<?=get('$dataFile', '$property')?>";
+                        $pageMeta->outertext = "<?php if (has('$dataFile', '$property')) { ?>" . $pageMeta->outertext . "<?php } ?>";
                     } else if ($pageMeta->property == "og:url") {
                         $pageMeta->content = '<?="http://".$_SERVER["HTTP_HOST"].$_SERVER["REQUEST_URI"]?>';
                     } else if ($pageMeta->property == "og:title") {
                         $pageMeta->content = "<?=get('$dataFile', 'title')?>";
+                        $pageMeta->outertext = "<?php if (has('$dataFile', 'title')) { ?>" . $pageMeta->outertext . "<?php } ?>";
                     } else if ($pageMeta->property == "og:description") {
                         $pageMeta->content = "<?=get('$dataFile', 'description')?>";
+                        $pageMeta->outertext = "<?php if (has('$dataFile', 'description')) { ?>" . $pageMeta->outertext . "<?php } ?>";
                     } else if ($pageMeta->property == "og:site_name") {
                         $pageMeta->content = "<?=get('autocms-settings.json', 'site-name')?>";
+                        $pageMeta->outertext = "<?php if (has('$dataFile', 'site-name')) { ?>" . $pageMeta->outertext . "<?php } ?>";
                     } else {
                         $data[$property] = Array('text' => $pageMeta->content, 'description' => $pageMeta->property, 'type' => 'text');
                         $pageMeta->content = "<?=get('$dataFile', '$property')?>";
+                        $pageMeta->outertext = "<?php if (has('$dataFile', '$property')) { ?>" . $pageMeta->outertext . "<?php } ?>";
                     }
                 }
             }
