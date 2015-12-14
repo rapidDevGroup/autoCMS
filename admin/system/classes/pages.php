@@ -138,9 +138,11 @@ class PagesData extends DataBuild {
             }
 
             foreach($html->find('head') as $pageHead) {
-                $pageHead->innertext .= "<?=get('autocms-rss.json', 'rss-link')?>" . "<?=get('autocms-analytics.json', 'analytics')?>";
+                $pageHead->innertext .= "<?=get('autocms-rss.json', 'rss-link')?>" . "<?=get('autocms-analytics.json', 'analytics')?>" . "<?=get('$dataFile', 'schema')?>";
                 $pageHead->class = str_replace('auto-head', '', $pageHead->class);
                 if (trim($pageHead->class) === '') $pageHead->class = null;
+
+                $data['schema'] = Array('script' => '', 'description' => 'SEO schemas', 'type' => 'script');
             }
 
             foreach($html->find('.auto-color, .auto-edit, .auto-edit-text, .auto-link, .auto-edit-img, .auto-edit-bg-img, .auto-repeat') as $edit) {
@@ -255,12 +257,12 @@ class PagesData extends DataBuild {
 
         foreach ($data as $key => $datum) {
             if (DashboardUtils::endsWith($key, '-loaded') && trim($datum) != '') $key = str_replace('-loaded', '', $key);
-            if ($key != 'key' && isset($json[$key]) && $json[$key][$json[$key]['type']] != trim($datum)) {
+            if ($key != 'key' && isset($json[$key]) && $json[$key][$json[$key]['type']] != trim($datum) && trim($datum) != '') {
                 $changeLog[] = Array('key' => $key, 'change' => Array('original' => $json[$key][$json[$key]['type']], 'new' => trim($datum)));
                 $json[$key][$json[$key]['type']] = trim($datum);
             } else {
                 list($repeatKey, $iteration, $itemKey) = explode("-", $key);
-                if (isset($json[$repeatKey]['repeat'][$iteration][$itemKey]) && $json[$repeatKey]['repeat'][$iteration][$itemKey][$json[$repeatKey]['repeat'][$iteration][$itemKey]['type']] != trim($datum)) {
+                if (isset($json[$repeatKey]['repeat'][$iteration][$itemKey]) && $json[$repeatKey]['repeat'][$iteration][$itemKey][$json[$repeatKey]['repeat'][$iteration][$itemKey]['type']] != trim($datum) && trim($datum) != '') {
                     $changeLog[] = Array('key' => $key, 'change' => Array('original' => $json[$repeatKey]['repeat'][$iteration][$itemKey][$json[$repeatKey]['repeat'][$iteration][$itemKey]['type']], 'new' => trim($datum)));
                     $json[$repeatKey]['repeat'][$iteration][$itemKey][$json[$repeatKey]['repeat'][$iteration][$itemKey]['type']] = trim($datum);
                 }

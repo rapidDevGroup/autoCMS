@@ -6,7 +6,7 @@ class AnalyticsData extends Data {
     public function createFile() {
         if (!file_exists($this->dataLoc . $this->dataFile)) {
             $this->data = Array();
-            $this->data['analytics'] = Array('analytics' => '', 'description' => 'analytics code', 'type' => 'analytics', 'placeholder' => '&lt;script&gt; tag from google or other source...');
+            $this->data['analytics'] = Array('script' => '', 'description' => 'analytics code', 'type' => 'script', 'placeholder' => '&lt;script&gt; tag from google or other source...');
             $fp = fopen($this->dataLoc . $this->dataFile, 'w');
             fwrite($fp, json_encode($this->data));
             fclose($fp);

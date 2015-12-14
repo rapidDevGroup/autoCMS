@@ -17,7 +17,11 @@ include_once('header.php');
                         <label for="<?=$key?>" class="col-lg-2 col-sm-2 control-label">
                             <a id="desc-<?=$key?>" class="desc-edit dirtyOK" data-type="text" data-pk="<?=$key?>" data-url="/admin/page/<?=$page?>/desc/" data-title="edit description"><?=$desc?></a>
                         </label>
-                        <?php if ($datum['type'] == 'html') { ?>
+                        <?php if ($datum['type'] == 'script') { ?>
+                            <div class="col-lg-9 col-sm-10">
+                                <textarea name="<?=$key?>" rows="6" class="form-control" placeholder="<?=$datum['placeholder']?>"><?=$datum['analytics']?></textarea>
+                            </div>
+                        <?php } else if ($datum['type'] == 'html') { ?>
                             <div class="col-lg-9 col-sm-10 textarea">
                                 <textarea name="<?=$key?>" class="form-control editor"><?=$datum['html']?></textarea>
                             </div>

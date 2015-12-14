@@ -123,8 +123,6 @@ $(function() {
             $('#' + recipient + '-image').attr('src', imgSrc);
             $('#' + recipient + '-loaded').attr('value', imgSrc);
 
-            console.log('same ' + recipient);
-
             $('#imageSelectModal').modal('hide');
         });
     });
