@@ -21,7 +21,7 @@ $data = $analyticsData->getData();
                         </label>
                         <?php if ($datum['type'] == 'script') { ?>
                             <div class="col-lg-9 col-sm-10">
-                                <textarea name="<?=$key?>" rows="6" class="form-control" placeholder="<?=$datum['placeholder']?>"><?=$datum['analytics']?></textarea>
+                                <textarea name="<?=$key?>" rows="6" class="form-control" placeholder="<?=$datum['placeholder']?>"><?=$datum['script']?></textarea>
                             </div>
                         <?php } ?>
                     </div>

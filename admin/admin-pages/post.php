@@ -37,9 +37,9 @@ $openGraphTypes = $blogData->getPostOGTypes();
                                 <label class="col-lg-2 col-sm-2 control-label">
                                     <?=ucwords(str_replace("-", " ", $key))?>
                                 </label>
-                                <?php if ($key == 'script') { ?>
+                                <?php if ($key == 'seo-schemas') { ?>
                                     <div class="col-lg-9 col-sm-10 textarea">
-                                        <textarea name="<?=$key?>" class="form-control editor"><?php if(isset($postInfo[$key])) { print $postInfo[$key]; } ?></textarea>
+                                        <textarea name="<?=$key?>" class="form-control"><?php if(isset($postInfo[$key])) { print $postInfo[$key]; } ?></textarea>
                                     </div>
                                 <?php } else if ($key == 'full-blog' || $key == 'short-blog') { ?>
                                     <div class="col-lg-9 col-sm-10 textarea">
