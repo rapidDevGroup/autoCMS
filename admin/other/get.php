@@ -40,6 +40,21 @@ function make404() {
     die();
 }
 
+// has data
+function has($file, $key, $count = null, $secondary = null) {
+    $dataFile = 'admin/data/' . $file;
+    if (file_exists($dataFile)) {
+        $json = json_decode(file_get_contents($dataFile), true);
+
+        if (!is_null($secondary) && !is_null($count) && $json[$key]['type'] == 'repeat' && isset($json[$key]['repeat'][$count][$secondary][$json[$key]['repeat'][$count][$secondary]['type']]) && trim($json[$key]['repeat'][$count][$secondary][$json[$key]['repeat'][$count][$secondary]['type']]) != '') {
+            return true;
+        }
+        return (isset($json[$key][$json[$key]['type']]) && trim($json[$key][$json[$key]['type']]) != '');
+    }
+
+    return false;
+}
+
 // get data
 function get($file, $key, $count = null, $secondary = null) {
     $dataFile = 'admin/data/' . $file;
@@ -98,7 +113,22 @@ function getBlog($key, $count = null) {
 }
 
 function getBlogPage($type) {
+    $dataBlogListFile = 'admin/data/autocms-blog.json';
+    if (file_exists($dataBlogListFile)) $jsonBlog = json_decode(file_get_contents($dataBlogListFile), true);
 
+
+    $blogCount = 0;
+    if (empty($jsonBlog['posts'])) $blogCount = 0; else $blogCount = count($jsonBlog['posts']);
+
+    if ($type == 'next') {
+
+    } else if ($type == 'prev') {
+
+    } elseif ($type == 'has-next') {
+
+    } elseif ($type == 'has-prev') {
+
+    }
     return '';
 }
 
