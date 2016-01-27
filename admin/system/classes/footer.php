@@ -42,8 +42,8 @@ class FooterData extends DataBuild {
 
                 $footerHTML = '';
                 foreach ($html->find('.auto-footer') as $edit) {
-                    $edit->class = str_replace('auto-footer', '', $edit->class);
-                    if (trim($edit->class) === '') $edit->class = null;
+                    //$edit->class = str_replace('auto-footer', '', $edit->class);
+                    //if (trim($edit->class) === '') $edit->class = null;
                     $footerHTML = clone $edit;
                     $edit->outertext = '<?php require_once("admin/other/autocms-footer.php") ?>';
                 }

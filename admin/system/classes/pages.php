@@ -145,8 +145,8 @@ class PagesData extends DataBuild {
 
             foreach($html->find('.auto-head') as $pageHead) {
                 $pageHead->innertext .= "<?=get('$dataFile', 'schema')?>";
-                $pageHead->class = str_replace('auto-head', '', $pageHead->class);
-                if (trim($pageHead->class) === '') $pageHead->class = null;
+                //$pageHead->class = str_replace('auto-head', '', $pageHead->class);
+                //if (trim($pageHead->class) === '') $pageHead->class = null;
 
                 $data['schema'] = Array('script' => '', 'description' => 'SEO schemas', 'type' => 'script');
             }
@@ -184,9 +184,9 @@ class PagesData extends DataBuild {
                         }
                     }
 
-                    $edit->class = str_replace('auto-repeat', '', $edit->class);
-                    if (trim($edit->class) === '') $edit->class = null;
-                    $edit->autocms = null;
+                    //$edit->class = str_replace('auto-repeat', '', $edit->class);
+                    //if (trim($edit->class) === '') $edit->class = null;
+                    //$edit->autocms = null;
                     $edit->outertext = '<?php for ($x = 0; $x ' . "< repeatCount('$dataFile', '$fieldID');" . ' $x++) { ?>' . $edit->outertext . "<?php } ?>";
 
                 } else if (strpos($edit->class, 'auto-edit-img') !== false) {

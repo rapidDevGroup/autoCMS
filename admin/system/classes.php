@@ -52,6 +52,29 @@ class Data {
 class DataBuild extends Data {
     public $sectionName;
 
+    function makeNavLink(&$edit, &$dataArr, $dataFile, $fieldID, $desc) {
+        if (isset($edit->autocms)) $desc = $edit->autocms;
+
+        $dataArr[$fieldID] = Array('link' => trim($edit->href), 'description' => $desc, 'type' => 'link');
+        $edit->href = "<?=get('$dataFile', '$fieldID')?>";
+        $edit->outertext = "<?php if (has('$dataFile', '$fieldID')) { ?>" . $edit->outertext . "<?php } ?>";
+
+        //$edit->class = str_replace('auto-nav-link', '', $edit->class);
+        //if (trim($edit->class) === '') $edit->class = null;
+        //$edit->autocms = null;
+    }
+
+    function makeNavText(&$edit, &$dataArr, $dataFile, $fieldID, $desc) {
+        if (isset($edit->autocms)) $desc = $edit->autocms;
+
+        $dataArr[$fieldID] = Array('text' => trim($edit->innertext), 'description' => $desc, 'type' => 'text');
+        $edit->innertext = "<?=get('$dataFile', '$fieldID')?>";
+
+        //$edit->class = str_replace('auto-edit-text', '', $edit->class);
+        //if (trim($edit->class) === '') $edit->class = null;
+        //$edit->autocms = null;
+    }
+
     function makeLink(&$edit, &$dataArr, $dataFile, $fieldID, $desc, $count = null, $repeatFieldID = null) {
         if (isset($edit->autocms)) $desc = $edit->autocms;
 
@@ -65,9 +88,9 @@ class DataBuild extends Data {
             $edit->outertext = "<?php if (has('$dataFile', '$fieldID', " . '$x' . ", '$repeatFieldID')) { ?>" . $edit->outertext . "<?php } ?>";
         }
 
-        $edit->class = str_replace('auto-link', '', $edit->class);
-        if (trim($edit->class) === '') $edit->class = null;
-        $edit->autocms = null;
+        //$edit->class = str_replace('auto-link', '', $edit->class);
+        //if (trim($edit->class) === '') $edit->class = null;
+        //$edit->autocms = null;
     }
 
     function makeHTMLText(&$edit, &$dataArr, $dataFile, $fieldID, $desc, $type = 'html', $count = null, $repeatFieldID = null) {
@@ -80,6 +103,7 @@ class DataBuild extends Data {
             $dataArr[$fieldID]['repeat'][$count][$repeatFieldID] = Array($type => trim($edit->innertext), 'description' => $desc, 'type' => $type);
             $edit->innertext = "<?=get('$dataFile', '$fieldID', " . '$x' . ", '$repeatFieldID')?>";
         }
+        /*
         if ($type == 'html') {
             $edit->class = str_replace('auto-edit', '', $edit->class);
         } else {
@@ -87,6 +111,7 @@ class DataBuild extends Data {
         }
         if (trim($edit->class) === '') $edit->class = null;
         $edit->autocms = null;
+        */
     }
 
     function makeColor(&$edit, &$dataArr, $dataFile, $fieldID, $desc, $count = null, $repeatFieldID = null) {
@@ -108,10 +133,10 @@ class DataBuild extends Data {
         } else {
             $edit->style = str_replace($tag, '', $edit->style) . "background-color: <?=get('$dataFile', '$fieldID')?>;";
         }
-        $edit->class = str_replace('auto-color', '', $edit->class);
-        if (trim($edit->class) === '') $edit->class = null;
 
-        $edit->autocms = null;
+        //$edit->class = str_replace('auto-color', '', $edit->class);
+        //if (trim($edit->class) === '') $edit->class = null;
+        //$edit->autocms = null;
     }
 
     function makeImageBGImage(&$edit, &$dataArr, $dataFile, $fieldID, $desc, $isBG = false, $count = null, $repeatFieldID = null) {
@@ -157,7 +182,7 @@ class DataBuild extends Data {
                 } else {
                     $edit->style = str_replace($tag, '', $edit->style) . "background-image: url('<?=get('$dataFile', '$fieldID')?>');";
                 }
-                $edit->class = str_replace('auto-edit-bg-img', '', $edit->class);
+                //$edit->class = str_replace('auto-edit-bg-img', '', $edit->class);
             } else {
                 $altText = $edit->alt;
                 if ($altText === false) $altText = '';
@@ -179,10 +204,10 @@ class DataBuild extends Data {
                 } else {
                     $edit->alt = "<?=get('$dataFile', '$altFieldID')?>";
                 }
-                $edit->class = str_replace('auto-edit-img', '', $edit->class);
+                //$edit->class = str_replace('auto-edit-img', '', $edit->class);
             }
-            if (trim($edit->class) === '') $edit->class = null;
-            $edit->autocms = null;
+            //if (trim($edit->class) === '') $edit->class = null;
+            //$edit->autocms = null;
         }
     }
 
