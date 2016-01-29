@@ -72,6 +72,10 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^([a-zA-Z0-9-_]+)/page/([0-9]+)/$ $1.php?page=$2 [L]
 
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^page/([0-9]+)/$ index.php?page=$1 [L]
+
 # Find php file for missing directory plus blog category
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
