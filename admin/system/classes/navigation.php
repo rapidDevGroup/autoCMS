@@ -10,15 +10,21 @@ class NavigationData extends DataBuild {
 
             $html = str_get_html($fileData);
 
-            foreach($html->find('.auto-nav, .auto-nav-internal, .auto-nav-link, .auto-nav-text') as $navigation) {
-                $desc = '';
-                if (isset($navigation->autocms)) $desc = $navigation->autocms;
-                $fieldID = uniqid();
-                if (strpos($navigation->class, 'auto-nav') !== false) {
-                    if (isset($navigation->autocms)) {
-                        $desc = preg_replace("/[^a-z^A-Z^0-9_-]/", "", $navigation->autocms);
+            foreach($html->find('.auto-nav-internal, .auto-nav-link, .auto-nav-text, .auto-nav') as $navigation) {
+                if ($navigation->getAttribute('data-autocms') != null && $navigation->getAttribute('data-autocms') != '') {
+                    $desc = $navigation->getAttribute('data-autocms');
+                    if (strpos($navigation->class, 'auto-nav-link') !== false) {
+                        $this->makeNavLink($navigation, $this->data, $this->dataFile, preg_replace("/[^a-z^A-Z^0-9_-]/", "", $desc), $desc);
+                    } else if (strpos($navigation->class, 'auto-nav-text') !== false) {
+                        $this->makeNavText($navigation, $this->data, $this->dataFile, preg_replace("/[^a-z^A-Z^0-9_-]/", "", $desc), $desc);
+                    } else if (strpos($navigation->class, 'auto-nav-internal') !== false) {
+                        $navigation->href = str_replace(Array('index.html', 'index.htm', '.html', '.htm'), '/', '/' . $navigation->href);
+                        $navigation->href = str_replace('//', '/', $navigation->href);
 
-                        $this->data[$desc] = Array('text' => $navigation->innertext, 'description' => $navigation->autocms, 'type' => 'text');
+                        //$navigation->class = str_replace('auto-nav-internal', '', $navigation->class);
+                        //if (trim($navigation->class) === '') $navigation->class = null;
+                    } else if (strpos($navigation->class, 'auto-nav') !== false) {
+                        $this->data[preg_replace("/[^a-z^A-Z^0-9_-]/", "", $desc)] = Array('text' => $navigation->innertext, 'description' => $desc, 'type' => 'text');
                         $navigation->innertext = "<?=get('$this->dataFile', '$desc')?>";
                         $navigation->href = str_replace(Array('index.html', 'index.htm', '.html', '.htm'), '/', '/' . $navigation->href);
                         $navigation->href = str_replace('//', '/', $navigation->href);
@@ -26,16 +32,6 @@ class NavigationData extends DataBuild {
                         //$navigation->class = str_replace('auto-nav', '', $navigation->class);
                         //if (trim($navigation->class) === '') $navigation->class = null;
                     }
-                } else if (strpos($navigation->class, 'auto-nav-link') !== false) {
-                    $this->makeNavLink($navigation, $this->data, $this->dataFile, $fieldID, $desc);
-                } else if (strpos($navigation->class, 'auto-nav-text') !== false) {
-                    $this->makeNavText($navigation, $this->data, $this->dataFile, $fieldID, $desc);
-                } else if (strpos($navigation->class, 'auto-nav-internal') !== false) {
-                    $navigation->href = str_replace(Array('index.html', 'index.htm', '.html', '.htm'), '/', '/' . $navigation->href);
-                    $navigation->href = str_replace('//', '/', $navigation->href);
-
-                    //$navigation->class = str_replace('auto-nav-internal', '', $navigation->class);
-                    //if (trim($navigation->class) === '') $navigation->class = null;
                 }
             }
 

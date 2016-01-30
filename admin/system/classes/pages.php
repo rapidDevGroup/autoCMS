@@ -160,7 +160,7 @@ class PagesData extends DataBuild {
                 $desc = '';
                 if (strpos($edit->class, 'auto-repeat') !== false) {
 
-                    if (isset($edit->autocms)) $desc = $edit->autocms;
+                    if ($edit->getAttribute('data-autocms') != null) $desc = $edit->getAttribute('data-autocms');
                     $data[$fieldID] = Array('repeat' => Array(), 'description' => $desc, 'type' => 'repeat');
                     $count = 0;
                     $data[$fieldID]['repeat'][$count] = Array();
@@ -186,7 +186,7 @@ class PagesData extends DataBuild {
 
                     //$edit->class = str_replace('auto-repeat', '', $edit->class);
                     //if (trim($edit->class) === '') $edit->class = null;
-                    //$edit->autocms = null;
+                    //$edit->getAttribute('data-autocms') = null;
                     $edit->outertext = '<?php for ($x = 0; $x ' . "< repeatCount('$dataFile', '$fieldID');" . ' $x++) { ?>' . $edit->outertext . "<?php } ?>";
 
                 } else if (strpos($edit->class, 'auto-edit-img') !== false) {
