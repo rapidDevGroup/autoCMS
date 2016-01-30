@@ -165,28 +165,24 @@ class PagesData extends DataBuild {
                     $count = 0;
                     $data[$fieldID]['repeat'][$count] = Array();
 
-                    foreach($html->find('.auto-repeat .auto-color, .auto-repeat .auto-edit, .auto-repeat .auto-edit-text, .auto-repeat .auto-link, .auto-repeat .auto-edit-img, .auto-repeat .auto-edit-bg-img') as $repeat) {
+                    foreach($html->find('.auto-repeat .auto-repeat-color, .auto-repeat .auto-repeat-edit, .auto-repeat .auto-repeat-edit-text, .auto-repeat .auto-repeat-link, .auto-repeat .auto-repeat-edit-img, .auto-repeat .auto-repeat-edit-bg-img') as $repeat) {
                         $desc = '';
 
                         $repeatFieldID = uniqid();
-                        if (strpos($repeat->class, 'auto-edit-img') !== false) {
+                        if (strpos($repeat->class, 'auto-repeat-edit-img') !== false) {
                             $this->makeImageBGImage($repeat, $data, $dataFile, $fieldID, $desc, false, $count, $repeatFieldID);
-                        } else if (strpos($repeat->class, 'auto-edit-bg-img') !== false) {
+                        } else if (strpos($repeat->class, 'auto-repeat-edit-bg-img') !== false) {
                             $this->makeImageBGImage($repeat, $data, $dataFile, $fieldID, $desc, true, $count, $repeatFieldID);
-                        } else if (strpos($repeat->class, 'auto-link') !== false) {
+                        } else if (strpos($repeat->class, 'auto-repeat-link') !== false) {
                             $this->makeLink($repeat, $data, $dataFile, $fieldID, $desc, $count, $repeatFieldID);
-                        } else if (strpos($repeat->class, 'auto-edit-text') !== false) {
+                        } else if (strpos($repeat->class, 'auto-repeat-edit-text') !== false) {
                             $this->makeHTMLText($repeat, $data, $dataFile, $fieldID, $desc, 'text', $count, $repeatFieldID);
-                        } else if (strpos($repeat->class, 'auto-edit') !== false) {
+                        } else if (strpos($repeat->class, 'auto-repeat-edit') !== false) {
                             $this->makeHTMLText($repeat, $data, $dataFile, $fieldID, $desc, 'html', $count, $repeatFieldID);
-                        } else if (strpos($repeat->class, 'auto-color') !== false) {
+                        } else if (strpos($repeat->class, 'auto-repeat-color') !== false) {
                             $this->makeColor($repeat, $data, $dataFile, $fieldID, $desc, $count, $repeatFieldID);
                         }
                     }
-
-                    //$edit->class = str_replace('auto-repeat', '', $edit->class);
-                    //if (trim($edit->class) === '') $edit->class = null;
-                    //$edit->getAttribute('data-autocms') = null;
                     $edit->outertext = '<?php for ($x = 0; $x ' . "< repeatCount('$dataFile', '$fieldID');" . ' $x++) { ?>' . $edit->outertext . "<?php } ?>";
 
                 } else if (strpos($edit->class, 'auto-edit-img') !== false) {
