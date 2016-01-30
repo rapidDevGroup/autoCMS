@@ -20,17 +20,11 @@ class NavigationData extends DataBuild {
                     } else if (strpos($navigation->class, 'auto-nav-internal') !== false) {
                         $navigation->href = str_replace(Array('index.html', 'index.htm', '.html', '.htm'), '/', '/' . $navigation->href);
                         $navigation->href = str_replace('//', '/', $navigation->href);
-
-                        //$navigation->class = str_replace('auto-nav-internal', '', $navigation->class);
-                        //if (trim($navigation->class) === '') $navigation->class = null;
                     } else if (strpos($navigation->class, 'auto-nav') !== false) {
                         $this->data[preg_replace("/[^a-z^A-Z^0-9_-]/", "", $desc)] = Array('text' => $navigation->innertext, 'description' => $desc, 'type' => 'text');
                         $navigation->innertext = "<?=get('$this->dataFile', '" . preg_replace("/[^a-z^A-Z^0-9_-]/", "", $desc) . "')?>";
                         $navigation->href = str_replace(Array('index.html', 'index.htm', '.html', '.htm'), '/', '/' . $navigation->href);
                         $navigation->href = str_replace('//', '/', $navigation->href);
-
-                        //$navigation->class = str_replace('auto-nav', '', $navigation->class);
-                        //if (trim($navigation->class) === '') $navigation->class = null;
                     }
                 }
             }
