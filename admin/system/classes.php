@@ -53,23 +53,17 @@ class DataBuild extends Data {
     public $sectionName;
 
     function makeNavLink(&$edit, &$dataArr, $dataFile, $fieldID, $desc) {
-        if (isset($edit->autocms)) $desc = $edit->autocms;
-
         $dataArr[$fieldID] = Array('link' => trim($edit->href), 'description' => $desc, 'type' => 'link');
         $edit->href = "<?=get('$dataFile', '$fieldID')?>";
         $edit->outertext = "<?php if (has('$dataFile', '$fieldID')) { ?>" . $edit->outertext . "<?php } ?>";
     }
 
     function makeNavText(&$edit, &$dataArr, $dataFile, $fieldID, $desc) {
-        if (isset($edit->autocms)) $desc = $edit->autocms;
-
         $dataArr[$fieldID] = Array('text' => trim($edit->innertext), 'description' => $desc, 'type' => 'text');
         $edit->innertext = "<?=get('$dataFile', '$fieldID')?>";
     }
 
     function makeLink(&$edit, &$dataArr, $dataFile, $fieldID, $desc, $count = null, $repeatFieldID = null) {
-        if (isset($edit->autocms)) $desc = $edit->autocms;
-
         if (is_null($repeatFieldID)) {
             $dataArr[$fieldID] = Array('link' => trim($edit->href), 'description' => $desc, 'type' => 'link');
             $edit->href = "<?=get('$dataFile', '$fieldID')?>";
@@ -82,8 +76,6 @@ class DataBuild extends Data {
     }
 
     function makeHTMLText(&$edit, &$dataArr, $dataFile, $fieldID, $desc, $type = 'html', $count = null, $repeatFieldID = null) {
-        if (isset($edit->autocms)) $desc = $edit->autocms;
-
         if (is_null($repeatFieldID)) {
             $dataArr[$fieldID] = Array($type => trim($edit->innertext), 'description' => $desc, 'type' => $type);
             $edit->innertext = "<?=get('$dataFile', '$fieldID')?>";
@@ -93,9 +85,23 @@ class DataBuild extends Data {
         }
     }
 
-    function makeColor(&$edit, &$dataArr, $dataFile, $fieldID, $desc, $count = null, $repeatFieldID = null) {
-        if (isset($edit->autocms)) $desc = $edit->autocms;
+    function makeDataText(&$edit, &$dataArr, $dataFile, $count = null, $repeatFieldID = null) {
+        foreach ($edit->getAllAttributes() as $key => $attribute) {
+            $fieldID = uniqid();
+            if (strpos($key, 'data') !== false && strpos($key, 'auto-data') === false && $key != 'data-autocms') {
+                $desc = $key;
+                if (is_null($repeatFieldID)) {
+                    $dataArr[$fieldID] = Array('text' => trim($attribute), 'description' => $desc, 'type' => 'text');
+                    $edit->setAttribute($key, "<?=get('$dataFile', '$fieldID')?>");
+                } else {
+                    $dataArr[$fieldID]['repeat'][$count][$repeatFieldID] = Array('text' => trim($attribute), 'description' => $desc, 'type' => 'text');
+                    $edit->setAttribute($key, "<?=get('$dataFile', '$fieldID', " . '$x' . ", '$repeatFieldID')?>");
+                }
+            }
+        }
+    }
 
+    function makeColor(&$edit, &$dataArr, $dataFile, $fieldID, $desc, $count = null, $repeatFieldID = null) {
         $color = $edit->style;
         preg_match('~\bbackground(-color)?\s*:\s*(#[0-9a-f]{3,6}|[a-z\(\0-9,\)]+)\s*(;)?~i', $color, $matches);
         $color = $matches[2];
@@ -115,7 +121,6 @@ class DataBuild extends Data {
     }
 
     function makeImageBGImage(&$edit, &$dataArr, $dataFile, $fieldID, $desc, $isBG = false, $count = null, $repeatFieldID = null) {
-        if (isset($edit->autocms)) $desc = $edit->autocms;
         $tag = null;
         $source = null;
 
