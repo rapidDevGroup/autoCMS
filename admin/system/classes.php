@@ -85,15 +85,16 @@ class DataBuild extends Data {
         }
     }
 
-    function makeDataText(&$edit, &$dataArr, $dataFile, $count = null, $repeatFieldID = null) {
-        foreach ($edit->getAllAttributes() as $key => $attribute) {
-            $fieldID = uniqid();
+    function makeDataText(&$edit, &$dataArr, $dataFile, $fieldID, $count = null) {
+        foreach ($edit->getAllAttributes() AS $key => $attribute) {
             if (strpos($key, 'data') !== false && strpos($key, 'auto-data') === false && $key != 'data-autocms') {
                 $desc = $key;
-                if (is_null($repeatFieldID)) {
+                if (is_null($count)) {
+                    $fieldID = uniqid();
                     $dataArr[$fieldID] = Array('text' => trim($attribute), 'description' => $desc, 'type' => 'text');
                     $edit->setAttribute($key, "<?=get('$dataFile', '$fieldID')?>");
                 } else {
+                    $repeatFieldID = uniqid();
                     $dataArr[$fieldID]['repeat'][$count][$repeatFieldID] = Array('text' => trim($attribute), 'description' => $desc, 'type' => 'text');
                     $edit->setAttribute($key, "<?=get('$dataFile', '$fieldID', " . '$x' . ", '$repeatFieldID')?>");
                 }

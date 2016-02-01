@@ -157,22 +157,21 @@ class PagesData extends DataBuild {
 
             foreach($html->find('.auto-color, .auto-edit, .auto-edit-text, .auto-link, .auto-edit-img, .auto-edit-bg-img, .auto-data, .auto-repeat') as $edit) {
                 $fieldID = uniqid();
-                $desc = '';
+                $desc = ($edit->getAttribute('data-autocms') ? $edit->getAttribute('data-autocms') : '');
                 if (strpos($edit->class, 'auto-repeat') !== false) {
 
-                    if ($edit->getAttribute('data-autocms') != null) $desc = $edit->getAttribute('data-autocms');
                     $data[$fieldID] = Array('repeat' => Array(), 'description' => $desc, 'type' => 'repeat');
                     $count = 0;
                     $data[$fieldID]['repeat'][$count] = Array();
 
                     foreach($html->find('.auto-repeat .auto-repeat-color, .auto-repeat .auto-repeat-edit, .auto-repeat .auto-repeat-edit-text, .auto-repeat .auto-repeat-link, .auto-repeat .auto-repeat-edit-img, .auto-repeat .auto-repeat-edit-bg-img, .auto-repeat .auto-repeat-data') as $repeat) {
-                        $desc = '';
+                        $desc = ($edit->getAttribute('data-autocms') ? $edit->getAttribute('data-autocms') : '');
 
                         $repeatFieldID = uniqid();
                         if (strpos($repeat->class, 'auto-repeat-edit-img') !== false) {
                             $this->makeImageBGImage($repeat, $data, $dataFile, $fieldID, $desc, false, $count, $repeatFieldID);
-                        } else if (strpos($edit->class, 'auto-repeat-data') !== false) {
-                            $this->makeDataText($edit, $data, $dataFile, $count, $repeatFieldID);
+                        } else if (strpos($repeat->class, 'auto-repeat-data') !== false) {
+                            $this->makeDataText($repeat, $data, $dataFile, $fieldID, $count);
                         } else if (strpos($repeat->class, 'auto-repeat-edit-bg-img') !== false) {
                             $this->makeImageBGImage($repeat, $data, $dataFile, $fieldID, $desc, true, $count, $repeatFieldID);
                         } else if (strpos($repeat->class, 'auto-repeat-link') !== false) {
@@ -188,7 +187,7 @@ class PagesData extends DataBuild {
                     $edit->outertext = '<?php for ($x = 0; $x ' . "< repeatCount('$dataFile', '$fieldID');" . ' $x++) { ?>' . $edit->outertext . "<?php } ?>";
 
                 } else if (strpos($edit->class, 'auto-data') !== false) {
-                    $this->makeDataText($edit, $data, $dataFile);
+                    $this->makeDataText($edit, $data, $dataFile, $fieldID);
                 } else if (strpos($edit->class, 'auto-edit-img') !== false) {
                     $this->makeImageBGImage($edit, $data, $dataFile, $fieldID, $desc);
                 } else if (strpos($edit->class, 'auto-edit-bg-img') !== false) {

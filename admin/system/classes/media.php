@@ -14,7 +14,7 @@ class MediaData extends Data {
     }
 
     public function addToMediaLibrary($type, $location, $originalLocation = null) {
-        if (trim($originalLocation) != '') {
+        if (is_null($originalLocation) || trim($originalLocation) != '') {
             $imgId = uniqid();
             $this->data[$type][$imgId] = Array('original-location' => $originalLocation, 'location' => $location);
         }
