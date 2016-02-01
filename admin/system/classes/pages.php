@@ -165,13 +165,13 @@ class PagesData extends DataBuild {
                     $count = 0;
                     $data[$fieldID]['repeat'][$count] = Array();
 
-                    foreach($html->find('.auto-repeat .auto-repeat-color, .auto-repeat .auto-repeat-edit, .auto-repeat .auto-repeat-edit-text, .auto-repeat .auto-repeat-link, .auto-repeat .auto-repeat-edit-img, .auto-repeat .auto-repeat-edit-bg-img, .auto-repeat .auto-data') as $repeat) {
+                    foreach($html->find('.auto-repeat .auto-repeat-color, .auto-repeat .auto-repeat-edit, .auto-repeat .auto-repeat-edit-text, .auto-repeat .auto-repeat-link, .auto-repeat .auto-repeat-edit-img, .auto-repeat .auto-repeat-edit-bg-img, .auto-repeat .auto-repeat-data') as $repeat) {
                         $desc = '';
 
                         $repeatFieldID = uniqid();
                         if (strpos($repeat->class, 'auto-repeat-edit-img') !== false) {
                             $this->makeImageBGImage($repeat, $data, $dataFile, $fieldID, $desc, false, $count, $repeatFieldID);
-                        } else if (strpos($edit->class, 'auto-data') !== false) {
+                        } else if (strpos($edit->class, 'auto-repeat-data') !== false) {
                             $this->makeDataText($edit, $data, $dataFile, $count, $repeatFieldID);
                         } else if (strpos($repeat->class, 'auto-repeat-edit-bg-img') !== false) {
                             $this->makeImageBGImage($repeat, $data, $dataFile, $fieldID, $desc, true, $count, $repeatFieldID);
