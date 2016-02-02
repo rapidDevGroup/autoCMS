@@ -38,7 +38,7 @@ class UsersData extends Data {
 
         foreach($this->data as $key => $user) {
             if ($user['user'] == $_SESSION["user"]) {
-                $json[$key]['password'] = password_hash($password, PASSWORD_DEFAULT);
+                $this->data[$key]['password'] = password_hash($password, PASSWORD_DEFAULT);
             }
         }
 
