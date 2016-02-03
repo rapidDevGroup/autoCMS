@@ -45,5 +45,7 @@ Toro::serve(array(
     '/page/:alpha/repeat/:key/'                 => 'Repeat',
     '/page/:alpha/repeat/:key/update/'          => 'Repeat',
     '/page/:alpha/repeat-dup/:key/:number/'     => 'RepeatDup',
-    '/page/:alpha/repeat-del/:key/:number/'     => 'RepeatDel'
+    '/page/:alpha/repeat-del/:key/:number/'     => 'RepeatDel',
+    '/page/:alpha/repeat-up/:key/:number/'      => 'RepeatUp',
+    '/page/:alpha/repeat-down/:key/:number/'    => 'RepeatDown'
 ));

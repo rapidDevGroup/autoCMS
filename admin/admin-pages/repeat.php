@@ -48,7 +48,13 @@ include_once('header.php');
                         </div>
                     <?php } ?>
                     <div class="row">
-                        <div class="col-lg-offset-9 col-lg-2 col-sm-offset-9 col-sm-3">
+                        <div class="col-lg-offset-6 col-lg-3 col-sm-offset-5 col-sm-4">
+                            <div class="btn-group btn-group-justified">
+                                <?php if ($x != 0) { ?><a href="/admin/page/<?=$page?>/repeat-up/<?=$key?>/<?=$x?>/" class="btn btn-warning">Move Up</a><?php } ?>
+                                <?php if (count($data)-1 != $x) { ?><a href="/admin/page/<?=$page?>/repeat-down/<?=$key?>/<?=$x?>/" class="btn btn-warning">Move Down</a><?php } ?>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-sm-3">
                             <div class="btn-group btn-group-justified">
                                 <a href="/admin/page/<?=$page?>/repeat-dup/<?=$key?>/<?=$x?>/" class="btn btn-warning">Duplicate</a>
                                 <?php if (count($data) > 1) { ?><a href="/admin/page/<?=$page?>/repeat-del/<?=$key?>/<?=$x?>/" class="btn btn-danger">Delete</a><?php } ?>

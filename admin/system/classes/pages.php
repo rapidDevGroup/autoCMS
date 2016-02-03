@@ -305,6 +305,28 @@ class PagesData extends DataBuild {
         fclose($fp);
     }
 
+    static public function repeatMoveUp($page, $key, $num) {
+        $dataFile = 'data/page-' . $page . '.json';
+        $json = json_decode(file_get_contents($dataFile), true);
+
+        PagesData::moveElement($json[$key]['repeat'], $num, $num-1);
+
+        $fp = fopen($dataFile, 'w');
+        fwrite($fp, json_encode($json));
+        fclose($fp);
+    }
+
+    static public function repeatMoveDown($page, $key, $num) {
+        $dataFile = 'data/page-' . $page . '.json';
+        $json = json_decode(file_get_contents($dataFile), true);
+
+        PagesData::moveElement($json[$key]['repeat'], $num, $num+1);
+
+        $fp = fopen($dataFile, 'w');
+        fwrite($fp, json_encode($json));
+        fclose($fp);
+    }
+
     static public function deleteRepeat($page, $key, $num) {
         $dataFile = 'data/page-' . $page . '.json';
         $json = json_decode(file_get_contents($dataFile), true);
@@ -327,6 +349,11 @@ class PagesData extends DataBuild {
         $json = json_decode(file_get_contents($dataFile), true);
 
         return $json[$key]['repeat'];
+    }
+
+    static public function moveElement(&$array, $a, $b) {
+        $out = array_splice($array, $a, 1);
+        array_splice($array, $b, 0, $out);
     }
 }
 
@@ -368,9 +395,7 @@ class RepeatDel {
             include_once('404.html');
         } else if ($users->checkPass() && !$users->authNeeded()) {
             PagesData::deleteRepeat($page, $key, $num);
-
             header('Location: /admin/page/' . $page . '/repeat/' . $key . '/');
-
         } else {
             include_once('401.html');
         }
@@ -384,9 +409,35 @@ class RepeatDup {
             include_once('404.html');
         } else if ($users->checkPass() && !$users->authNeeded()) {
             PagesData::duplicateRepeat($page, $key, $num);
-
             header('Location: /admin/page/' . $page . '/repeat/' . $key . '/');
+        } else {
+            include_once('401.html');
+        }
+    }
+}
 
+class RepeatUp {
+    function get($page, $key, $num) {
+        $users = new UsersData();
+        if (is_null($page) || is_null($key) || is_null($num)) {
+            include_once('404.html');
+        } else if ($users->checkPass() && !$users->authNeeded()) {
+            PagesData::repeatMoveUp($page, $key, $num);
+            header('Location: /admin/page/' . $page . '/repeat/' . $key . '/');
+        } else {
+            include_once('401.html');
+        }
+    }
+}
+
+class RepeatDown {
+    function get($page, $key, $num) {
+        $users = new UsersData();
+        if (is_null($page) || is_null($key) || is_null($num)) {
+            include_once('404.html');
+        } else if ($users->checkPass() && !$users->authNeeded()) {
+            PagesData::repeatMoveDown($page, $key, $num);
+            header('Location: /admin/page/' . $page . '/repeat/' . $key . '/');
         } else {
             include_once('401.html');
         }

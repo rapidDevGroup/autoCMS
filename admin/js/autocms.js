@@ -1,8 +1,9 @@
+/* create exists function */
+jQuery.fn.exists = function () {
+    return this.length > 0;
+};
+
 $(function() {
-    /* create exists function */
-    jQuery.fn.exists = function () {
-        return this.length > 0;
-    };
 
     var $container = $('.container');
 

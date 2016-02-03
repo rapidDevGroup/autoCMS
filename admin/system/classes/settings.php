@@ -7,6 +7,7 @@ class SettingsData extends Data {
         if (!file_exists($this->dataLoc . $this->dataFile)) {
             $this->data = Array();
             $this->data['site-name'] = Array('text' => '', 'description' => 'name of site', 'type' => 'text');
+            $this->data['site-email'] = Array('text' => '', 'description' => 'site main email', 'type' => 'text');
             $this->data['site-lang'] = Array('text' => 'en-US', 'description' => 'site locale', 'type' => 'text', 'placeholder' => 'locale code');
             $this->data['site-description'] = Array('text' => '', 'description' => 'describe your site', 'type' => 'text');
             $this->data['site-categories'] = Array('text' => '', 'description' => 'your site categories', 'type' => 'text');

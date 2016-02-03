@@ -90,7 +90,7 @@ class BlogData extends Data {
                     $blog->innertext .= "<?=getBlog('seo-schemas')?>";
 
                 } else if (strpos($blog->class, 'auto-blog-list') !== false) {
-                    foreach($html->find('.auto-blog-list .auto-blog-title, .auto-blog-list .auto-blog-date, .auto-blog-list .auto-blog-cats, .auto-blog-list .auto-blog-bg-img, .auto-blog-list .auto-blog-img, .auto-blog-list .auto-blog-short, .auto-blog-list .auto-blog-full, .auto-blog-list .auto-blog-link, .auto-blog-list .auto-blog-link-href') as $list) {
+                    foreach($html->find('.auto-blog-list .auto-blog-title, .auto-blog-list .auto-blog-date, .auto-blog-list .auto-blog-cats, .auto-blog-list .auto-blog-bg-img, .auto-blog-list .auto-blog-img, .auto-blog-list .auto-blog-short, .auto-blog-list .auto-blog-full, .auto-blog-list .auto-blog-link, .auto-blog-list .auto-blog-link-href, .auto-blog-list .auto-blog-author') as $list) {
                         if (strpos($list->class, 'auto-blog-title') !== false) {
                             $list->innertext = '<?=getBlog("title", $x,"' . $file . '")?>';
                             $this->data['types']['title'] = true;
@@ -121,6 +121,10 @@ class BlogData extends Data {
                             $list->href = '<?=getBlog("link-href", $x,"' . $file . '")?>';
                             $list->innertext = '<?=getBlog("link-text", $x,"' . $file . '")?>';
                             $this->data['types']['link-text'] = true;
+                        } else if (strpos($list->class, 'auto-blog-author') !== false) {
+                            $list->href = '<?=getBlog("author", $x,"' . $file . '")?>';
+                            $list->innertext = '<?=getBlog("author", $x,"' . $file . '")?>';
+                            $this->data['types']['author'] = true;
                         }
                         if (trim($list->class) === '') $list->class = null;
                     }
@@ -131,7 +135,7 @@ class BlogData extends Data {
 
                 } else if (strpos($blog->class, 'auto-blog-post') !== false) {
                     $this->data['post-page'] = str_replace(Array('.html', '.htm'), '', $file);
-                    foreach($html->find('.auto-blog-post .auto-blog-title, .auto-blog-post .auto-blog-date, .auto-blog-post .auto-blog-cats, .auto-blog-post .auto-blog-bg-img, .auto-blog-post .auto-blog-img, .auto-blog-post .auto-blog-short, .auto-blog-post .auto-blog-full') as $post) {
+                    foreach($html->find('.auto-blog-post .auto-blog-title, .auto-blog-post .auto-blog-date, .auto-blog-post .auto-blog-cats, .auto-blog-post .auto-blog-bg-img, .auto-blog-post .auto-blog-img, .auto-blog-post .auto-blog-short, .auto-blog-post .auto-blog-full, .auto-blog-post .auto-blog-author') as $post) {
                         if (strpos($post->class, 'auto-blog-title') !== false) {
                             $post->innertext = '<?=getBlog("title")?>';
                             $this->data['types']['title'] = true;
@@ -155,6 +159,9 @@ class BlogData extends Data {
                         } else if (strpos($post->class, 'auto-blog-cats') !== false) {
                             $post->innertext = '<?=getBlog("cats", "$x")?>';
                             $this->data['types']['categories'] = true;
+                        } else if (strpos($post->class, 'auto-blog-author') !== false) {
+                            $post->innertext = '<?=getBlog("author", "$x")?>';
+                            $this->data['types']['author'] = true;
                         }
                         if (trim($post->class) === '') $post->class = null;
                     }
