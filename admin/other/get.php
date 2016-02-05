@@ -89,7 +89,7 @@ function getBlog($key, $count = null, $file = null) {
     if (!is_null($count)) {
         if (isset($_GET['page']) && is_numeric($_GET['page'])) $currentPage = $_GET['page'];
 
-        $dataFile = 'page-' . str_replace(Array('.html', '.htm'), '.json', $file);
+        $dataFile = 'page-' . str_ireplace(Array('.html', '.htm'), '.json', $file);
         if (file_exists('admin/data/' . $dataFile)) {
             $fromFile = json_decode(file_get_contents('admin/data/' . $dataFile), true);
             $postPerPage = $fromFile['blog-count']['blog-count'];
@@ -140,7 +140,7 @@ function getBlogPage($type, $file) {
     if (!empty($jsonBlog['posts'])) foreach ($jsonBlog['posts'] as $post) if (isset($post['published'])) $blogCount++;
 
     $postPerPage = 0;
-    $dataFile = 'page-' . str_replace(Array('.html', '.htm'), '.json', $file);
+    $dataFile = 'page-' . str_ireplace(Array('.html', '.htm'), '.json', $file);
     if (file_exists('admin/data/' . $dataFile)) {
         $fromFile = json_decode(file_get_contents('admin/data/' . $dataFile), true);
         $postPerPage = $fromFile['blog-count']['blog-count'];
@@ -148,7 +148,7 @@ function getBlogPage($type, $file) {
 
     if ($blogCount == 0 || $postPerPage == 0 || $blogCount <= $postPerPage) return false;
 
-    $location = str_replace(Array('index.html', 'index.htm', '.html', '.htm'), '/', $file);
+    $location = str_ireplace(Array('index.html', 'index.htm', '.html', '.htm'), '/', $file);
     if ($location != '/') $location = '/' . $location;
     if ($type == 'next') {
         return $location . 'page/' . ($currentPage + 1) . '/';
@@ -172,7 +172,7 @@ function blogCount($file, $key) {
     $postPerPage = 0;
     if (isset($_GET['page']) && is_numeric($_GET['page'])) $currentPage = $_GET['page'];
 
-    $dataFile = 'page-' . str_replace(Array('.html', '.htm'), '.json', $file);
+    $dataFile = 'page-' . str_ireplace(Array('.html', '.htm'), '.json', $file);
     if (file_exists('admin/data/' . $dataFile)) {
         $fromFile = json_decode(file_get_contents('admin/data/' . $dataFile), true);
         $postPerPage = $fromFile['blog-count']['blog-count'];
@@ -198,7 +198,7 @@ function blogCount($file, $key) {
         }
         $maxCount = $fromFile['rss-count']['number'];
     } else {
-        $dataFile = 'page-' . str_replace(Array('.html', '.htm'), '.json', $file);
+        $dataFile = 'page-' . str_ireplace(Array('.html', '.htm'), '.json', $file);
         if (file_exists('admin/data/' . $dataFile)) {
             $fromFile = json_decode(file_get_contents('admin/data/' . $dataFile), true);
         } else {

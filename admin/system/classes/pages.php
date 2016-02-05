@@ -9,10 +9,10 @@ class PagesData extends DataBuild {
 
     public function buildDataFile($files) {
         foreach ($files as $file) {
-            $this->addPage(str_replace(Array('.html', '.htm'), '', $file));
+            $this->addPage(str_ireplace(Array('.html', '.htm'), '', $file));
 
             // create datafile to store stuff
-            $dataFile = 'page-' . str_replace(Array('.html', '.htm'), '.json', $file);
+            $dataFile = 'page-' . str_ireplace(Array('.html', '.htm'), '.json', $file);
             if (file_exists($this->dataLoc . $dataFile)) {
                 $data = json_decode(file_get_contents($this->dataLoc . $dataFile), true);
             } else {
@@ -158,7 +158,7 @@ class PagesData extends DataBuild {
             foreach($html->find('.auto-color, .auto-edit, .auto-edit-text, .auto-link, .auto-edit-img, .auto-edit-bg-img, .auto-data, .auto-repeat') as $edit) {
                 $fieldID = uniqid();
                 $desc = ($edit->getAttribute('data-autocms') ? $edit->getAttribute('data-autocms') : '');
-                if (strpos($edit->class, 'auto-repeat') !== false) {
+                if (stripos($edit->class, 'auto-repeat') !== false) {
 
                     $data[$fieldID] = Array('repeat' => Array(), 'description' => $desc, 'type' => 'repeat');
                     $count = 0;
@@ -168,37 +168,37 @@ class PagesData extends DataBuild {
                         $desc = ($edit->getAttribute('data-autocms') ? $edit->getAttribute('data-autocms') : '');
 
                         $repeatFieldID = uniqid();
-                        if (strpos($repeat->class, 'auto-repeat-edit-img') !== false) {
+                        if (stripos($repeat->class, 'auto-repeat-edit-img') !== false) {
                             $this->makeImageBGImage($repeat, $data, $dataFile, $fieldID, $desc, false, $count, $repeatFieldID);
-                        } else if (strpos($repeat->class, 'auto-repeat-data') !== false) {
+                        } else if (stripos($repeat->class, 'auto-repeat-data') !== false) {
                             $this->makeDataText($repeat, $data, $dataFile, $fieldID, $count);
-                        } else if (strpos($repeat->class, 'auto-repeat-edit-bg-img') !== false) {
+                        } else if (stripos($repeat->class, 'auto-repeat-edit-bg-img') !== false) {
                             $this->makeImageBGImage($repeat, $data, $dataFile, $fieldID, $desc, true, $count, $repeatFieldID);
-                        } else if (strpos($repeat->class, 'auto-repeat-link') !== false) {
+                        } else if (stripos($repeat->class, 'auto-repeat-link') !== false) {
                             $this->makeLink($repeat, $data, $dataFile, $fieldID, $desc, $count, $repeatFieldID);
-                        } else if (strpos($repeat->class, 'auto-repeat-edit-text') !== false) {
+                        } else if (stripos($repeat->class, 'auto-repeat-edit-text') !== false) {
                             $this->makeHTMLText($repeat, $data, $dataFile, $fieldID, $desc, 'text', $count, $repeatFieldID);
-                        } else if (strpos($repeat->class, 'auto-repeat-edit') !== false) {
+                        } else if (stripos($repeat->class, 'auto-repeat-edit') !== false) {
                             $this->makeHTMLText($repeat, $data, $dataFile, $fieldID, $desc, 'html', $count, $repeatFieldID);
-                        } else if (strpos($repeat->class, 'auto-repeat-color') !== false) {
+                        } else if (stripos($repeat->class, 'auto-repeat-color') !== false) {
                             $this->makeColor($repeat, $data, $dataFile, $fieldID, $desc, $count, $repeatFieldID);
                         }
                     }
                     $edit->outertext = '<?php for ($x = 0; $x ' . "< repeatCount('$dataFile', '$fieldID');" . ' $x++) { ?>' . $edit->outertext . "<?php } ?>";
 
-                } else if (strpos($edit->class, 'auto-data') !== false) {
+                } else if (stripos($edit->class, 'auto-data') !== false) {
                     $this->makeDataText($edit, $data, $dataFile, $fieldID);
-                } else if (strpos($edit->class, 'auto-edit-img') !== false) {
+                } else if (stripos($edit->class, 'auto-edit-img') !== false) {
                     $this->makeImageBGImage($edit, $data, $dataFile, $fieldID, $desc);
-                } else if (strpos($edit->class, 'auto-edit-bg-img') !== false) {
+                } else if (stripos($edit->class, 'auto-edit-bg-img') !== false) {
                     $this->makeImageBGImage($edit, $data, $dataFile, $fieldID, $desc, true);
-                } else if (strpos($edit->class, 'auto-link') !== false) {
+                } else if (stripos($edit->class, 'auto-link') !== false) {
                     $this->makeLink($edit, $data, $dataFile, $fieldID, $desc);
-                } else if (strpos($edit->class, 'auto-edit-text') !== false) {
+                } else if (stripos($edit->class, 'auto-edit-text') !== false) {
                     $this->makeHTMLText($edit, $data, $dataFile, $fieldID, $desc, 'text');
-                } else if (strpos($edit->class, 'auto-edit') !== false) {
+                } else if (stripos($edit->class, 'auto-edit') !== false) {
                     $this->makeHTMLText($edit, $data, $dataFile, $fieldID, $desc);
-                } else if (strpos($edit->class, 'auto-color') !== false) {
+                } else if (stripos($edit->class, 'auto-color') !== false) {
                     $this->makeColor($edit, $data, $dataFile, $fieldID, $desc);
                 }
             }
@@ -218,7 +218,7 @@ class PagesData extends DataBuild {
     }
 
     static public function addVariableToPage($file, $name, $value) {
-        $dataFile = 'page-' . str_replace(Array('.html', '.htm'), '.json', $file);
+        $dataFile = 'page-' . str_ireplace(Array('.html', '.htm'), '.json', $file);
 
         if (file_exists('data/' . $dataFile)) {
             $data = json_decode(file_get_contents('data/' . $dataFile), true);
@@ -238,14 +238,14 @@ class PagesData extends DataBuild {
         $json = json_decode(file_get_contents($dataFile), true);
 
         $logsData = new LogsData();
-        if (strpos($editKey, '-') !== false) {
+        if (stripos($editKey, '-') !== false) {
             list($repeatKey, $iteration, $itemKey) = explode("-", $editKey);
             if (isset($json[$repeatKey]['repeat'][$iteration][$itemKey])) {
-                $logsData->addToLog('has changes a description on', str_replace('page-', '', $file) . ' page', Array('key' => $editKey, 'change' => Array('original' => $json[$editKey]['description'], 'new' => $editDesc)));
+                $logsData->addToLog('has changes a description on', str_ireplace('page-', '', $file) . ' page', Array('key' => $editKey, 'change' => Array('original' => $json[$editKey]['description'], 'new' => $editDesc)));
                 $json[$repeatKey]['repeat'][$iteration][$itemKey]['description'] = trim($editDesc);
             }
         } else if (isset($json[$editKey])) {
-            $logsData->addToLog('has changes a description on', str_replace('page-', '', $file) . ' page', Array('key' => $editKey, 'change' => Array('original' => $json[$editKey]['description'], 'new' => $editDesc)));
+            $logsData->addToLog('has changes a description on', str_ireplace('page-', '', $file) . ' page', Array('key' => $editKey, 'change' => Array('original' => $json[$editKey]['description'], 'new' => $editDesc)));
             $json[$editKey]['description'] = $editDesc;
         }
 
@@ -265,7 +265,7 @@ class PagesData extends DataBuild {
         $changeLog = Array();
 
         foreach ($data as $key => $datum) {
-            if (DashboardUtils::endsWith($key, '-loaded') && trim($datum) != '') $key = str_replace('-loaded', '', $key);
+            if (DashboardUtils::endsWith($key, '-loaded') && trim($datum) != '') $key = str_ireplace('-loaded', '', $key);
             if ($key != 'key' && isset($json[$key]) && $json[$key][$json[$key]['type']] != trim($datum) && trim($datum) != '') {
                 $changeLog[] = Array('key' => $key, 'change' => Array('original' => $json[$key][$json[$key]['type']], 'new' => trim($datum)));
                 $json[$key][$json[$key]['type']] = trim($datum);
@@ -363,9 +363,7 @@ class Pages {
         if (is_null($page) && $users->checkPass() && !$users->authNeeded()) {
             include_once('admin-pages/dash.php');
         } else if ($users->checkPass() && !$users->authNeeded()) {
-
             $data = PagesData::getPageData($page);
-
             include_once('admin-pages/page.php');
         } else {
             include_once('401.html');

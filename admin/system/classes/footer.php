@@ -25,19 +25,19 @@ class FooterData extends DataBuild {
                     $fieldID = uniqid();
                     $desc = $edit->getAttribute('data-autocms');
 
-                    if (strpos($edit->class, 'auto-edit-img') !== false) {
+                    if (stripos($edit->class, 'auto-edit-img') !== false) {
                         $this->makeImageBGImage($edit, $this->data, $this->dataFile, $fieldID, $desc);
-                    } else if (strpos($edit->class, 'auto-data') !== false) {
+                    } else if (stripos($edit->class, 'auto-data') !== false) {
                         $this->makeDataText($edit, $this->data, $this->dataFile);
-                    } else if (strpos($edit->class, 'auto-edit-bg-img') !== false) {
+                    } else if (stripos($edit->class, 'auto-edit-bg-img') !== false) {
                         $this->makeImageBGImage($edit, $this->data, $this->dataFile, $fieldID, $desc, true);
-                    } else if (strpos($edit->class, 'auto-link') !== false) {
+                    } else if (stripos($edit->class, 'auto-link') !== false) {
                         $this->makeLink($edit, $this->data, $this->dataFile, $fieldID, $desc);
-                    } else if (strpos($edit->class, 'auto-edit-text') !== false) {
+                    } else if (stripos($edit->class, 'auto-edit-text') !== false) {
                         $this->makeHTMLText($edit, $this->data, $this->dataFile, $fieldID, $desc, 'text');
-                    } else if (strpos($edit->class, 'auto-edit') !== false) {
+                    } else if (stripos($edit->class, 'auto-edit') !== false) {
                         $this->makeHTMLText($edit, $this->data, $this->dataFile, $fieldID, $desc);
-                    } else if (strpos($edit->class, 'auto-color') !== false) {
+                    } else if (stripos($edit->class, 'auto-color') !== false) {
                         $this->makeColor($edit, $this->data, $this->dataFile, $fieldID, $desc);
                     }
                 }

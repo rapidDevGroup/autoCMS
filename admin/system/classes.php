@@ -87,7 +87,7 @@ class DataBuild extends Data {
 
     function makeDataText(&$edit, &$dataArr, $dataFile, $fieldID, $count = null) {
         foreach ($edit->getAllAttributes() AS $key => $attribute) {
-            if (strpos($key, 'data') !== false && strpos($key, 'auto-data') === false && $key != 'data-autocms') {
+            if (stripos($key, 'data') !== false && strpos($key, 'auto-data') === false && $key != 'data-autocms') {
                 $desc = $key;
                 if (is_null($count)) {
                     $fieldID = uniqid();
@@ -115,9 +115,9 @@ class DataBuild extends Data {
         }
 
         if (!is_null($repeatFieldID)) {
-            $edit->style = str_replace($tag, '', $edit->style) . "background-color: <?=get('$dataFile', '$fieldID', ".'$x'.", '$repeatFieldID')?>;";
+            $edit->style = str_ireplace($tag, '', $edit->style) . "background-color: <?=get('$dataFile', '$fieldID', ".'$x'.", '$repeatFieldID')?>;";
         } else {
-            $edit->style = str_replace($tag, '', $edit->style) . "background-color: <?=get('$dataFile', '$fieldID')?>;";
+            $edit->style = str_ireplace($tag, '', $edit->style) . "background-color: <?=get('$dataFile', '$fieldID')?>;";
         }
     }
 
@@ -159,9 +159,9 @@ class DataBuild extends Data {
 
             if ($isBG) {
                 if (!is_null($repeatFieldID)) {
-                    $edit->style = str_replace($tag, '', $edit->style) . "background-image: url('<?=get('$dataFile', '$fieldID', ".'$x'.", '$repeatFieldID')?>');";
+                    $edit->style = str_ireplace($tag, '', $edit->style) . "background-image: url('<?=get('$dataFile', '$fieldID', ".'$x'.", '$repeatFieldID')?>');";
                 } else {
-                    $edit->style = str_replace($tag, '', $edit->style) . "background-image: url('<?=get('$dataFile', '$fieldID')?>');";
+                    $edit->style = str_ireplace($tag, '', $edit->style) . "background-image: url('<?=get('$dataFile', '$fieldID')?>');";
                 }
             } else {
                 $altText = $edit->alt;

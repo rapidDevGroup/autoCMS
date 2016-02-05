@@ -20,7 +20,7 @@ $openGraphTypes = $blogData->getPostOGTypes();
                         <div class="form-group">
                             <label class="col-lg-2 col-sm-2 control-label">
                                 <?=$key?>
-                                <?php $key = str_replace(':', '', $key); ?>
+                                <?php $key = str_ireplace(':', '', $key); ?>
                             </label>
                             <?php if ($key != 'ogimage') { ?>
                                 <div class="col-lg-9 col-sm-10">
@@ -35,7 +35,7 @@ $openGraphTypes = $blogData->getPostOGTypes();
                         <?php if ($key != 'link-href' && $key != 'open-graph' && $key != 'link-next' && $key != 'link-prev') { ?>
                             <div class="form-group">
                                 <label class="col-lg-2 col-sm-2 control-label">
-                                    <?=ucwords(str_replace("-", " ", $key))?>
+                                    <?=ucwords(str_ireplace("-", " ", $key))?>
                                 </label>
                                 <?php if ($key == 'seo-schemas') { ?>
                                     <div class="col-lg-9 col-sm-10 textarea">

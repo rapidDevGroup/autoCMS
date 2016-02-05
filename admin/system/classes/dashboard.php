@@ -24,7 +24,7 @@ class DashboardUtils {
 
     static public function renameFiles($files) {
         foreach ($files as $file) {
-            $newName = str_replace(Array('.html', '.htm'), '.php', $file);
+            $newName = str_ireplace(Array('.html', '.htm'), '.php', $file);
             rename('../' . $file, '../' . $newName);
         }
     }

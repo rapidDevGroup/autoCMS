@@ -32,21 +32,21 @@ class BlogData extends Data {
             $html = str_get_html($fileData);
 
             foreach($html->find('.auto-blog-next, .auto-blog-prev, .auto-blog-has-prev, .auto-blog-has-next') as $pagination) {
-                if (strpos($pagination->class, 'auto-blog-next') !== false) {
+                if (stripos($pagination->class, 'auto-blog-next') !== false) {
                     $pagination->href = '<?=getBlogPage("next","' . $file . '")?>';
                     //$pagination->class = str_replace('auto-blog-next', '', $pagination->class);
                     $this->data['types']['link-next'] = true;
-                    $this->data['list-pagination-pages'] = str_replace(Array('.html', '.htm'), '', $file);
-                } else if (strpos($pagination->class, 'auto-blog-prev') !== false) {
+                    $this->data['list-pagination-pages'] = str_ireplace(Array('.html', '.htm'), '', $file);
+                } else if (stripos($pagination->class, 'auto-blog-prev') !== false) {
                     $pagination->href = '<?=getBlogPage("prev","' . $file . '")?>';
                     //$pagination->class = str_replace('auto-blog-prev', '', $pagination->class);
                     $this->data['types']['link-prev'] = true;
-                    $this->data['list-pagination-pages'] = str_replace(Array('.html', '.htm'), '', $file);
-                } else if (strpos($pagination->class, 'auto-blog-has-next') !== false) {
+                    $this->data['list-pagination-pages'] = str_ireplace(Array('.html', '.htm'), '', $file);
+                } else if (stripos($pagination->class, 'auto-blog-has-next') !== false) {
                     $this->data['pagination']['has-next'] = $pagination->style;
                     $pagination->style = '<?=getBlogPage("has-next","' . $file . '")?>';
                     //$pagination->class = str_replace('auto-blog-has-next', '', $pagination->class);
-                } else if (strpos($pagination->class, 'auto-blog-has-prev') !== false) {
+                } else if (stripos($pagination->class, 'auto-blog-has-prev') !== false) {
                     $this->data['pagination']['has-prev'] = $pagination->style;
                     $pagination->style = '<?=getBlogPage("has-prev","' . $file . '")?>';
                     //$pagination->class = str_replace('auto-blog-has-prev', '', $pagination->class);
@@ -54,7 +54,7 @@ class BlogData extends Data {
             }
 
             foreach($html->find('.auto-blog-head, .auto-blog-list, .auto-blog-post') as $blog) {
-                if (strpos($blog->class, 'auto-blog-head') !== false) {
+                if (stripos($blog->class, 'auto-blog-head') !== false) {
                     foreach($html->find('.auto-blog-head title') as $pageTitle) {
                         $pageTitle->innertext = "<?=getBlog('title')?>";
                         $this->data['types']['title'] = true;
@@ -89,39 +89,39 @@ class BlogData extends Data {
                     }
                     $blog->innertext .= "<?=getBlog('seo-schemas')?>";
 
-                } else if (strpos($blog->class, 'auto-blog-list') !== false) {
+                } else if (stripos($blog->class, 'auto-blog-list') !== false) {
                     foreach($html->find('.auto-blog-list .auto-blog-title, .auto-blog-list .auto-blog-date, .auto-blog-list .auto-blog-cats, .auto-blog-list .auto-blog-bg-img, .auto-blog-list .auto-blog-img, .auto-blog-list .auto-blog-short, .auto-blog-list .auto-blog-full, .auto-blog-list .auto-blog-link, .auto-blog-list .auto-blog-link-href, .auto-blog-list .auto-blog-author') as $list) {
-                        if (strpos($list->class, 'auto-blog-title') !== false) {
+                        if (stripos($list->class, 'auto-blog-title') !== false) {
                             $list->innertext = '<?=getBlog("title", $x,"' . $file . '")?>';
                             $this->data['types']['title'] = true;
-                        } else if (strpos($list->class, 'auto-blog-bg-img') !== false) {
+                        } else if (stripos($list->class, 'auto-blog-bg-img') !== false) {
                             $list->style = "background-image: url('<?=getBlog(" . '"image", $x' . ", $file)?>');";
                             $this->data['types']['image'] = true;
-                        } else if (strpos($list->class, 'auto-blog-img') !== false) {
+                        } else if (stripos($list->class, 'auto-blog-img') !== false) {
                             $list->src = '<?=getBlog("image", $x,"' . $file . '")?>';
                             $list->alt = '<?=getBlog("image-alt-text", $x,"' . $file . '")?>';
                             $this->data['types']['image'] = true;
                             $this->data['types']['image-alt-text'] = true;
-                        } else if (strpos($list->class, 'auto-blog-short') !== false) {
+                        } else if (stripos($list->class, 'auto-blog-short') !== false) {
                             $list->innertext = '<?=getBlog("short-blog", $x,"' . $file . '")?>';
                             $this->data['types']['short-blog'] = true;
-                        } else if (strpos($list->class, 'auto-blog-full') !== false) {
+                        } else if (stripos($list->class, 'auto-blog-full') !== false) {
                             $list->innertext = '<?=getBlog("full-blog", $x,"' . $file . '")?>';
                             $this->data['types']['full'] = true;
-                        } else if (strpos($list->class, 'auto-blog-date') !== false) {
+                        } else if (stripos($list->class, 'auto-blog-date') !== false) {
                             $list->innertext = '<?=getBlog("date", $x,"' . $file . '")?>';
                             $this->data['types']['date'] = true;
-                        } else if (strpos($list->class, 'auto-blog-cats') !== false) {
+                        } else if (stripos($list->class, 'auto-blog-cats') !== false) {
                             $list->innertext = '<?=getBlog("cats", $x,"' . $file . '")?>';
                             $this->data['types']['categories'] = true;
-                        } else if (strpos($list->class, 'auto-blog-link-href') !== false) {
+                        } else if (stripos($list->class, 'auto-blog-link-href') !== false) {
                             $list->href = '<?=getBlog("link-href", $x,"' . $file . '")?>';
                             $this->data['types']['link-href'] = true;
-                        } else if (strpos($list->class, 'auto-blog-link') !== false) {
+                        } else if (stripos($list->class, 'auto-blog-link') !== false) {
                             $list->href = '<?=getBlog("link-href", $x,"' . $file . '")?>';
                             $list->innertext = '<?=getBlog("link-text", $x,"' . $file . '")?>';
                             $this->data['types']['link-text'] = true;
-                        } else if (strpos($list->class, 'auto-blog-author') !== false) {
+                        } else if (stripos($list->class, 'auto-blog-author') !== false) {
                             $list->href = '<?=getBlog("author", $x,"' . $file . '")?>';
                             $list->innertext = '<?=getBlog("author", $x,"' . $file . '")?>';
                             $this->data['types']['author'] = true;
@@ -133,33 +133,33 @@ class BlogData extends Data {
 
                     PagesData::addVariableToPage($file, 'blog-count', Array('blog-count' => 3, 'description' => 'blog display count', 'type' => 'blog-count'));
 
-                } else if (strpos($blog->class, 'auto-blog-post') !== false) {
-                    $this->data['post-page'] = str_replace(Array('.html', '.htm'), '', $file);
+                } else if (stripos($blog->class, 'auto-blog-post') !== false) {
+                    $this->data['post-page'] = str_ireplace(Array('.html', '.htm'), '', $file);
                     foreach($html->find('.auto-blog-post .auto-blog-title, .auto-blog-post .auto-blog-date, .auto-blog-post .auto-blog-cats, .auto-blog-post .auto-blog-bg-img, .auto-blog-post .auto-blog-img, .auto-blog-post .auto-blog-short, .auto-blog-post .auto-blog-full, .auto-blog-post .auto-blog-author') as $post) {
-                        if (strpos($post->class, 'auto-blog-title') !== false) {
+                        if (stripos($post->class, 'auto-blog-title') !== false) {
                             $post->innertext = '<?=getBlog("title")?>';
                             $this->data['types']['title'] = true;
-                        } else if (strpos($post->class, 'auto-blog-bg-img') !== false) {
+                        } else if (stripos($post->class, 'auto-blog-bg-img') !== false) {
                             $post->style = "background-image: url('<?=getBlog(" . '"image"' . ")?>');";
                             $this->data['types']['image'] = true;
-                        } else if (strpos($post->class, 'auto-blog-img') !== false) {
+                        } else if (stripos($post->class, 'auto-blog-img') !== false) {
                             $post->src = '<?=getBlog("image")?>';
                             $post->alt = '<?=getBlog("image-alt-text")?>';
                             $this->data['types']['image'] = true;
                             $this->data['types']['image-alt-text'] = true;
-                        } else if (strpos($post->class, 'auto-blog-short') !== false) {
+                        } else if (stripos($post->class, 'auto-blog-short') !== false) {
                             $post->innertext = '<?=getBlog("short-blog")?>';
                             $this->data['types']['short-blog'] = true;
-                        } else if (strpos($post->class, 'auto-blog-full') !== false) {
+                        } else if (stripos($post->class, 'auto-blog-full') !== false) {
                             $post->innertext = '<?=getBlog("full-blog")?>';
                             $this->data['types']['full-blog'] = true;
-                        } else if (strpos($post->class, 'auto-blog-date') !== false) {
+                        } else if (stripos($post->class, 'auto-blog-date') !== false) {
                             $post->innertext = '<?=getBlog("date")?>';
                             $this->data['types']['date'] = true;
-                        } else if (strpos($post->class, 'auto-blog-cats') !== false) {
+                        } else if (stripos($post->class, 'auto-blog-cats') !== false) {
                             $post->innertext = '<?=getBlog("cats", "$x")?>';
                             $this->data['types']['categories'] = true;
-                        } else if (strpos($post->class, 'auto-blog-author') !== false) {
+                        } else if (stripos($post->class, 'auto-blog-author') !== false) {
                             $post->innertext = '<?=getBlog("author", "$x")?>';
                             $this->data['types']['author'] = true;
                         }
