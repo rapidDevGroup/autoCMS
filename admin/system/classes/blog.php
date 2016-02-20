@@ -95,7 +95,7 @@ class BlogData extends Data {
                             $list->innertext = '<?=getBlog("title", $x,"' . $file . '")?>';
                             $this->data['types']['title'] = true;
                         } else if (stripos($list->class, 'auto-blog-bg-img') !== false) {
-                            $list->style = "background-image: url('<?=getBlog(" . '"image", $x' . ", $file)?>');";
+                            $list->style = "background-image: url('<?=getBlog(" . '"image", $x' . ", '$file')?>');";
                             $this->data['types']['image'] = true;
                         } else if (stripos($list->class, 'auto-blog-img') !== false) {
                             $list->src = '<?=getBlog("image", $x,"' . $file . '")?>';
