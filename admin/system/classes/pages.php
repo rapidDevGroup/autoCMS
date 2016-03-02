@@ -270,7 +270,7 @@ class PagesData extends DataBuild {
                     $key = str_ireplace('-loaded', '', $key);
                     $changeLog[] = Array('key' => $key, 'change' => Array('original' => $json[$key][$json[$key]['type']], 'new' => trim($datum)));
                     $json[$key][$json[$key]['type']] = trim($datum);
-                } else {
+                } else if (trim($datum) != '') {
                     $changeLog[] = Array('key' => $key, 'change' => Array('original' => $json[$key][$json[$key]['type']], 'new' => trim($datum)));
                     $json[$key][$json[$key]['type']] = trim($datum);
                 }
@@ -281,7 +281,7 @@ class PagesData extends DataBuild {
                         $key = str_ireplace('-loaded', '', $key);
                         $changeLog[] = Array('key' => $key, 'change' => Array('original' => $json[$repeatKey]['repeat'][$iteration][$itemKey][$json[$repeatKey]['repeat'][$iteration][$itemKey]['type']], 'new' => trim($datum)));
                         $json[$repeatKey]['repeat'][$iteration][$itemKey][$json[$repeatKey]['repeat'][$iteration][$itemKey]['type']] = trim($datum);
-                    } else {
+                    } else if (trim($datum) != '') {
                         $changeLog[] = Array('key' => $key, 'change' => Array('original' => $json[$repeatKey]['repeat'][$iteration][$itemKey][$json[$repeatKey]['repeat'][$iteration][$itemKey]['type']], 'new' => trim($datum)));
                         $json[$repeatKey]['repeat'][$iteration][$itemKey][$json[$repeatKey]['repeat'][$iteration][$itemKey]['type']] = trim($datum);
                     }
