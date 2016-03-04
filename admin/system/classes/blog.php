@@ -258,9 +258,8 @@ class BlogData extends Data {
             $this->data['posts'][$post_id]['published'] = $updateTime;
         }
 
-        $settingsData = new SettingsData();
         $postPage = $this->data['post-page'];
-        $json['link-href'] = $settingsData->getHost() . $postPage . '/' . $externalTitle . '/';
+        $json['link-href'] = '/' . $postPage . '/' . $externalTitle . '/';
 
         $fp = fopen($dataFile, 'w');
         fwrite($fp, json_encode($json));
