@@ -6,10 +6,18 @@ date_default_timezone_set('UTC');
 
 $post_id = null;
 $currentCount = 0;
+$dataFiles = Array();
 
 function getPostID($external) {
-    $dataFile = 'admin/data/autocms-blog.json';
-    $json = json_decode(file_get_contents($dataFile), true);
+    global $dataFiles;
+    $json = null;
+    if (isset($dataFiles['autocms-blog.json'])) {
+        $json = $dataFiles['autocms-blog.json'];
+    } else {
+        $dataFile = 'admin/data/autocms-blog.json';
+        $json = json_decode(file_get_contents($dataFile), true);
+        $dataFiles['autocms-blog.json'] = $json;
+    }
     foreach ($json['posts'] as $key => $data)
         if ($data['external'] == $external) return $key;
 
@@ -18,7 +26,13 @@ function getPostID($external) {
 
 $dataBlogListFile = 'admin/data/autocms-blog.json';
 if (file_exists($dataBlogListFile)) {
-    $jsonBlog = json_decode(file_get_contents($dataBlogListFile), true);
+    $jsonBlog = null;
+    if (isset($dataFiles['autocms-blog.json'])) {
+        $jsonBlog = $dataFiles['autocms-blog.json'];
+    } else {
+        $jsonBlog = json_decode(file_get_contents($dataBlogListFile), true);
+        $dataFiles['autocms-blog.json'] = $jsonBlog;
+    }
     $baseCall = explode('/', $_SERVER['REQUEST_URI']);
     if (!isset($_GET['blog']) && $jsonBlog['post-page'] == $baseCall[1] && !isset($_GET['page'])) {
         make404();
@@ -46,9 +60,16 @@ function make404() {
 
 // has data
 function has($file, $key, $count = null, $secondary = null) {
+    global $dataFiles;
     $dataFile = 'admin/data/' . $file;
     if (file_exists($dataFile)) {
-        $json = json_decode(file_get_contents($dataFile), true);
+        $json = null;
+        if (isset($dataFiles[$file])) {
+            $json = $dataFiles[$file];
+        } else {
+            $json = json_decode(file_get_contents($dataFile), true);
+            $dataFiles[$file] = $json;
+        }
 
         if (!is_null($secondary) && !is_null($count) && $json[$key]['type'] == 'repeat' && isset($json[$key]['repeat'][$count][$secondary][$json[$key]['repeat'][$count][$secondary]['type']]) && trim($json[$key]['repeat'][$count][$secondary][$json[$key]['repeat'][$count][$secondary]['type']]) != '') {
             return true;
@@ -61,10 +82,16 @@ function has($file, $key, $count = null, $secondary = null) {
 
 // get data
 function get($file, $key, $count = null, $secondary = null) {
+    global $dataFiles;
     $dataFile = 'admin/data/' . $file;
     if (file_exists($dataFile)) {
-        $json = json_decode(file_get_contents($dataFile), true);
-
+        $json = null;
+        if (isset($dataFiles[$file])) {
+            $json = $dataFiles[$file];
+        } else {
+            $json = json_decode(file_get_contents($dataFile), true);
+            $dataFiles[$file] = $json;
+        }
         if (!is_null($secondary) && !is_null($count) && $json[$key]['type'] == 'repeat') {
             return $json[$key]['repeat'][$count][$secondary][$json[$key]['repeat'][$count][$secondary]['type']];
         }
@@ -76,22 +103,36 @@ function get($file, $key, $count = null, $secondary = null) {
 
 // return count of the repeat
 function repeatCount($file, $key) {
-    $dataFile = 'admin/data/' . $file;
-    $json = json_decode(file_get_contents($dataFile), true);
+    global $dataFiles;
+    $json = null;
+    if (isset($dataFiles[$file])) {
+        $json = $dataFiles[$file];
+    } else {
+        $dataFile = 'admin/data/' . $file;
+        $json = json_decode(file_get_contents($dataFile), true);
+        $dataFiles[$file] = $json;
+    }
 
     return count($json[$key]['repeat']);
 }
 
 // get the post data
 function getBlog($key, $count = null, $file = null) {
+    global $dataFiles, $currentCount, $post_id;
     $currentPage = 1;
     $postPerPage = 0;
     if (!is_null($count)) {
         if (isset($_GET['page']) && is_numeric($_GET['page'])) $currentPage = $_GET['page'];
 
         $dataFile = 'page-' . str_ireplace(Array('.html', '.htm'), '.json', $file);
-        if (file_exists('admin/data/' . $dataFile)) {
-            $fromFile = json_decode(file_get_contents('admin/data/' . $dataFile), true);
+        if (file_exists('admin/data/' . $file)) {
+            $fromFile = null;
+            if (isset($dataFiles[$dataFile])) {
+                $fromFile = $dataFiles[$dataFile];
+            } else {
+                $fromFile = json_decode(file_get_contents('admin/data/' . $dataFile), true);
+                $dataFiles[$dataFile] = $fromFile;
+            }
             $postPerPage = $fromFile['blog-count']['blog-count'];
         }
     }
@@ -99,7 +140,13 @@ function getBlog($key, $count = null, $file = null) {
 
     $dataBlogListFile = 'admin/data/autocms-blog.json';
     if (file_exists($dataBlogListFile)) {
-        $jsonBlog = json_decode(file_get_contents($dataBlogListFile), true);
+        $jsonBlog = null;
+        if (isset($dataFiles['autocms-blog.json'])) {
+            $jsonBlog = $dataFiles['autocms-blog.json'];
+        } else {
+            $jsonBlog = json_decode(file_get_contents($dataBlogListFile), true);
+            $dataFiles['autocms-blog.json'] = $jsonBlog;
+        }
     } else {
         return '';
     }
@@ -130,6 +177,7 @@ function getBlog($key, $count = null, $file = null) {
 }
 
 function getBlogPage($type, $file) {
+    global $dataFiles;
     $currentPage = 1;
     if (isset($_GET['page']) && is_numeric($_GET['page'])) $currentPage = $_GET['page'];
 
@@ -142,7 +190,13 @@ function getBlogPage($type, $file) {
     $postPerPage = 0;
     $dataFile = 'page-' . str_ireplace(Array('.html', '.htm'), '.json', $file);
     if (file_exists('admin/data/' . $dataFile)) {
-        $fromFile = json_decode(file_get_contents('admin/data/' . $dataFile), true);
+        $fromFile = null;
+        if (isset($dataFiles[$dataFile])) {
+            $fromFile = $dataFiles[$dataFile];
+        } else {
+            $fromFile = json_decode(file_get_contents('admin/data/' . $dataFile), true);
+            $dataFiles[$dataFile] = $fromFile;
+        }
         $postPerPage = $fromFile['blog-count']['blog-count'];
     }
 
@@ -168,13 +222,20 @@ function getBlogPage($type, $file) {
 
 // get how many blog list count to show on this page
 function blogCount($file, $key) {
+    global $dataFiles;
     $currentPage = 1;
     $postPerPage = 0;
     if (isset($_GET['page']) && is_numeric($_GET['page'])) $currentPage = $_GET['page'];
 
     $dataFile = 'page-' . str_ireplace(Array('.html', '.htm'), '.json', $file);
     if (file_exists('admin/data/' . $dataFile)) {
-        $fromFile = json_decode(file_get_contents('admin/data/' . $dataFile), true);
+        $fromFile = null;
+        if (isset($dataFiles[$dataFile])) {
+            $fromFile = $dataFiles[$dataFile];
+        } else {
+            $fromFile = json_decode(file_get_contents('admin/data/' . $dataFile), true);
+            $dataFiles[$dataFile] = $fromFile;
+        }
         $postPerPage = $fromFile['blog-count']['blog-count'];
     }
 
@@ -192,7 +253,13 @@ function blogCount($file, $key) {
 
     if ($key == 'rss-count') {
         if (file_exists('admin/data/' . $file)) {
-            $fromFile = json_decode(file_get_contents('admin/data/' . $file), true);
+            $fromFile = null;
+            if (isset($dataFiles[$dataFile])) {
+                $fromFile = $dataFiles[$dataFile];
+            } else {
+                $fromFile = json_decode(file_get_contents('admin/data/' . $dataFile), true);
+                $dataFiles[$dataFile] = $fromFile;
+            }
         } else {
             return 0;
         }
@@ -200,7 +267,13 @@ function blogCount($file, $key) {
     } else {
         $dataFile = 'page-' . str_ireplace(Array('.html', '.htm'), '.json', $file);
         if (file_exists('admin/data/' . $dataFile)) {
-            $fromFile = json_decode(file_get_contents('admin/data/' . $dataFile), true);
+            $fromFile = null;
+            if (isset($dataFiles[$dataFile])) {
+                $fromFile = $dataFiles[$dataFile];
+            } else {
+                $fromFile = json_decode(file_get_contents('admin/data/' . $dataFile), true);
+                $dataFiles[$dataFile] = $fromFile;
+            }
         } else {
             return 0;
         }
