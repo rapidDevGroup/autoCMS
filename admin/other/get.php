@@ -125,7 +125,7 @@ function getBlog($key, $count = null, $file = null) {
         if (isset($_GET['page']) && is_numeric($_GET['page'])) $currentPage = $_GET['page'];
 
         $dataFile = 'page-' . str_ireplace(Array('.html', '.htm'), '.json', $file);
-        if (file_exists('admin/data/' . $file)) {
+        if (file_exists('admin/data/' . $dataFile)) {
             $fromFile = null;
             if (isset($dataFiles[$dataFile])) {
                 $fromFile = $dataFiles[$dataFile];
