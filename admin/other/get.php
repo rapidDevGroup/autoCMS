@@ -5,7 +5,6 @@
 date_default_timezone_set('UTC');
 
 $post_id = null;
-$currentCount = 0;
 $dataFiles = Array();
 
 function getPostID($external) {
@@ -118,7 +117,7 @@ function repeatCount($file, $key) {
 
 // get the post data
 function getBlog($key, $count = null, $file = null) {
-    global $dataFiles, $currentCount, $post_id;
+    global $dataFiles, $post_id;
     $currentPage = 1;
     $postPerPage = 0;
     if (!is_null($count)) {
@@ -136,7 +135,7 @@ function getBlog($key, $count = null, $file = null) {
             $postPerPage = $fromFile['blog-count']['blog-count'];
         }
     }
-    $currentCount += ($currentPage * $postPerPage) - $postPerPage;
+    $currentCount = ($currentPage * $postPerPage) - $postPerPage;
 
     $dataBlogListFile = 'admin/data/autocms-blog.json';
     if (file_exists($dataBlogListFile)) {
@@ -182,7 +181,15 @@ function getBlogPage($type, $file) {
     if (isset($_GET['page']) && is_numeric($_GET['page'])) $currentPage = $_GET['page'];
 
     $dataBlogListFile = 'admin/data/autocms-blog.json';
-    if (file_exists($dataBlogListFile)) $jsonBlog = json_decode(file_get_contents($dataBlogListFile), true);
+    if (file_exists($dataBlogListFile)) {
+        $jsonBlog = null;
+        if (isset($dataFiles['autocms-blog.json'])) {
+            $jsonBlog = $dataFiles['autocms-blog.json'];
+        } else {
+            $jsonBlog = json_decode(file_get_contents($dataBlogListFile), true);
+            $dataFiles['autocms-blog.json'] = $jsonBlog;
+        }
+    }
 
     $blogCount = 0;
     if (!empty($jsonBlog['posts'])) foreach ($jsonBlog['posts'] as $post) if (isset($post['published'])) $blogCount++;

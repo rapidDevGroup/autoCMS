@@ -77,6 +77,7 @@ $pages = $pagesData->getData();
                             <?php if (file_exists('data/autocms-analytics.json')) {?><li><a href="/admin/analytics/" target="iframe"><i class="fa fa-bar-chart fa-fw"></i> Analytics</a></li><?php } ?>
                             <?php if (file_exists('data/autocms-media.json')) {?><li><a href="/admin/media/" target="iframe"><i class="fa fa-file-image-o fa-fw"></i> Media Library</a></li><?php } ?>
                             <?php if (file_exists('data/autocms-settings.json')) {?><li><a href="/admin/settings/" target="iframe"><i class="fa fa-cog fa-fw"></i> Settings</a></li><?php } ?>
+                            <!---<li><a href="/admin/invoicing/" target="iframe"><i class="fa fa-file fa-fw"></i> Invoicing</a></li>--->
                         </ul>
                     </div>
                 </div>
