@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-define("VERSION", "0.4.1");
+define("VERSION", "0.4.2");
 define("_LOG_COUNT_MAX_", 20);
 date_default_timezone_set('UTC');
 

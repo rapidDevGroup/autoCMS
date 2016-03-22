@@ -20,7 +20,7 @@ class FooterData extends DataBuild {
             $html = str_get_html($fileData);
 
             if (!$footerFound) {
-                foreach ($html->find('.auto-footer .auto-color, .auto-footer .auto-edit, .auto-footer .auto-edit-text, .auto-footer .auto-link, .auto-footer .auto-edit-img, .auto-footer .auto-edit-bg-img, .auto-data') as $edit) {
+                foreach ($html->find('.auto-footer .auto-color, .auto-footer .auto-edit, .auto-footer .auto-edit-text, .auto-footer .auto-link, .auto-footer .auto-edit-img, .auto-footer .auto-edit-bg-img, .auto-footer .auto-data') as $edit) {
                     $footerFound = true;
                     $fieldID = uniqid();
                     $desc = $edit->getAttribute('data-autocms');
@@ -28,7 +28,7 @@ class FooterData extends DataBuild {
                     if (stripos($edit->class, 'auto-edit-img') !== false) {
                         $this->makeImageBGImage($edit, $this->data, $this->dataFile, $fieldID, $desc);
                     } else if (stripos($edit->class, 'auto-data') !== false) {
-                        $this->makeDataText($edit, $this->data, $this->dataFile);
+                        $this->makeDataText($edit, $this->data, $this->dataFile, $fieldID);
                     } else if (stripos($edit->class, 'auto-edit-bg-img') !== false) {
                         $this->makeImageBGImage($edit, $this->data, $this->dataFile, $fieldID, $desc, true);
                     } else if (stripos($edit->class, 'auto-link') !== false) {

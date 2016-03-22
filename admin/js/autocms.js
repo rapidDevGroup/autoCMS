@@ -76,10 +76,9 @@ $(function() {
     });
 
     $('a, button').click(function () {
-        if (isDirty && !$(this).hasClass('dirtyOK')) {
-            return (confirm("You will lose unsaved changes. Continue?"));
+        if (isDirty && $(this).hasClass('dirtyOK')) {
+            $(window).off('beforeunload');
         }
-        $(window).off('beforeunload');
         return true;
     });
 
