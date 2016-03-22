@@ -122,7 +122,6 @@ class BlogData extends Data {
                             $list->innertext = '<?=getBlog("link-text", $x,"' . $file . '")?>';
                             $this->data['types']['link-text'] = true;
                         } else if (stripos($list->class, 'auto-blog-author') !== false) {
-                            $list->href = '<?=getBlog("author", $x,"' . $file . '")?>';
                             $list->innertext = '<?=getBlog("author", $x,"' . $file . '")?>';
                             $this->data['types']['author'] = true;
                         }
