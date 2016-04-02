@@ -265,12 +265,12 @@ class PagesData extends DataBuild {
         $changeLog = Array();
 
         foreach ($data as $key => $datum) {
-            if ($key != 'key' && isset($json[$key]) && $json[$key][$json[$key]['type']] != trim($datum)) {
+            if ($key != 'key') {
                 if (DashboardUtils::endsWith($key, '-loaded') && trim($datum) != '') {
                     $key = str_ireplace('-loaded', '', $key);
                     $changeLog[] = Array('key' => $key, 'change' => Array('original' => $json[$key][$json[$key]['type']], 'new' => trim($datum)));
                     $json[$key][$json[$key]['type']] = trim($datum);
-                } else if (trim($datum) != '') {
+                } else if ($json[$key][$json[$key]['type']] != trim($datum)) {
                     $changeLog[] = Array('key' => $key, 'change' => Array('original' => $json[$key][$json[$key]['type']], 'new' => trim($datum)));
                     $json[$key][$json[$key]['type']] = trim($datum);
                 }
@@ -281,7 +281,7 @@ class PagesData extends DataBuild {
                         $key = str_ireplace('-loaded', '', $key);
                         $changeLog[] = Array('key' => $key, 'change' => Array('original' => $json[$repeatKey]['repeat'][$iteration][$itemKey][$json[$repeatKey]['repeat'][$iteration][$itemKey]['type']], 'new' => trim($datum)));
                         $json[$repeatKey]['repeat'][$iteration][$itemKey][$json[$repeatKey]['repeat'][$iteration][$itemKey]['type']] = trim($datum);
-                    } else if (trim($datum) != '') {
+                    } else if ($json[$repeatKey]['repeat'][$iteration][$itemKey][$json[$repeatKey]['repeat'][$iteration][$itemKey]['type']] != trim($datum)) {
                         $changeLog[] = Array('key' => $key, 'change' => Array('original' => $json[$repeatKey]['repeat'][$iteration][$itemKey][$json[$repeatKey]['repeat'][$iteration][$itemKey]['type']], 'new' => trim($datum)));
                         $json[$repeatKey]['repeat'][$iteration][$itemKey][$json[$repeatKey]['repeat'][$iteration][$itemKey]['type']] = trim($datum);
                     }
