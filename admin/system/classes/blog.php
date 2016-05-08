@@ -34,22 +34,18 @@ class BlogData extends Data {
             foreach($html->find('.auto-blog-next, .auto-blog-prev, .auto-blog-has-prev, .auto-blog-has-next') as $pagination) {
                 if (stripos($pagination->class, 'auto-blog-next') !== false) {
                     $pagination->href = '<?=getBlogPage("next","' . $file . '")?>';
-                    //$pagination->class = str_replace('auto-blog-next', '', $pagination->class);
                     $this->data['types']['link-next'] = true;
                     $this->data['list-pagination-pages'] = str_ireplace(Array('.html', '.htm'), '', $file);
                 } else if (stripos($pagination->class, 'auto-blog-prev') !== false) {
                     $pagination->href = '<?=getBlogPage("prev","' . $file . '")?>';
-                    //$pagination->class = str_replace('auto-blog-prev', '', $pagination->class);
                     $this->data['types']['link-prev'] = true;
                     $this->data['list-pagination-pages'] = str_ireplace(Array('.html', '.htm'), '', $file);
                 } else if (stripos($pagination->class, 'auto-blog-has-next') !== false) {
                     $this->data['pagination']['has-next'] = $pagination->style;
                     $pagination->style = '<?=getBlogPage("has-next","' . $file . '")?>';
-                    //$pagination->class = str_replace('auto-blog-has-next', '', $pagination->class);
                 } else if (stripos($pagination->class, 'auto-blog-has-prev') !== false) {
                     $this->data['pagination']['has-prev'] = $pagination->style;
                     $pagination->style = '<?=getBlogPage("has-prev","' . $file . '")?>';
-                    //$pagination->class = str_replace('auto-blog-has-prev', '', $pagination->class);
                 }
             }
 
@@ -75,7 +71,7 @@ class BlogData extends Data {
                             } else if ($pageMeta->property == "og:author" || $pageMeta->property == 'article:author') {
                                 $pageMeta->content = "<?=getBlog('author')?>";
                             } else if ($pageMeta->property == "og:url") {
-                                $pageMeta->content = "<?=getBlog('link-href')?>";
+                                $pageMeta->content = "<?=get('autocms-settings.json', 'site-host')?><?=getBlog('link-href')?>";
                             } else if ($pageMeta->property == "og:type") {
                                 $pageMeta->content = "article";
                             } else if ($pageMeta->property == "og:site_name") {
@@ -115,10 +111,10 @@ class BlogData extends Data {
                             $list->innertext = '<?=getBlog("cats", $x,"' . $file . '")?>';
                             $this->data['types']['categories'] = true;
                         } else if (stripos($list->class, 'auto-blog-link-href') !== false) {
-                            $list->href = '<?=getBlog("link-href", $x,"' . $file . '")?>';
+                            $list->href = "<?=get('autocms-settings.json', 'site-host')?>".'<?=getBlog("link-href", $x,"' . $file . '")?>';
                             $this->data['types']['link-href'] = true;
                         } else if (stripos($list->class, 'auto-blog-link') !== false) {
-                            $list->href = '<?=getBlog("link-href", $x,"' . $file . '")?>';
+                            $list->href = "<?=get('autocms-settings.json', 'site-host')?>".'<?=getBlog("link-href", $x,"' . $file . '")?>';
                             $list->innertext = '<?=getBlog("link-text", $x,"' . $file . '")?>';
                             $this->data['types']['link-text'] = true;
                         } else if (stripos($list->class, 'auto-blog-author') !== false) {
@@ -156,10 +152,10 @@ class BlogData extends Data {
                             $post->innertext = '<?=getBlog("date")?>';
                             $this->data['types']['date'] = true;
                         } else if (stripos($post->class, 'auto-blog-cats') !== false) {
-                            $post->innertext = '<?=getBlog("cats", "$x")?>';
+                            $post->innertext = '<?=getBlog("cats")?>';
                             $this->data['types']['categories'] = true;
                         } else if (stripos($post->class, 'auto-blog-author') !== false) {
-                            $post->innertext = '<?=getBlog("author", "$x")?>';
+                            $post->innertext = '<?=getBlog("author")?>';
                             $this->data['types']['author'] = true;
                         }
                         if (trim($post->class) === '') $post->class = null;
@@ -264,17 +260,17 @@ class BlogData extends Data {
         fwrite($fp, json_encode($json));
         fclose($fp);
 
-        DashboardUtils::createXMLSitemap();
+        DashboardUtils::createXMLSiteMap();
     }
 
     public function publishPost($post_id) {
         $this->data['posts'][$post_id]['published'] = time();
-        DashboardUtils::createXMLSitemap();
+        DashboardUtils::createXMLSiteMap();
     }
 
     public function unpublishPost($post_id) {
         unset($this->data['posts'][$post_id]['published']);
-        DashboardUtils::createXMLSitemap();
+        DashboardUtils::createXMLSiteMap();
     }
 
     public function trashPost($post_id) {

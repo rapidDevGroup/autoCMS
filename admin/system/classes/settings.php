@@ -11,7 +11,7 @@ class SettingsData extends Data {
             $this->data['site-lang'] = Array('text' => 'en-US', 'description' => 'site locale', 'type' => 'text', 'placeholder' => 'locale code');
             $this->data['site-description'] = Array('text' => '', 'description' => 'describe your site', 'type' => 'text');
             $this->data['site-categories'] = Array('text' => '', 'description' => 'your site categories', 'type' => 'text');
-            $this->data['site-host'] = Array('text' => 'http://' . $_SERVER['HTTP_HOST'] . '/', 'description' => 'host of the site', 'type' => 'text', 'placeholder' => 'http://yourdomain.com/');
+            $this->data['site-host'] = Array('text' => 'http://' . $_SERVER['HTTP_HOST'], 'description' => 'host of the site', 'type' => 'text', 'placeholder' => 'http://yourdomain.com');
             $this->data['rss-count'] = Array('number' => '10', 'description' => 'num of posts in rss', 'type' => 'number');
             $fp = fopen($this->dataLoc . $this->dataFile, 'w');
             fwrite($fp, json_encode($this->data));
