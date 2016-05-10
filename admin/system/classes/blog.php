@@ -108,7 +108,7 @@ class BlogData extends Data {
                             $list->innertext = '<?=getBlog("date", $x,"' . $file . '")?>';
                             $this->data['types']['date'] = true;
                         } else if (stripos($list->class, 'auto-blog-cats') !== false) {
-                            $list->innertext = '<?=getBlog("cats", $x,"' . $file . '")?>';
+                            $list->innertext = '<?=getBlog("categories", $x,"' . $file . '")?>';
                             $this->data['types']['categories'] = true;
                         } else if (stripos($list->class, 'auto-blog-link-href') !== false) {
                             $list->href = "<?=get('autocms-settings.json', 'site-host')?>".'<?=getBlog("link-href", $x,"' . $file . '")?>';
@@ -152,7 +152,7 @@ class BlogData extends Data {
                             $post->innertext = '<?=getBlog("date")?>';
                             $this->data['types']['date'] = true;
                         } else if (stripos($post->class, 'auto-blog-cats') !== false) {
-                            $post->innertext = '<?=getBlog("cats")?>';
+                            $post->innertext = '<?=getBlog("categories")?>';
                             $this->data['types']['categories'] = true;
                         } else if (stripos($post->class, 'auto-blog-author') !== false) {
                             $post->innertext = '<?=getBlog("author")?>';
@@ -249,6 +249,10 @@ class BlogData extends Data {
             }
         } else {
             $this->data['posts'][$post_id]['last-updated'] = $updateTime;
+            $this->data['posts'][$post_id]['title'] = $json['title'];
+            $this->data['posts'][$post_id]['author'] = $json['author'];
+            $this->data['posts'][$post_id]['categories'] = $json['categories'];
+            $this->data['posts'][$post_id]['last-updated'] = $updateTime;
         }
 
         if ($publish) {
@@ -257,6 +261,7 @@ class BlogData extends Data {
 
         $postPage = $this->data['post-page'];
         $json['link-href'] = '/' . $postPage . '/' . $externalTitle . '/';
+        $json['external'] = $externalTitle;
 
         $fp = fopen($dataFile, 'w');
         fwrite($fp, json_encode($json));

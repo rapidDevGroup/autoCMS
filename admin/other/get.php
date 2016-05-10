@@ -131,15 +131,17 @@ class GetDataFromFiles {
         if ($this->loadFile('autocms-blog.json')) {
             if (isset($_GET['page']) && is_numeric($_GET['page'])) $currentPage = $_GET['page'];
             else $currentPage = 1;
-            $dataFile = 'page-' . str_ireplace(Array('.html', '.htm'), '.json', $file);
+            $dataFile = 'page-' . str_ireplace(Array('.html', '.htm'), '', $file) . '.json';
             $postPerPage = $this->getBlogPostCount($dataFile);
 
             if (empty($this->fileArray['autocms-blog.json']['posts'])) return 0;
             $countPub = 0;
             foreach ($this->fileArray['autocms-blog.json']['posts'] as $post) {
-                if (isset($_GET['author'], $post['published']) && $this->cleanURL($post['author']) == $_GET['author']) {
+                if (isset($_GET['category'], $post['published']) && in_array($this->cleanURL($_GET['category']), array_map(Array($this, 'cleanURL'), explode(' ', $post['categories'])))) {
                     $countPub++;
-                } else if (isset($post['published']) && !isset($_GET['author'])) {
+                } else if (isset($_GET['author'], $post['published']) && $this->cleanURL($post['author']) == $_GET['author'] && !isset($_GET['category'])) {
+                    $countPub++;
+                } else if (isset($post['published']) && !isset($_GET['author']) && !isset($_GET['category'])) {
                     $countPub++;
                 }
             }
@@ -149,13 +151,13 @@ class GetDataFromFiles {
             if ($key == 'rss-count') {
                 $maxCount = $this->getBlogPostCount($file, $key);
             } else {
-                $dataFile = 'page-' . str_ireplace(Array('.html', '.htm'), '.json', $file);
+                $dataFile = 'page-' . str_ireplace(Array('.html', '.htm'), '', $file) . '.json';
                 $maxCount = $this->getBlogPostCount($dataFile, $key);
             }
 
             if ($maxCount == 0) return $countPub;
 
-            if (!isset($_GET['author'])) {
+            if (!isset($_GET['author']) && !isset($_GET['category'])) {
                 return ($maxCount < $countPub ? $maxCount : $countPub);
             } else {
                 return $countPub;
@@ -179,14 +181,40 @@ class GetDataFromFiles {
             if (!is_null($count)) {
                 if (isset($_GET['author'])) {
                     $newArray = array_filter($this->fileArray['autocms-blog.json']['posts'], array($this, 'getAuthoredPosts'));
+                } else if (isset($_GET['category'])) {
+                    $newArray = array_filter($this->fileArray['autocms-blog.json']['posts'], array($this, 'getCategoryPosts'));
                 } else {
                     $newArray = array_filter($this->fileArray['autocms-blog.json']['posts'], array($this, 'getPublishedPosts'));
                 }
                 $pageKey = array_keys($newArray)[$currentCount + $count];
                 $blogFile = 'blog-' . $pageKey . '.json';
                 if ($this->loadFile($blogFile, true)) {
-                    if ($key == 'author') {
-                        return '<a href="/author/' . $this->cleanURL($this->fileBlogArray[$blogFile][$key]) . '/">' . $this->fileBlogArray[$blogFile][$key] . '</a>';
+                    $baseURL = '/';
+                    if ($this->loadFile('autocms-settings.json')) {
+                        $baseURL = $this->getData('autocms-settings.json', 'site-host', null, null) . '/';
+                        $currentURI = explode('/', $_SERVER['REQUEST_URI']);
+                        if ((isset($_GET['author']) && $currentURI[1] != 'author') || (isset($_GET['category']) && $currentURI[1] != 'category')) {
+                            $baseURL .= $currentURI[1] . '/';
+                        }
+                    }
+
+                    if ($key == 'author' && !isset($_GET['author'])) {
+                        return '<a href="' . $baseURL . 'author/' . $this->cleanURL($this->fileBlogArray[$blogFile][$key]) . '/">' . $this->fileBlogArray[$blogFile][$key] . '</a>';
+                    } else if ($key == 'categories') {
+                        $catArr = explode(' ', $this->fileBlogArray[$blogFile]['categories']);
+                        foreach ($catArr as $arrKey => $cat) {
+                            $newCat = $this->cleanURL($cat);
+                            if ($newCat != $this->cleanURL($_GET['category'])) {
+                                $catArr[$arrKey] = '<a href="' . $baseURL . 'category/' . $newCat . '/">' . $newCat . '</a>';
+                            } else {
+                                $catArr[$arrKey] = $newCat;
+                            }
+                        }
+                        return implode(' ', $catArr);
+                    }
+                    // for backwards compatibility
+                    if ($key == 'cats') {
+                        return $this->fileBlogArray[$blogFile]['categories'];
                     }
                     return $this->fileBlogArray[$blogFile][$key];
                 }
@@ -206,7 +234,11 @@ class GetDataFromFiles {
     }
 
     public function getAuthoredPosts($post) {
-        return ($this->cleanURL($post['author']) == $_GET['author']);
+        return ($this->cleanURL($post['author']) == $_GET['author']) && isset($post['published']);
+    }
+
+    public function getCategoryPosts($post) {
+        return (in_array($this->cleanURL($_GET['category']), array_map(Array($this, 'cleanURL'), explode(' ', $post['categories'])))) && isset($post['published']);
     }
     
     private function cleanURL($string) {
@@ -222,7 +254,7 @@ class GetDataFromFiles {
     }
 
     public function getBlogPage($type, $file) {
-        if (isset($_GET['author']) && ($type == 'has-next' || $type == 'has-prev')) return false;
+        if ((isset($_GET['author']) || isset($_GET['category'])) && ($type == 'has-next' || $type == 'has-prev')) return false;
 
         if ($this->loadFile('autocms-blog.json')) {
             $currentPage = 1;
@@ -234,7 +266,7 @@ class GetDataFromFiles {
                     if (isset($post['published'])) $blogCount++;
                 }
 
-            $dataFile = 'page-' . str_ireplace(Array('.html', '.htm'), '.json', $file);
+            $dataFile = 'page-' . str_ireplace(Array('.html', '.htm'), '', $file) . '.json';
             $postPerPage = $this->getBlogPostCount($dataFile);
 
             if (($type == 'has-next' || $type == 'has-prev')
