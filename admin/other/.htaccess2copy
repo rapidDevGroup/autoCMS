@@ -81,6 +81,21 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^([a-zA-Z0-9-_]+)/category/([a-zA-Z0-9-_]+)/$ $1.php?category=$2 [L]
 
+# Find php file for missing directory plus blog category
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^category/([a-zA-Z0-9-_]+)/$ index.php?category=$1 [L]
+
+# Find php file for missing directory plus blog author
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([a-zA-Z0-9-_]+)/author/([a-zA-Z0-9-_]+)/$ $1.php?author=$2 [L]
+
+# Find php file for missing directory plus blog author
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^author/([a-zA-Z0-9-_]+)/$ index.php?author=$1 [L]
+
 # Find php file for missing directory plus blog if exists
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d

@@ -1,291 +1,318 @@
 <?php
-
-//todo: page is a reserved page name, as is admin, and assets
-
 date_default_timezone_set('UTC');
 
-$post_id = null;
-$dataFiles = Array();
+class CheckIf404 {
+    function __construct() {
+        $getDataFromFiles = new GetDataFromFiles();
+        $currentURI = explode('/', $_SERVER['REQUEST_URI']);
 
-function getPostID($external) {
-    global $dataFiles;
-    $json = null;
-    if (isset($dataFiles['autocms-blog.json'])) {
-        $json = $dataFiles['autocms-blog.json'];
-    } else {
-        $dataFile = 'admin/data/autocms-blog.json';
-        $json = json_decode(file_get_contents($dataFile), true);
-        $dataFiles['autocms-blog.json'] = $json;
-    }
-    foreach ($json['posts'] as $key => $data)
-        if ($data['external'] == $external) return $key;
+        if (isset($_GET['blog'])) {
+            if (!$getDataFromFiles->loadFile('blog-' . $getDataFromFiles->getBlogPostKey(strtolower($_GET['blog'])) . '.json', true))
+                $this->make404("blog file doesn't exists!");
+            if (!$getDataFromFiles->getBlogPublished($_GET['blog']))
+                $this->make404("blog is not published");
 
-    return null;
-}
-
-$dataBlogListFile = 'admin/data/autocms-blog.json';
-if (file_exists($dataBlogListFile)) {
-    $jsonBlog = null;
-    if (isset($dataFiles['autocms-blog.json'])) {
-        $jsonBlog = $dataFiles['autocms-blog.json'];
-    } else {
-        $jsonBlog = json_decode(file_get_contents($dataBlogListFile), true);
-        $dataFiles['autocms-blog.json'] = $jsonBlog;
-    }
-    $baseCall = explode('/', $_SERVER['REQUEST_URI']);
-    if (!isset($_GET['blog']) && $jsonBlog['post-page'] == $baseCall[1] && !isset($_GET['page'])) {
-        make404();
-    }
-    // if request is a post, make sure file exists
-    if (isset($_GET['blog']) && !file_exists($_SERVER['DOCUMENT_ROOT'] . '/admin/data/blog/blog-' . getPostID(strtolower($_GET['blog'])) . '.json')) {
-        make404();
-    }
-    if (isset($_GET['blog']) && !isset($jsonBlog['posts'][getPostID(strtolower($_GET['blog']))]['published'])) {
-        make404();
-    }
-}
-
-function make404() {
-    header("HTTP/1.0 404 Not Found");
-    if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/error.php')) {
-        include_once('error.php');
-    } else {
-        print "<!DOCTYPE html><html><head><title>404 Not Found</title></head><body><h1>Not Found</h1><p>The requested URL was not found on this server..</p></body></html>";
-    }
-    die();
-}
-
-// has data
-function has($file, $key, $count = null, $secondary = null) {
-    global $dataFiles;
-    $dataFile = 'admin/data/' . $file;
-    if (file_exists($dataFile)) {
-        $json = null;
-        if (isset($dataFiles[$file])) {
-            $json = $dataFiles[$file];
-        } else {
-            $json = json_decode(file_get_contents($dataFile), true);
-            $dataFiles[$file] = $json;
+        } else if (isset($_GET['page'])) {
+            // todo check if page exists
+        } else if (isset($_GET['author'])) {
+            // todo check if author exists
+        } else if (isset($_GET['category'])) {
+            // todo check if category exists
         }
 
-        if (!is_null($secondary) && !is_null($count) && $json[$key]['type'] == 'repeat' && isset($json[$key]['repeat'][$count][$secondary][$json[$key]['repeat'][$count][$secondary]['type']]) && trim($json[$key]['repeat'][$count][$secondary][$json[$key]['repeat'][$count][$secondary]['type']]) != '') {
+        if (!isset($_GET['blog']) && !isset($_GET['page']) && $getDataFromFiles->getBlogPostPage() == $currentURI[1]) {
+            $this->make404("No blog data!");
+        }
+    }
+
+    private function make404($message = "") {
+        header("HTTP/1.0 404 Not Found");
+        print "<--" . $message . "-->\n";
+        if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/error.php')) {
+            include_once('error.php');
+        } else {
+            print "<!DOCTYPE html><html><head><title>404 Not Found</title></head><body><h1>Not Found</h1><p>The requested URL was not found on this server.</p></body></html>";
+        }
+        die();
+    }
+}
+
+class GetDataFromFiles {
+    public $fileDataLocation = 'admin/data/';
+    public $fileBlogDataLocation = 'admin/data/blog/';
+    public $fileArray;
+    public $fileBlogArray;
+
+    function __construct() {
+        $this->fileArray = Array();
+        $this->fileBlogArray = Array();
+    }
+
+    public function loadFile($datafile, $isBlog = false) {
+        if ($isBlog && file_exists($this->fileBlogDataLocation . $datafile)) {
+            if (!isset($this->fileBlogArray[$datafile])) {
+                $this->fileBlogArray[$datafile] = $this->loadBlogData($datafile);
+            }
             return true;
         }
-        return (isset($json[$key][$json[$key]['type']]) && trim($json[$key][$json[$key]['type']]) != '');
-    }
 
-    return false;
-}
-
-// get data
-function get($file, $key, $count = null, $secondary = null) {
-    global $dataFiles;
-    $dataFile = 'admin/data/' . $file;
-    if (file_exists($dataFile)) {
-        $json = null;
-        if (isset($dataFiles[$file])) {
-            $json = $dataFiles[$file];
-        } else {
-            $json = json_decode(file_get_contents($dataFile), true);
-            $dataFiles[$file] = $json;
-        }
-        if (!is_null($secondary) && !is_null($count) && $json[$key]['type'] == 'repeat') {
-            return $json[$key]['repeat'][$count][$secondary][$json[$key]['repeat'][$count][$secondary]['type']];
-        }
-        return $json[$key][$json[$key]['type']];
-    }
-
-    return '';
-}
-
-// return count of the repeat
-function repeatCount($file, $key) {
-    global $dataFiles;
-    $json = null;
-    if (isset($dataFiles[$file])) {
-        $json = $dataFiles[$file];
-    } else {
-        $dataFile = 'admin/data/' . $file;
-        $json = json_decode(file_get_contents($dataFile), true);
-        $dataFiles[$file] = $json;
-    }
-
-    return count($json[$key]['repeat']);
-}
-
-// get the post data
-function getBlog($key, $count = null, $file = null) {
-    global $dataFiles, $post_id;
-    $currentPage = 1;
-    $postPerPage = 0;
-    if (!is_null($count)) {
-        if (isset($_GET['page']) && is_numeric($_GET['page'])) $currentPage = $_GET['page'];
-
-        $dataFile = 'page-' . str_ireplace(Array('.html', '.htm'), '.json', $file);
-        if (file_exists('admin/data/' . $dataFile)) {
-            $fromFile = null;
-            if (isset($dataFiles[$dataFile])) {
-                $fromFile = $dataFiles[$dataFile];
-            } else {
-                $fromFile = json_decode(file_get_contents('admin/data/' . $dataFile), true);
-                $dataFiles[$dataFile] = $fromFile;
+        if (file_exists($this->fileDataLocation . $datafile)) {
+            if (!isset($this->fileArray[$datafile])) {
+                $this->fileArray[$datafile] = $this->loadData($datafile);
             }
-            $postPerPage = $fromFile['blog-count']['blog-count'];
+            return true;
         }
-    }
-    $currentCount = ($currentPage * $postPerPage) - $postPerPage;
 
-    $dataBlogListFile = 'admin/data/autocms-blog.json';
-    if (file_exists($dataBlogListFile)) {
-        $jsonBlog = null;
-        if (isset($dataFiles['autocms-blog.json'])) {
-            $jsonBlog = $dataFiles['autocms-blog.json'];
-        } else {
-            $jsonBlog = json_decode(file_get_contents($dataBlogListFile), true);
-            $dataFiles['autocms-blog.json'] = $jsonBlog;
+        return false;
+    }
+
+    private function loadData($dataFile) {
+        return json_decode(file_get_contents($this->fileDataLocation . $dataFile), true);
+    }
+
+    private function loadBlogData($dataFile) {
+        return json_decode(file_get_contents($this->fileBlogDataLocation . $dataFile), true);
+    }
+
+    public function getBlogPostKey($external) {
+        if ($this->loadFile('autocms-blog.json')) {
+
+            foreach ($this->fileArray['autocms-blog.json']['posts'] as $key => $data)
+                if ($data['external'] == $external) return $key;
         }
-    } else {
+
+        return null;
+    }
+
+    public function hasData($dataFile, $key, $count, $secondary) {
+        if ($this->loadFile($dataFile)) {
+            if (!is_null($secondary)
+                    && !is_null($count)
+                    && $this->fileArray[$dataFile][$key]['type'] == 'repeat'
+                    && isset($this->fileArray[$dataFile][$key]['repeat'][$count][$secondary][$this->fileArray[$dataFile][$key]['repeat'][$count][$secondary]['type']])
+                    && trim($this->fileArray[$dataFile][$key]['repeat'][$count][$secondary][$this->fileArray[$dataFile][$key]['repeat'][$count][$secondary]['type']]) != '') {
+                return true;
+            }
+            return (isset($this->fileArray[$dataFile][$key][$this->fileArray[$dataFile][$key]['type']])
+                && trim($this->fileArray[$dataFile][$key][$this->fileArray[$dataFile][$key]['type']]) != '');
+        }
+
+        return false;
+    }
+
+    public function getData($dataFile, $key, $count, $secondary) {
+        if ($this->loadFile($dataFile)) {
+            if (!is_null($secondary) && !is_null($count) && $this->fileArray[$dataFile][$key]['type'] == 'repeat') {
+                return $this->fileArray[$dataFile][$key]['repeat'][$count][$secondary][$this->fileArray[$dataFile][$key]['repeat'][$count][$secondary]['type']];
+            }
+            return $this->fileArray[$dataFile][$key][$this->fileArray[$dataFile][$key]['type']];
+        }
+
         return '';
     }
 
-    if (!is_null($count)) {
-        foreach ($jsonBlog['posts'] as $post) {
-            if (isset($post['published'])) {
-                break;
+    public function getRepeatCount($dataFile, $key) {
+        if ($this->loadFile($dataFile)) {
+            return count($this->fileArray[$dataFile][$key]['repeat']);
+        }
+
+        return 0;
+    }
+
+    public function getBlogPostCount($dataFile, $key = 'blog-count') {
+        if ($this->loadFile($dataFile)) {
+            return $this->fileArray[$dataFile][$key]['blog-count'];
+        }
+
+        return 0;
+    }
+
+    public function getBlogCount($file, $key) {
+        if ($this->loadFile('autocms-blog.json')) {
+            if (isset($_GET['page']) && is_numeric($_GET['page'])) $currentPage = $_GET['page'];
+            else $currentPage = 1;
+            $dataFile = 'page-' . str_ireplace(Array('.html', '.htm'), '.json', $file);
+            $postPerPage = $this->getBlogPostCount($dataFile);
+
+            if (empty($this->fileArray['autocms-blog.json']['posts'])) return 0;
+            $countPub = 0;
+            foreach ($this->fileArray['autocms-blog.json']['posts'] as $post) {
+                if (isset($_GET['author'], $post['published']) && $this->cleanURL($post['author']) == $_GET['author']) {
+                    $countPub++;
+                } else if (isset($post['published']) && !isset($_GET['author'])) {
+                    $countPub++;
+                }
+            }
+
+            $countPub -= ($currentPage * $postPerPage) - $postPerPage;
+
+            if ($key == 'rss-count') {
+                $maxCount = $this->getBlogPostCount($file, $key);
             } else {
-                $currentCount++;
+                $dataFile = 'page-' . str_ireplace(Array('.html', '.htm'), '.json', $file);
+                $maxCount = $this->getBlogPostCount($dataFile, $key);
+            }
+
+            if ($maxCount == 0) return $countPub;
+
+            return ($maxCount < $countPub ? $maxCount : $countPub);
+        }
+
+        return 0;
+    }
+
+    public function getBlogData($key, $count, $file) {
+        if ($this->loadFile('autocms-blog.json')) {
+            $currentPage = 1;
+            $postPerPage = 0;
+            if (!is_null($count)) {
+                if (isset($_GET['page']) && is_numeric($_GET['page'])) $currentPage = $_GET['page'];
+                $dataFile = 'page-' . str_ireplace(Array('.html', '.htm'), '', $file) . '.json';
+                $postPerPage = $this->getBlogPostCount($dataFile);
+            }
+            $currentCount = ($currentPage * $postPerPage) - $postPerPage;
+
+            if (!is_null($count)) {
+
+                // todo: find the next post
+
+                foreach ($this->fileArray['autocms-blog.json']['posts'] as $post) {
+                    if (isset($_GET['author'])) {
+                        if ($this->cleanURL($post['author']) == $_GET['author']) {
+                            break;
+                        } else {
+                            $currentCount++;
+                        }
+                    } else {
+                        if (isset($post['published'])) {
+                            break;
+                        } else {
+                            $currentCount++;
+                        }
+                    }
+                }
+                $pageKey = array_keys($this->fileArray['autocms-blog.json']['posts'])[$count + $currentCount];
+                $blogFile = 'blog-' . $pageKey . '.json';
+                if ($this->loadFile($blogFile, true)) {
+                    if ($key == 'author') {
+                        return '<a href="/author/' . $this->cleanURL($this->fileBlogArray[$blogFile][$key]) . '/">' . $this->fileBlogArray[$blogFile][$key] . '</a>';
+                    }
+                    return $this->fileBlogArray[$blogFile][$key];
+                }
+            } else {
+                $post_id = $this->getBlogPostKey(strtolower($_GET['blog']));
+                $blogFile = 'blog-' . $post_id . '.json';
+                if ($this->loadFile($blogFile, true)) {
+                    return $this->fileBlogArray[$blogFile][$key];
+                }
             }
         }
-        $pageKey = array_keys($jsonBlog['posts'])[$count + $currentCount];
-        $dataFile = 'admin/data/blog/blog-' . $pageKey . '.json';
-        if (file_exists($dataFile)) {
-            $json = json_decode(file_get_contents($dataFile), true);
-            return $json[$key];
-        }
-    } else {
-        $post_id = getPostID(strtolower($_GET['blog']));
-        $dataFile = 'admin/data/blog/blog-' . $post_id . '.json';
-        if (file_exists($dataFile)) {
-            $json = json_decode(file_get_contents($dataFile), true);
-            return $json[$key];
-        }
+        return '';
     }
-    return '';
+    
+    private function cleanURL($string) {
+        //Lower case everything
+        $string = trim(strtolower($string));
+        //Make alphanumeric (removes all other characters)
+        $string = preg_replace("/[^a-z0-9_\s-]/", "", $string);
+        //Clean up multiple dashes or whitespaces
+        $string = preg_replace("/[\s-]+/", " ", $string);
+        //Convert whitespaces and underscore to dash
+        $string = preg_replace("/[\s_]/", "-", $string);
+        return $string;
+    }
+
+    public function getBlogPage($type, $file) {
+        if (isset($_GET['author']) && ($type == 'has-next' || $type == 'has-prev')) return false;
+
+        if ($this->loadFile('autocms-blog.json')) {
+            $currentPage = 1;
+            if (isset($_GET['page']) && is_numeric($_GET['page'])) $currentPage = $_GET['page'];
+
+            $blogCount = 0;
+            if (!empty($this->fileArray['autocms-blog.json']['posts']))
+                foreach ($this->fileArray['autocms-blog.json']['posts'] as $post) {
+                    if (isset($post['published'])) $blogCount++;
+                }
+
+            $dataFile = 'page-' . str_ireplace(Array('.html', '.htm'), '.json', $file);
+            $postPerPage = $this->getBlogPostCount($dataFile);
+
+            if (($type == 'has-next' || $type == 'has-prev')
+                && ($blogCount == 0 || $postPerPage == 0 || $blogCount <= $postPerPage)) return false;
+
+            $location = str_ireplace(Array('index.html', 'index.htm', '.html', '.htm'), '/', $file);
+            if ($location != '/') $location = '/' . $location;
+
+            if ($type == 'next') {
+                return $location . 'page/' . ($currentPage + 1) . '/';
+            } else if ($type == 'prev') {
+                if (($currentPage - 1) > 1) {
+                    return $location . 'page/' . ($currentPage - 1) . '/';
+                } else {
+                    return $location;
+                }
+            } elseif ($type == 'has-next') {
+                return ($currentPage * $postPerPage < $blogCount ? 'display:inline' : '');
+            } elseif ($type == 'has-prev') {
+                return ($currentPage > 1 ? 'display:inline' : '');
+            }
+        }
+        return '';
+    }
+
+    public function getBlogPostPage() {
+        if ($this->loadFile('autocms-blog.json')) {
+            return $this->fileArray['autocms-blog.json']['post-page'];
+        }
+
+        return '';
+    }
+
+    public function getBlogPublished($post_external) {
+        if ($this->loadFile('autocms-blog.json')) {
+            return isset($this->fileArray['autocms-blog.json']['posts'][$this->getBlogPostKey(strtolower($post_external))]['published']);
+        }
+
+        return '';
+    }
+}
+
+$loadFileClass = new GetDataFromFiles();
+
+new CheckIf404();
+
+function getPostID($external) {
+    global $loadFileClass;
+    return $loadFileClass->getBlogPostKey($external);
+}
+
+function has($file, $key, $count = null, $secondary = null) {
+    global $loadFileClass;
+    return $loadFileClass->hasData($file, $key, $count, $secondary);
+}
+
+function get($file, $key, $count = null, $secondary = null) {
+    global $loadFileClass;
+    return $loadFileClass->getData($file, $key, $count, $secondary);
+}
+
+function repeatCount($file, $key) {
+    global $loadFileClass;
+    return $loadFileClass->getRepeatCount($file, $key);
+}
+
+function getBlog($key, $count = null, $file = null) {
+    global $loadFileClass;
+    return $loadFileClass->getBlogData($key, $count, $file);
+}
+
+function blogCount($file, $key) {
+    global $loadFileClass;
+    return $loadFileClass->getBlogCount($file, $key);
 }
 
 function getBlogPage($type, $file) {
-    global $dataFiles;
-    $currentPage = 1;
-    if (isset($_GET['page']) && is_numeric($_GET['page'])) $currentPage = $_GET['page'];
-
-    $dataBlogListFile = 'admin/data/autocms-blog.json';
-    if (file_exists($dataBlogListFile)) {
-        $jsonBlog = null;
-        if (isset($dataFiles['autocms-blog.json'])) {
-            $jsonBlog = $dataFiles['autocms-blog.json'];
-        } else {
-            $jsonBlog = json_decode(file_get_contents($dataBlogListFile), true);
-            $dataFiles['autocms-blog.json'] = $jsonBlog;
-        }
-    }
-
-    $blogCount = 0;
-    if (!empty($jsonBlog['posts'])) foreach ($jsonBlog['posts'] as $post) if (isset($post['published'])) $blogCount++;
-
-    $postPerPage = 0;
-    $dataFile = 'page-' . str_ireplace(Array('.html', '.htm'), '.json', $file);
-    if (file_exists('admin/data/' . $dataFile)) {
-        $fromFile = null;
-        if (isset($dataFiles[$dataFile])) {
-            $fromFile = $dataFiles[$dataFile];
-        } else {
-            $fromFile = json_decode(file_get_contents('admin/data/' . $dataFile), true);
-            $dataFiles[$dataFile] = $fromFile;
-        }
-        $postPerPage = $fromFile['blog-count']['blog-count'];
-    }
-
-    if ($blogCount == 0 || $postPerPage == 0 || $blogCount <= $postPerPage) return false;
-
-    $location = str_ireplace(Array('index.html', 'index.htm', '.html', '.htm'), '/', $file);
-    if ($location != '/') $location = '/' . $location;
-    if ($type == 'next') {
-        return $location . 'page/' . ($currentPage + 1) . '/';
-    } else if ($type == 'prev') {
-        if (($currentPage-1) > 1) {
-            return $location . 'page/' . ($currentPage - 1) . '/';
-        } else {
-            return $location;
-        }
-    } elseif ($type == 'has-next') {
-        return ($currentPage * $postPerPage < $blogCount ? 'display:inline':'');
-    } elseif ($type == 'has-prev') {
-        return ($currentPage > 1 ? 'display:inline':'');
-    }
-    return '';
-}
-
-// get how many blog list count to show on this page
-function blogCount($file, $key) {
-    global $dataFiles;
-    $currentPage = 1;
-    $postPerPage = 0;
-    if (isset($_GET['page']) && is_numeric($_GET['page'])) $currentPage = $_GET['page'];
-
-    $dataFile = 'page-' . str_ireplace(Array('.html', '.htm'), '.json', $file);
-    if (file_exists('admin/data/' . $dataFile)) {
-        $fromFile = null;
-        if (isset($dataFiles[$dataFile])) {
-            $fromFile = $dataFiles[$dataFile];
-        } else {
-            $fromFile = json_decode(file_get_contents('admin/data/' . $dataFile), true);
-            $dataFiles[$dataFile] = $fromFile;
-        }
-        $postPerPage = $fromFile['blog-count']['blog-count'];
-    }
-
-    $dataBlogListFile = 'admin/data/autocms-blog.json';
-    if (file_exists($dataBlogListFile)) {
-        $jsonBlog = json_decode(file_get_contents($dataBlogListFile), true);
-    } else {
-        return 0;
-    }
-    if (empty($jsonBlog['posts'])) return 0;
-    $countPub = 0;
-    foreach ($jsonBlog['posts'] as $data) if (isset($data['published'])) $countPub++;
-
-    $countPub -= ($currentPage * $postPerPage) - $postPerPage;
-
-    if ($key == 'rss-count') {
-        if (file_exists('admin/data/' . $file)) {
-            $fromFile = null;
-            if (isset($dataFiles[$dataFile])) {
-                $fromFile = $dataFiles[$dataFile];
-            } else {
-                $fromFile = json_decode(file_get_contents('admin/data/' . $dataFile), true);
-                $dataFiles[$dataFile] = $fromFile;
-            }
-        } else {
-            return 0;
-        }
-        $maxCount = $fromFile['rss-count']['number'];
-    } else {
-        $dataFile = 'page-' . str_ireplace(Array('.html', '.htm'), '.json', $file);
-        if (file_exists('admin/data/' . $dataFile)) {
-            $fromFile = null;
-            if (isset($dataFiles[$dataFile])) {
-                $fromFile = $dataFiles[$dataFile];
-            } else {
-                $fromFile = json_decode(file_get_contents('admin/data/' . $dataFile), true);
-                $dataFiles[$dataFile] = $fromFile;
-            }
-        } else {
-            return 0;
-        }
-        $maxCount = $fromFile[$key]['blog-count'];
-    }
-
-    if ($maxCount == 0) return $countPub;
-
-    return ($maxCount < $countPub ? $maxCount : $countPub);
+    global $loadFileClass;
+    return $loadFileClass->getBlogPage($type, $file);
 }

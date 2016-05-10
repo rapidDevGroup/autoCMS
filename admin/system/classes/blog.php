@@ -224,7 +224,7 @@ class BlogData extends Data {
             $logsData->addToLog('has created', $data['title'] . ' blog', $changeLog);
         }
 
-        $externalTitle = preg_replace('/[^a-z0-9-]/i', '', str_replace(' ', '-', strtolower(trim($json['title']))));
+        $externalTitle = $this->cleanURL($json['title']);
 
         if ($isNew || (isset($this->data['posts'][$post_id]['external']) && $this->data['posts'][$post_id]['external'] != $externalTitle)) {
             $externalTitleOriginal = $externalTitle;
@@ -239,10 +239,12 @@ class BlogData extends Data {
             }
 
             if ($isNew) {
-                $this->data['posts'][$post_id] = Array('external' => $externalTitle, 'title' => $json['title'], 'creator' => $_SESSION["user"], 'created' => $creationTime);
+                $this->data['posts'][$post_id] = Array('external' => $externalTitle, 'title' => $json['title'], 'author' => $json['author'], 'categories' => $json['categories'], 'creator' => $_SESSION["user"], 'created' => $creationTime);
             } else {
                 $this->data['posts'][$post_id]['title'] = $json['title'];
                 $this->data['posts'][$post_id]['external'] = $externalTitle;
+                $this->data['posts'][$post_id]['author'] = $json['author'];
+                $this->data['posts'][$post_id]['categories'] = $json['categories'];
                 $this->data['posts'][$post_id]['last-updated'] = $updateTime;
             }
         } else {
@@ -261,6 +263,18 @@ class BlogData extends Data {
         fclose($fp);
 
         DashboardUtils::createXMLSiteMap();
+    }
+
+    private function cleanURL($string) {
+        //Lower case everything
+        $string = trim(strtolower($string));
+        //Make alphanumeric (removes all other characters)
+        $string = preg_replace("/[^a-z0-9_\s-]/", "", $string);
+        //Clean up multiple dashes or whitespaces
+        $string = preg_replace("/[\s-]+/", " ", $string);
+        //Convert whitespaces and underscore to dash
+        $string = preg_replace("/[\s_]/", "-", $string);
+        return $string;
     }
 
     public function publishPost($post_id) {

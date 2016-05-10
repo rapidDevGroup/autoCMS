@@ -40,7 +40,6 @@ class SettingsData extends Data {
     }
 
     public function getHost() {
-        if (!DashboardUtils::endsWith($this->data['site-host']['text'], '/')) $this->data['site-host']['text'] .= '/';
         return $this->data['site-host']['text'];
     }
 

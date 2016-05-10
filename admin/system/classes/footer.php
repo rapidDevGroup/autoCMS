@@ -43,15 +43,12 @@ class FooterData extends DataBuild {
                 }
 
                 foreach ($html->find('.auto-footer') as $edit) {
-                    $footerHTML = clone $edit;
-                    $edit->outertext = '<?php require_once("admin/other/autocms-footer.php") ?>';
-                    if (!file_exists('other/autocms-footer.php')) {
-                        $fp = fopen('other/autocms-footer.php', 'w');
-                        fwrite($fp, $footerHTML);
-                        fclose($fp);
-                    }
-                }
+                    $fp = fopen('other/autocms-footer.php', 'w');
+                    fwrite($fp, $edit);
+                    fclose($fp);
 
+                    $edit->outertext = '<?php require_once("admin/other/autocms-footer.php") ?>';
+                }
             } else {
                 foreach ($html->find('.auto-footer') as $edit) {
                     $edit->outertext = '<?php require_once("admin/other/autocms-footer.php") ?>';

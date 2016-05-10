@@ -26,7 +26,7 @@ if (!empty($categories)) {
 $count = blogCount('autocms-settings.json', 'rss-count');
 for($var = 0 ; $var < $count ; $var++) {
     $baseXMLFeed->channel->item[$var]->title = getBlog('title', $var);
-    $baseXMLFeed->channel->item[$var]->link = getBlog('link-href', $var);
+    $baseXMLFeed->channel->item[$var]->link = get('autocms-settings.json', 'site-host') . getBlog('link-href', $var);
     $baseXMLFeed->channel->item[$var]->pubDate = date(DATE_RFC2822, getBlog('published', $var));
     $baseXMLFeed->channel->item[$var]->addChild('dc:creator', '<![CDATA[' . getBlog('author', $var) . ']]', 'http://purl.org/dc/elements/1.1/');
     $baseXMLFeed->channel->item[$var]->guid = getBlog('link-href', $var);
