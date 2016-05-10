@@ -155,7 +155,11 @@ class GetDataFromFiles {
 
             if ($maxCount == 0) return $countPub;
 
-            return ($maxCount < $countPub ? $maxCount : $countPub);
+            if (!isset($_GET['author'])) {
+                return ($maxCount < $countPub ? $maxCount : $countPub);
+            } else {
+                return $countPub;
+            }
         }
 
         return 0;
@@ -173,25 +177,12 @@ class GetDataFromFiles {
             $currentCount = ($currentPage * $postPerPage) - $postPerPage;
 
             if (!is_null($count)) {
-
-                // todo: find the next post
-
-                foreach ($this->fileArray['autocms-blog.json']['posts'] as $post) {
-                    if (isset($_GET['author'])) {
-                        if ($this->cleanURL($post['author']) == $_GET['author']) {
-                            break;
-                        } else {
-                            $currentCount++;
-                        }
-                    } else {
-                        if (isset($post['published'])) {
-                            break;
-                        } else {
-                            $currentCount++;
-                        }
-                    }
+                if (isset($_GET['author'])) {
+                    $newArray = array_filter($this->fileArray['autocms-blog.json']['posts'], array($this, 'getAuthoredPosts'));
+                } else {
+                    $newArray = array_filter($this->fileArray['autocms-blog.json']['posts'], array($this, 'getPublishedPosts'));
                 }
-                $pageKey = array_keys($this->fileArray['autocms-blog.json']['posts'])[$count + $currentCount];
+                $pageKey = array_keys($newArray)[$currentCount + $count];
                 $blogFile = 'blog-' . $pageKey . '.json';
                 if ($this->loadFile($blogFile, true)) {
                     if ($key == 'author') {
@@ -208,6 +199,14 @@ class GetDataFromFiles {
             }
         }
         return '';
+    }
+
+    public function getPublishedPosts($post) {
+        return isset($post['published']);
+    }
+
+    public function getAuthoredPosts($post) {
+        return ($this->cleanURL($post['author']) == $_GET['author']);
     }
     
     private function cleanURL($string) {
