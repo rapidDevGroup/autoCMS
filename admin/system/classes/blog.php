@@ -24,10 +24,24 @@ class BlogData extends Data {
         }
     }
 
+    private function scanForAutoCurly($fileData, $file) {
+        if (stripos($fileData, 'auto-blog-list') !== false) {
+            $fileData = preg_replace("/{-{auto-blog-link-href}-}/i", "<?=get('autocms-settings.json', 'site-host')?>".'<?=getBlog("link-href", $x,"' . $file . '")?>', $fileData);
+            $fileData = preg_replace("/{-{auto-blog-post-id}-}/i", '<?=getBlog("post-id", $x,"' . $file . '")?>', $fileData);
+        } else if (stripos($fileData, 'auto-blog-post') !== false) {
+            $fileData = preg_replace("/{-{auto-blog-link-href}-}/i", "<?=get('autocms-settings.json', 'site-host')?>".'<?=getBlog("link-href")?>', $fileData);
+            $fileData = preg_replace("/{-{auto-blog-post-id}-}/i", '<?=getBlog("post-id")?>', $fileData);
+        }
+
+        return $fileData;
+    }
+
     public function buildDataFile($files) {
 
         foreach ($files as $file) {
             $fileData = file_get_contents('../' . $file, true);
+
+            $fileData = $this->scanForAutoCurly($fileData, $file);
 
             $html = str_get_html($fileData);
 
@@ -56,8 +70,11 @@ class BlogData extends Data {
                         $this->data['types']['title'] = true;
                     }
                     foreach($html->find('.auto-blog-head meta') as $pageMeta) {
-                        if ($pageMeta->name == 'keywords' || $pageMeta->name == 'description' || $pageMeta->name == 'author') {
+                        if ($pageMeta->name == 'keywords' || $pageMeta->name == 'description') {
                             $pageMeta->content = "<?=getBlog('$pageMeta->name')?>";
+                            $this->data['types'][$pageMeta->name] = true;
+                        } else if ($pageMeta->name == 'author') {
+                            $pageMeta->content = "<?=getBlog('$pageMeta->name', null, null, true)?>";
                             $this->data['types'][$pageMeta->name] = true;
                         }
                         if (isset($pageMeta->property) && isset($pageMeta->content)) {
@@ -69,7 +86,7 @@ class BlogData extends Data {
                             } else if ($pageMeta->property == "og:description") {
                                 $pageMeta->content = "<?=getBlog('description')?>";
                             } else if ($pageMeta->property == "og:author" || $pageMeta->property == 'article:author') {
-                                $pageMeta->content = "<?=getBlog('author')?>";
+                                $pageMeta->content = "<?=getBlog('author', null, null, true)?>";
                             } else if ($pageMeta->property == "og:url") {
                                 $pageMeta->content = "<?=get('autocms-settings.json', 'site-host')?><?=getBlog('link-href')?>";
                             } else if ($pageMeta->property == "og:type") {
@@ -90,36 +107,46 @@ class BlogData extends Data {
                         if (stripos($list->class, 'auto-blog-title') !== false) {
                             $list->innertext = '<?=getBlog("title", $x,"' . $file . '")?>';
                             $this->data['types']['title'] = true;
+                            $this->addHasBlog($list, 'title', true, $file);
                         } else if (stripos($list->class, 'auto-blog-bg-img') !== false) {
                             $list->style = "background-image: url('<?=getBlog(" . '"image", $x' . ", '$file')?>');";
                             $this->data['types']['image'] = true;
+                            $this->addHasBlog($list, 'image', true, $file);
                         } else if (stripos($list->class, 'auto-blog-img') !== false) {
                             $list->src = '<?=getBlog("image", $x,"' . $file . '")?>';
                             $list->alt = '<?=getBlog("image-alt-text", $x,"' . $file . '")?>';
                             $this->data['types']['image'] = true;
                             $this->data['types']['image-alt-text'] = true;
+                            $this->addHasBlog($list, 'image', true, $file);
                         } else if (stripos($list->class, 'auto-blog-short') !== false) {
                             $list->innertext = '<?=getBlog("short-blog", $x,"' . $file . '")?>';
                             $this->data['types']['short-blog'] = true;
+                            $this->addHasBlog($list, 'short-blog', true, $file);
                         } else if (stripos($list->class, 'auto-blog-full') !== false) {
                             $list->innertext = '<?=getBlog("full-blog", $x,"' . $file . '")?>';
                             $this->data['types']['full'] = true;
+                            $this->addHasBlog($list, 'full-blog', true, $file);
                         } else if (stripos($list->class, 'auto-blog-date') !== false) {
                             $list->innertext = '<?=getBlog("date", $x,"' . $file . '")?>';
                             $this->data['types']['date'] = true;
+                            $this->addHasBlog($list, 'date', true, $file);
                         } else if (stripos($list->class, 'auto-blog-cats') !== false) {
                             $list->innertext = '<?=getBlog("categories", $x,"' . $file . '")?>';
                             $this->data['types']['categories'] = true;
+                            $this->addHasBlog($list, 'categories', true, $file);
                         } else if (stripos($list->class, 'auto-blog-link-href') !== false) {
                             $list->href = "<?=get('autocms-settings.json', 'site-host')?>".'<?=getBlog("link-href", $x,"' . $file . '")?>';
                             $this->data['types']['link-href'] = true;
+                            $this->addHasBlog($list, 'link-href', true, $file);
                         } else if (stripos($list->class, 'auto-blog-link') !== false) {
                             $list->href = "<?=get('autocms-settings.json', 'site-host')?>".'<?=getBlog("link-href", $x,"' . $file . '")?>';
                             $list->innertext = '<?=getBlog("link-text", $x,"' . $file . '")?>';
                             $this->data['types']['link-text'] = true;
+                            $this->addHasBlog($list, 'link-text', true, $file);
                         } else if (stripos($list->class, 'auto-blog-author') !== false) {
                             $list->innertext = '<?=getBlog("author", $x,"' . $file . '")?>';
                             $this->data['types']['author'] = true;
+                            $this->addHasBlog($list, 'author', true, $file);
                         }
                         if (trim($list->class) === '') $list->class = null;
                     }
@@ -134,29 +161,37 @@ class BlogData extends Data {
                         if (stripos($post->class, 'auto-blog-title') !== false) {
                             $post->innertext = '<?=getBlog("title")?>';
                             $this->data['types']['title'] = true;
+                            $this->addHasBlog($post, 'title');
                         } else if (stripos($post->class, 'auto-blog-bg-img') !== false) {
                             $post->style = "background-image: url('<?=getBlog(" . '"image"' . ")?>');";
                             $this->data['types']['image'] = true;
+                            $this->addHasBlog($post, 'image');
                         } else if (stripos($post->class, 'auto-blog-img') !== false) {
                             $post->src = '<?=getBlog("image")?>';
                             $post->alt = '<?=getBlog("image-alt-text")?>';
                             $this->data['types']['image'] = true;
                             $this->data['types']['image-alt-text'] = true;
+                            $this->addHasBlog($post, 'image');
                         } else if (stripos($post->class, 'auto-blog-short') !== false) {
                             $post->innertext = '<?=getBlog("short-blog")?>';
                             $this->data['types']['short-blog'] = true;
+                            $this->addHasBlog($post, 'short-blog');
                         } else if (stripos($post->class, 'auto-blog-full') !== false) {
                             $post->innertext = '<?=getBlog("full-blog")?>';
                             $this->data['types']['full-blog'] = true;
+                            $this->addHasBlog($post, 'full-blog');
                         } else if (stripos($post->class, 'auto-blog-date') !== false) {
                             $post->innertext = '<?=getBlog("date")?>';
                             $this->data['types']['date'] = true;
+                            $this->addHasBlog($post, 'date');
                         } else if (stripos($post->class, 'auto-blog-cats') !== false) {
                             $post->innertext = '<?=getBlog("categories")?>';
                             $this->data['types']['categories'] = true;
+                            $this->addHasBlog($post, 'categories');
                         } else if (stripos($post->class, 'auto-blog-author') !== false) {
                             $post->innertext = '<?=getBlog("author")?>';
                             $this->data['types']['author'] = true;
+                            $this->addHasBlog($post, 'author');
                         }
                         if (trim($post->class) === '') $post->class = null;
                     }
@@ -261,7 +296,7 @@ class BlogData extends Data {
 
         $postPage = $this->data['post-page'];
         $json['link-href'] = '/' . $postPage . '/' . $externalTitle . '/';
-        $json['external'] = $externalTitle;
+        $json['post-id'] = $externalTitle;
 
         $fp = fopen($dataFile, 'w');
         fwrite($fp, json_encode($json));

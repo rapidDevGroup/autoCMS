@@ -100,6 +100,10 @@ class GetDataFromFiles {
         return false;
     }
 
+    public function hasBlogData($file, $key, $count) {
+        return $this->getBlogData($key, $count, $file, true) != '';
+    }
+
     public function getData($dataFile, $key, $count, $secondary) {
         if ($this->loadFile($dataFile)) {
             if (!is_null($secondary) && !is_null($count) && $this->fileArray[$dataFile][$key]['type'] == 'repeat') {
@@ -167,7 +171,7 @@ class GetDataFromFiles {
         return 0;
     }
 
-    public function getBlogData($key, $count, $file) {
+    public function getBlogData($key, $count, $file, $clean) {
         if ($this->loadFile('autocms-blog.json')) {
             $currentPage = 1;
             $postPerPage = 0;
@@ -189,32 +193,30 @@ class GetDataFromFiles {
                 $pageKey = array_keys($newArray)[$currentCount + $count];
                 $blogFile = 'blog-' . $pageKey . '.json';
                 if ($this->loadFile($blogFile, true)) {
-                    $baseURL = '/';
-                    if ($this->loadFile('autocms-settings.json')) {
-                        $baseURL = $this->getData('autocms-settings.json', 'site-host', null, null) . '/';
-                        $currentURI = explode('/', $_SERVER['REQUEST_URI']);
-                        if ((isset($_GET['author']) && $currentURI[1] != 'author') || (isset($_GET['category']) && $currentURI[1] != 'category')) {
-                            $baseURL .= $currentURI[1] . '/';
-                        }
-                    }
-
-                    if ($key == 'author' && !isset($_GET['author'])) {
-                        return '<a href="' . $baseURL . 'author/' . $this->cleanURL($this->fileBlogArray[$blogFile][$key]) . '/">' . $this->fileBlogArray[$blogFile][$key] . '</a>';
-                    } else if ($key == 'categories') {
-                        $catArr = explode(' ', $this->fileBlogArray[$blogFile]['categories']);
-                        foreach ($catArr as $arrKey => $cat) {
-                            $newCat = $this->cleanURL($cat);
-                            if ($newCat != $this->cleanURL($_GET['category'])) {
-                                $catArr[$arrKey] = '<a href="' . $baseURL . 'category/' . $newCat . '/">' . $newCat . '</a>';
-                            } else {
-                                $catArr[$arrKey] = $newCat;
+                    if (!$clean) {
+                        $baseURL = '/';
+                        if ($this->loadFile('autocms-settings.json')) {
+                            $baseURL = $this->getData('autocms-settings.json', 'site-host', null, null) . '/';
+                            $currentURI = explode('/', $_SERVER['REQUEST_URI']);
+                            if ((isset($_GET['author']) && $currentURI[1] != 'author') || (isset($_GET['category']) && $currentURI[1] != 'category')) {
+                                $baseURL .= $currentURI[1] . '/';
                             }
                         }
-                        return implode(' ', $catArr);
-                    }
-                    // for backwards compatibility
-                    if ($key == 'cats') {
-                        return $this->fileBlogArray[$blogFile]['categories'];
+
+                        if ($key == 'author' && !isset($_GET['author'])) {
+                            return '<a href="' . $baseURL . 'author/' . $this->cleanURL($this->fileBlogArray[$blogFile][$key]) . '/">' . $this->fileBlogArray[$blogFile][$key] . '</a>';
+                        } else if ($key == 'categories') {
+                            $catArr = explode(' ', $this->fileBlogArray[$blogFile]['categories']);
+                            foreach ($catArr as $arrKey => $cat) {
+                                $newCat = $this->cleanURL($cat);
+                                if ($newCat != $this->cleanURL($_GET['category'])) {
+                                    $catArr[$arrKey] = '<a href="' . $baseURL . 'category/' . $newCat . '/">' . $newCat . '</a>';
+                                } else {
+                                    $catArr[$arrKey] = $newCat;
+                                }
+                            }
+                            return implode(' ', $catArr);
+                        }
                     }
                     return $this->fileBlogArray[$blogFile][$key];
                 }
@@ -222,6 +224,31 @@ class GetDataFromFiles {
                 $post_id = $this->getBlogPostKey(strtolower($_GET['blog']));
                 $blogFile = 'blog-' . $post_id . '.json';
                 if ($this->loadFile($blogFile, true)) {
+                    if (!$clean) {
+                        $baseURL = '/';
+                        if ($this->loadFile('autocms-settings.json')) {
+                            $baseURL = $this->getData('autocms-settings.json', 'site-host', null, null) . '/';
+                            $currentURI = explode('/', $_SERVER['REQUEST_URI']);
+                            if ((isset($_GET['author']) && $currentURI[1] != 'author') || (isset($_GET['category']) && $currentURI[1] != 'category')) {
+                                $baseURL .= $currentURI[1] . '/';
+                            }
+                        }
+
+                        if ($key == 'author' && !isset($_GET['author'])) {
+                            return '<a href="' . $baseURL . 'author/' . $this->cleanURL($this->fileBlogArray[$blogFile][$key]) . '/">' . $this->fileBlogArray[$blogFile][$key] . '</a>';
+                        } else if ($key == 'categories') {
+                            $catArr = explode(' ', $this->fileBlogArray[$blogFile]['categories']);
+                            foreach ($catArr as $arrKey => $cat) {
+                                $newCat = $this->cleanURL($cat);
+                                if ($newCat != $this->cleanURL($_GET['category'])) {
+                                    $catArr[$arrKey] = '<a href="' . $baseURL . 'category/' . $newCat . '/">' . $newCat . '</a>';
+                                } else {
+                                    $catArr[$arrKey] = $newCat;
+                                }
+                            }
+                            return implode(' ', $catArr);
+                        }
+                    }
                     return $this->fileBlogArray[$blogFile][$key];
                 }
             }
@@ -323,6 +350,11 @@ function has($file, $key, $count = null, $secondary = null) {
     return $loadFileClass->hasData($file, $key, $count, $secondary);
 }
 
+function hasBlog($key, $count = null, $file = null) {
+    global $loadFileClass;
+    return $loadFileClass->hasBlogData($file, $key, $count);
+}
+
 function get($file, $key, $count = null, $secondary = null) {
     global $loadFileClass;
     return $loadFileClass->getData($file, $key, $count, $secondary);
@@ -333,9 +365,9 @@ function repeatCount($file, $key) {
     return $loadFileClass->getRepeatCount($file, $key);
 }
 
-function getBlog($key, $count = null, $file = null) {
+function getBlog($key, $count = null, $file = null, $clean = false) {
     global $loadFileClass;
-    return $loadFileClass->getBlogData($key, $count, $file);
+    return $loadFileClass->getBlogData($key, $count, $file, $clean);
 }
 
 function blogCount($file, $key) {
