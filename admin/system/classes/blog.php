@@ -45,7 +45,8 @@ class BlogData extends Data {
 
             $html = str_get_html($fileData);
 
-            foreach($html->find('.auto-blog-next, .auto-blog-prev, .auto-blog-has-prev, .auto-blog-has-next') as $pagination) {
+            // pages in blog lists
+            foreach($html->find('.auto-blog-list .auto-blog-next, .auto-blog-list .auto-blog-prev, .auto-blog-list .auto-blog-has-prev, .auto-blog-list .auto-blog-has-next') as $pagination) {
                 if (stripos($pagination->class, 'auto-blog-next') !== false) {
                     $pagination->href = '<?=getBlogPage("next","' . $file . '")?>';
                     $this->data['types']['link-next'] = true;
@@ -60,6 +61,23 @@ class BlogData extends Data {
                 } else if (stripos($pagination->class, 'auto-blog-has-prev') !== false) {
                     $this->data['pagination']['has-prev'] = $pagination->style;
                     $pagination->style = '<?=getBlogPage("has-prev","' . $file . '")?>';
+                }
+            }
+
+            // pages in posts
+            foreach($html->find('.auto-blog-post .auto-blog-next-post, .auto-blog-post .auto-blog-prev-post, .auto-blog-post .auto-blog-has-prev-post, .auto-blog-post .auto-blog-has-next-post') as $pagination) {
+                if (stripos($pagination->class, 'auto-blog-next-post') !== false) {
+                    $pagination->href = '<?=getBlogPostControls("next")?>';
+                    $this->data['types']['link-next-post'] = true;
+                } else if (stripos($pagination->class, 'auto-blog-prev-post') !== false) {
+                    $pagination->href = '<?=getBlogPostControls("prev")?>';
+                    $this->data['types']['link-prev-post'] = true;
+                } else if (stripos($pagination->class, 'auto-blog-has-next-post') !== false) {
+                    $this->data['pagination']['has-next-post'] = $pagination->style;
+                    $pagination->style = '<?=getBlogPostControls("has-next")?>';
+                } else if (stripos($pagination->class, 'auto-blog-has-prev-post') !== false) {
+                    $this->data['pagination']['has-prev-post'] = $pagination->style;
+                    $pagination->style = '<?=getBlogPostControls("has-prev")?>';
                 }
             }
 

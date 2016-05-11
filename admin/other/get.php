@@ -280,7 +280,7 @@ class GetDataFromFiles {
         return $string;
     }
 
-    public function getBlogPage($type, $file) {
+    public function getBlogPageControl($type, $file) {
         if ((isset($_GET['author']) || isset($_GET['category'])) && ($type == 'has-next' || $type == 'has-prev')) return false;
 
         if ($this->loadFile('autocms-blog.json')) {
@@ -311,12 +311,20 @@ class GetDataFromFiles {
                     return $location;
                 }
             } elseif ($type == 'has-next') {
-                return ($currentPage * $postPerPage < $blogCount ? 'display:inline' : '');
+                return ($currentPage * $postPerPage < $blogCount ? 'display:inline' : ''); // todo: return style from file
             } elseif ($type == 'has-prev') {
-                return ($currentPage > 1 ? 'display:inline' : '');
+                return ($currentPage > 1 ? 'display:inline' : ''); // todo: return style from file
             }
         }
         return '';
+    }
+
+    public function getBlogPostControls($type) {
+        if ($this->loadFile('autocms-blog.json')) {
+
+        }
+
+        return false;
     }
 
     public function getBlogPostPage() {
@@ -377,5 +385,10 @@ function blogCount($file, $key) {
 
 function getBlogPage($type, $file) {
     global $loadFileClass;
-    return $loadFileClass->getBlogPage($type, $file);
+    return $loadFileClass->getBlogPageControl($type, $file);
+}
+
+function getBlogPostControls($type) {
+    global $loadFileClass;
+    return $loadFileClass->getBlogPostControls($type);
 }

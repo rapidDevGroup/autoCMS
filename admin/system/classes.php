@@ -66,7 +66,7 @@ class Data {
     
     public function addHasBlog(&$edit, $fieldID, $list = false, $dataFile = null) {
         if ($list) {
-            if (!is_null($level = $edit->getAttribute('data-autocms-has'))) {
+            if (!empty($level = $edit->getAttribute('data-autocms-has'))) {
                 if (intval($level) == 0) {
                     $edit->outertext = "<?php if (hasBlog('$fieldID', " . '$x' . ", '$dataFile')) { ?>" . $edit->outertext . "<?php } ?>";
                 } else if (intval($level) == 1) {
@@ -76,7 +76,7 @@ class Data {
                 }
             }
         } else {
-            if (!is_null($level = $edit->getAttribute('data-autocms-has'))) {
+            if (!empty($level = $edit->getAttribute('data-autocms-has'))) {
                 if (intval($level) == 0) {
                     $edit->outertext = "<?php if (hasBlog('$fieldID')) { ?>" . $edit->outertext . "<?php } ?>";
                 } else if (intval($level) == 1) {
