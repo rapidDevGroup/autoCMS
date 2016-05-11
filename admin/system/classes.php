@@ -52,26 +52,48 @@ class Data {
 class DataBuild extends Data {
     public $sectionName;
 
+    function addHas(&$edit, $dataFile, $fieldID, $count = null, $repeatFieldID = null) {
+        if (is_null($count)) {
+            if (!is_null($level = $edit->getAttribute('data-autocms-has'))) {
+                file_put_contents('levels.txt', $level . ' ' . intval($level) . "\n", FILE_APPEND);
+                if (intval($level) == 0) {
+                    $edit->outertext = "<?php if (has('$dataFile', '$fieldID')) { ?>" . $edit->outertext . "<?php } ?>";
+                } else if (intval($level) == 1) {
+                    $edit->parent()->outertext = "<?php if (has('$dataFile', '$fieldID')) { ?>" . $edit->parent()->outertext . "<?php } ?>";
+                }
+            }
+        } else {
+            if (!is_null($level = $edit->getAttribute('data-autocms-has'))) {
+                if (intval($level) == 0) {
+                    $edit->outertext = "<?php if (has('$dataFile', '$fieldID', " . '$x' . ", '$repeatFieldID')) { ?>" . $edit->outertext . "<?php } ?>";
+                } else if (intval($level) == 1) {
+                    $edit->parent()->outertext = "<?php if (has('$dataFile', '$fieldID', " . '$x' . ", '$repeatFieldID')) { ?>" . $edit->parent()->outertext . "<?php } ?>";
+                }
+            }
+        }
+    }
+
     function makeNavLink(&$edit, &$dataArr, $dataFile, $fieldID, $desc) {
         $dataArr[$fieldID] = Array('link' => trim($edit->href), 'description' => $desc, 'type' => 'link');
         $edit->href = "<?=get('$dataFile', '$fieldID')?>";
-        $edit->outertext = "<?php if (has('$dataFile', '$fieldID')) { ?>" . $edit->outertext . "<?php } ?>";
+        $this->addHas($edit, $dataFile, $fieldID);
     }
 
     function makeNavText(&$edit, &$dataArr, $dataFile, $fieldID, $desc) {
         $dataArr[$fieldID] = Array('text' => trim($edit->innertext), 'description' => $desc, 'type' => 'text');
         $edit->innertext = "<?=get('$dataFile', '$fieldID')?>";
+        $this->addHas($edit, $dataFile, $fieldID);
     }
 
     function makeLink(&$edit, &$dataArr, $dataFile, $fieldID, $desc, $count = null, $repeatFieldID = null) {
         if (is_null($repeatFieldID)) {
             $dataArr[$fieldID] = Array('link' => trim($edit->href), 'description' => $desc, 'type' => 'link');
             $edit->href = "<?=get('$dataFile', '$fieldID')?>";
-            $edit->outertext = "<?php if (has('$dataFile', '$fieldID')) { ?>" . $edit->outertext . "<?php } ?>";
+            $this->addHas($edit, $dataFile, $fieldID);
         } else {
             $dataArr[$fieldID]['repeat'][$count][$repeatFieldID] = Array('link' => trim($edit->href), 'description' => $desc, 'type' => 'link');
             $edit->href = "<?=get('$dataFile', '$fieldID', " . '$x' . ", '$repeatFieldID')?>";
-            $edit->outertext = "<?php if (has('$dataFile', '$fieldID', " . '$x' . ", '$repeatFieldID')) { ?>" . $edit->outertext . "<?php } ?>";
+            $this->addHas($edit, $dataFile, $fieldID, $count, $repeatFieldID);
         }
     }
 
@@ -79,9 +101,11 @@ class DataBuild extends Data {
         if (is_null($repeatFieldID)) {
             $dataArr[$fieldID] = Array($type => trim($edit->innertext), 'description' => $desc, 'type' => $type);
             $edit->innertext = "<?=get('$dataFile', '$fieldID')?>";
+            $this->addHas($edit, $dataFile, $fieldID);
         } else {
             $dataArr[$fieldID]['repeat'][$count][$repeatFieldID] = Array($type => trim($edit->innertext), 'description' => $desc, 'type' => $type);
             $edit->innertext = "<?=get('$dataFile', '$fieldID', " . '$x' . ", '$repeatFieldID')?>";
+            $this->addHas($edit, $dataFile, $fieldID, $count, $repeatFieldID);
         }
     }
 
@@ -93,10 +117,12 @@ class DataBuild extends Data {
                     $fieldID = uniqid();
                     $dataArr[$fieldID] = Array('text' => trim($attribute), 'description' => $desc, 'type' => 'text');
                     $edit->setAttribute($key, "<?=get('$dataFile', '$fieldID')?>");
+                    $this->addHas($edit, $dataFile, $fieldID);
                 } else {
                     $repeatFieldID = uniqid();
                     $dataArr[$fieldID]['repeat'][$count][$repeatFieldID] = Array('text' => trim($attribute), 'description' => $desc, 'type' => 'text');
                     $edit->setAttribute($key, "<?=get('$dataFile', '$fieldID', " . '$x' . ", '$repeatFieldID')?>");
+                    $this->addHas($edit, $dataFile, $fieldID, $count, $repeatFieldID);
                 }
             }
         }
@@ -116,8 +142,10 @@ class DataBuild extends Data {
 
         if (!is_null($repeatFieldID)) {
             $edit->style = str_ireplace($tag, '', $edit->style) . "background-color: <?=get('$dataFile', '$fieldID', ".'$x'.", '$repeatFieldID')?>;";
+            $this->addHas($edit, $dataFile, $fieldID, $count, $repeatFieldID);
         } else {
             $edit->style = str_ireplace($tag, '', $edit->style) . "background-color: <?=get('$dataFile', '$fieldID')?>;";
+            $this->addHas($edit, $dataFile, $fieldID);
         }
     }
 
@@ -171,12 +199,12 @@ class DataBuild extends Data {
                     $edit->src = "<?=get('$dataFile', '$fieldID', ".'$x'.", '$repeatFieldID')?>";
                     $dataArr[$fieldID]['repeat'][$count][$altFieldID] = Array('text' => $altText, 'description' => 'image alt text', 'type' => 'text', 'parent' => $fieldID);
 
-                    $edit->outertext = "<?php if (has('$dataFile', '$fieldID', " . '$x' . ", '$repeatFieldID')) { ?>" . $edit->outertext . "<?php } ?>";
+                    $this->addHas($edit, $dataFile, $fieldID, $count, $repeatFieldID);
                 } else {
                     $edit->src = "<?=get('$dataFile', '$fieldID')?>";
                     $dataArr[$altFieldID] = Array('text' => $altText, 'description' => 'image alt text', 'type' => 'text', 'parent' => $fieldID);
 
-                    $edit->outertext = "<?php if (has('$dataFile', '$fieldID')) { ?>" . $edit->outertext . "<?php } ?>";
+                    $this->addHas($edit, $dataFile, $fieldID);
                 }
 
                 if (!is_null($repeatFieldID)) {
