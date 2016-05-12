@@ -41,23 +41,22 @@ class Data {
     }
 
     function addHas(&$edit, $dataFile, $fieldID, $count = null, $repeatFieldID = null) {
-        if (is_null($count)) {
-            if (!empty($level = $edit->getAttribute('data-autocms-has'))) {
-                if (intval($level) == 0) {
+        $level = $edit->getAttribute('data-autocms-has');
+        if (is_numeric($level)) {
+            if (is_null($count)) {
+                if ($level == 0) {
                     $edit->outertext = "<?php if (has('$dataFile', '$fieldID')) { ?>" . $edit->outertext . "<?php } ?>";
-                } else if (intval($level) == 1) {
+                } else if ($level == 1) {
                     $edit->parent()->outertext = "<?php if (has('$dataFile', '$fieldID')) { ?>" . $edit->parent()->outertext . "<?php } ?>";
-                } else if (intval($level) == 2) {
+                } else if ($level == 2) {
                     $edit->parent()->parent()->outertext = "<?php if (has('$dataFile', '$fieldID')) { ?>" . $edit->parent()->parent()->outertext . "<?php } ?>";
                 }
-            }
-        } else {
-            if (!empty($level = $edit->getAttribute('data-autocms-has'))) {
-                if (intval($level) == 0) {
+            } else {
+                if ($level === 0) {
                     $edit->outertext = "<?php if (has('$dataFile', '$fieldID', " . '$x' . ", '$repeatFieldID')) { ?>" . $edit->outertext . "<?php } ?>";
-                } else if (intval($level) == 1) {
+                } else if ($level == 1) {
                     $edit->parent()->outertext = "<?php if (has('$dataFile', '$fieldID', " . '$x' . ", '$repeatFieldID')) { ?>" . $edit->parent()->outertext . "<?php } ?>";
-                } else if (intval($level) == 2) {
+                } else if ($level == 2) {
                     $edit->parent()->parent()->outertext = "<?php if (has('$dataFile', '$fieldID', " . '$x' . ", '$repeatFieldID')) { ?>" . $edit->parent()->parent()->outertext . "<?php } ?>";
                 }
             }
@@ -65,26 +64,30 @@ class Data {
     }
     
     public function addHasBlog(&$edit, $fieldID, $list = false, $dataFile = null) {
-        if ($list) {
-            if (!empty($level = $edit->getAttribute('data-autocms-has'))) {
-                if (intval($level) == 0) {
+        $level = $edit->getAttribute('data-autocms-has');
+        if (is_numeric($level)) {
+            if ($list) {
+                file_put_contents('levels.txt', "list: $level isnull:" . is_null($level) . " isnumeric: " . is_numeric($level) . "\n", FILE_APPEND);
+                if ($level == 0) {
+                    file_put_contents('levels.txt', "level zero $level\n", FILE_APPEND);
                     $edit->outertext = "<?php if (hasBlog('$fieldID', " . '$x' . ", '$dataFile')) { ?>" . $edit->outertext . "<?php } ?>";
-                } else if (intval($level) == 1) {
+                } else if ($level == 1) {
                     $edit->parent()->outertext = "<?php if (hasBlog('$fieldID', " . '$x' . ", '$dataFile')) { ?>" . $edit->parent()->outertext . "<?php } ?>";
-                } else if (intval($level) == 2) {
+                } else if ($level == 2) {
                     $edit->parent()->parent()->outertext = "<?php if (hasBlog('$fieldID', " . '$x' . ", '$dataFile')) { ?>" . $edit->parent()->parent()->outertext . "<?php } ?>";
                 }
-            }
-        } else {
-            if (!empty($level = $edit->getAttribute('data-autocms-has'))) {
-                if (intval($level) == 0) {
+            } else {
+                file_put_contents('levels.txt', "not list: $level isnull:" . is_null($level) . " isnumeric: " . is_numeric($level) . "\n", FILE_APPEND);
+                if ($level == 0) {
+                    file_put_contents('levels.txt', "level zero $level\n", FILE_APPEND);
                     $edit->outertext = "<?php if (hasBlog('$fieldID')) { ?>" . $edit->outertext . "<?php } ?>";
-                } else if (intval($level) == 1) {
+                } else if ($level == 1) {
                     $edit->parent()->outertext = "<?php if (hasBlog('$fieldID')) { ?>" . $edit->parent()->outertext . "<?php } ?>";
-                } else if (intval($level) == 2) {
+                } else if ($level == 2) {
                     $edit->parent()->parent()->outertext = "<?php if (hasBlog('$fieldID')) { ?>" . $edit->parent()->parent()->outertext . "<?php } ?>";
                 }
             }
+            file_put_contents('levels.txt', "end $level\n", FILE_APPEND);
         }
     }
 

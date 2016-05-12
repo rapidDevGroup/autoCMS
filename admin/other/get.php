@@ -101,7 +101,7 @@ class GetDataFromFiles {
     }
 
     public function hasBlogData($file, $key, $count) {
-        return $this->getBlogData($key, $count, $file, true) != '';
+        return ($this->getBlogData($key, $count, $file, true) != '');
     }
 
     public function getData($dataFile, $key, $count, $secondary) {
