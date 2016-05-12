@@ -206,7 +206,7 @@ class GetDataFromFiles {
                         if ($key == 'author' && !isset($_GET['author'])) {
                             return '<a href="' . $baseURL . 'author/' . $this->cleanURL($this->fileBlogArray[$blogFile][$key]) . '/">' . $this->fileBlogArray[$blogFile][$key] . '</a>';
                         } else if ($key == 'categories') {
-                            $catArr = explode(' ', $this->fileBlogArray[$blogFile]['categories']);
+                            $catArr = array_unique(explode(' ', $this->fileBlogArray[$blogFile]['categories']));
                             foreach ($catArr as $arrKey => $cat) {
                                 $newCat = $this->cleanURL($cat);
                                 if ($newCat != $this->cleanURL($_GET['category'])) {
@@ -237,7 +237,7 @@ class GetDataFromFiles {
                         if ($key == 'author' && !isset($_GET['author'])) {
                             return '<a href="' . $baseURL . 'author/' . $this->cleanURL($this->fileBlogArray[$blogFile][$key]) . '/">' . $this->fileBlogArray[$blogFile][$key] . '</a>';
                         } else if ($key == 'categories') {
-                            $catArr = explode(' ', $this->fileBlogArray[$blogFile]['categories']);
+                            $catArr = array_unique(explode(' ', $this->fileBlogArray[$blogFile]['categories']));
                             foreach ($catArr as $arrKey => $cat) {
                                 $newCat = $this->cleanURL($cat);
                                 if ($newCat != $this->cleanURL($_GET['category'])) {
