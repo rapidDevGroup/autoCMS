@@ -211,9 +211,10 @@ class BlogData extends Data {
                             $this->data['types']['author'] = true;
                             $this->addHasBlog($post, 'author');
                         } else if (stripos($post->class, 'auto-blog-link-href') !== false) {
-                            $post->href = "<?=get('autocms-settings.json', 'site-host')?>".'<?=getBlog("link-href")?>';
+                            $post->href = "<?=get('autocms-settings.json', 'site-host')?>" . '<?=getBlog("link-href")?>';
                             $this->data['types']['link-href'] = true;
                             $this->addHasBlog($post, 'link-href');
+                        }
                         if (trim($post->class) === '') $post->class = null;
                     }
                 }
