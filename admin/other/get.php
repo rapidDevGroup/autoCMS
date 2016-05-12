@@ -311,9 +311,9 @@ class GetDataFromFiles {
                     return $location;
                 }
             } elseif ($type == 'has-next') {
-                return ($currentPage * $postPerPage < $blogCount ? 'display:inline' : ''); // todo: return style from file
+                return ($currentPage * $postPerPage < $blogCount ? $this->fileArray['autocms-blog.json']['pagination']['has-next'] : '');
             } elseif ($type == 'has-prev') {
-                return ($currentPage > 1 ? 'display:inline' : ''); // todo: return style from file
+                return ($currentPage > 1 ? $this->fileArray['autocms-blog.json']['pagination']['has-prev'] : '');
             }
         }
         return '';
@@ -321,10 +321,39 @@ class GetDataFromFiles {
 
     public function getBlogPostControls($type) {
         if ($this->loadFile('autocms-blog.json')) {
-
+            $hasPrev = false;
+            $hasNext = false;
+            $newArr = array_filter($this->fileArray['autocms-blog.json']['posts'], array($this, 'getPublishedPosts'));
+            $arrKeys = array_keys($newArr);
+            $keyPos = array_search($this->getBlogPostKey(strtolower($_GET['blog'])), $arrKeys);
+            $count = count($arrKeys);
+            if ($count-1 > $keyPos) {
+                $hasPrev = true;
+            }
+            if ($keyPos > 0) {
+                $hasNext = true;
+            }
+            if ($hasNext && $type == 'has-next') {
+                return $this->fileArray['autocms-blog.json']['pagination']['has-next-post'];
+            } else if ($hasPrev && $type == 'has-prev') {
+                return $this->fileArray['autocms-blog.json']['pagination']['has-prev-post'];
+            }
+            $baseURL = '/';
+            if ($this->loadFile('autocms-settings.json')) {
+                $baseURL = $this->getData('autocms-settings.json', 'site-host', null, null) . '/';
+                $currentURI = explode('/', $_SERVER['REQUEST_URI']);
+                if ($currentURI[1] == $this->getBlogPostPage()) {
+                    $baseURL .= $currentURI[1] . '/';
+                }
+            }
+            if ($type == 'next') {
+                return $baseURL . $newArr[$arrKeys[$keyPos-1]]['external'] . '/';
+            } else if ($type == 'prev') {
+                return $baseURL . $newArr[$arrKeys[$keyPos+1]]['external'] . '/';
+            }
         }
 
-        return false;
+        return '';
     }
 
     public function getBlogPostPage() {
