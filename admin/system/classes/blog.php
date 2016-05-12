@@ -46,7 +46,7 @@ class BlogData extends Data {
             $html = str_get_html($fileData);
 
             // pages in blog lists
-            foreach($html->find('.auto-blog-list .auto-blog-next, .auto-blog-list .auto-blog-prev, .auto-blog-list .auto-blog-has-prev, .auto-blog-list .auto-blog-has-next') as $pagination) {
+            foreach($html->find('.auto-blog-next, .auto-blog-prev, .auto-blog-has-prev, .auto-blog-has-next') as $pagination) {
                 if (stripos($pagination->class, 'auto-blog-next') !== false) {
                     $pagination->href = '<?=getBlogPage("next","' . $file . '")?>';
                     $this->data['types']['link-next'] = true;
