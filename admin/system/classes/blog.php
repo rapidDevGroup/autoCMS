@@ -175,7 +175,7 @@ class BlogData extends Data {
 
                 } else if (stripos($blog->class, 'auto-blog-post') !== false) {
                     $this->data['post-page'] = str_ireplace(Array('.html', '.htm'), '', $file);
-                    foreach($html->find('.auto-blog-post .auto-blog-title, .auto-blog-post .auto-blog-date, .auto-blog-post .auto-blog-cats, .auto-blog-post .auto-blog-bg-img, .auto-blog-post .auto-blog-img, .auto-blog-post .auto-blog-short, .auto-blog-post .auto-blog-full, .auto-blog-post .auto-blog-author') as $post) {
+                    foreach($html->find('.auto-blog-post .auto-blog-title, .auto-blog-post .auto-blog-date, .auto-blog-post .auto-blog-cats, .auto-blog-post .auto-blog-bg-img, .auto-blog-post .auto-blog-img, .auto-blog-post .auto-blog-short, .auto-blog-post .auto-blog-full, .auto-blog-post .auto-blog-author, .auto-blog-post .auto-blog-link-href') as $post) {
                         if (stripos($post->class, 'auto-blog-title') !== false) {
                             $post->innertext = '<?=getBlog("title")?>';
                             $this->data['types']['title'] = true;
@@ -210,7 +210,10 @@ class BlogData extends Data {
                             $post->innertext = '<?=getBlog("author")?>';
                             $this->data['types']['author'] = true;
                             $this->addHasBlog($post, 'author');
-                        }
+                        } else if (stripos($post->class, 'auto-blog-link-href') !== false) {
+                            $post->href = "<?=get('autocms-settings.json', 'site-host')?>".'<?=getBlog("link-href")?>';
+                            $this->data['types']['link-href'] = true;
+                            $this->addHasBlog($post, 'link-href');
                         if (trim($post->class) === '') $post->class = null;
                     }
                 }
