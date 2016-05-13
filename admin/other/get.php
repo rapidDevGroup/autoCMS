@@ -229,8 +229,8 @@ class GetDataFromFiles {
                         if ($this->loadFile('autocms-settings.json')) {
                             $baseURL = $this->getData('autocms-settings.json', 'site-host', null, null) . '/';
                             $currentURI = explode('/', $_SERVER['REQUEST_URI']);
-                            if ((isset($_GET['author']) && $currentURI[1] != 'author') || (isset($_GET['category']) && $currentURI[1] != 'category')) {
-                                $baseURL .= $currentURI[1] . '/';
+                            if ($currentURI[1] == $this->getBlogPostPage()) {
+                                $baseURL .= $this->fileArray['autocms-blog.json']['list-pagination-pages'] . '/';
                             }
                         }
 
