@@ -50,6 +50,8 @@ class Data {
                     $edit->parent()->outertext = "<?php if (has('$dataFile', '$fieldID')) { ?>" . $edit->parent()->outertext . "<?php } ?>";
                 } else if ($level == 2) {
                     $edit->parent()->parent()->outertext = "<?php if (has('$dataFile', '$fieldID')) { ?>" . $edit->parent()->parent()->outertext . "<?php } ?>";
+                } else if ($level == 3) {
+                    $edit->parent()->parent()->parent()->outertext = "<?php if (has('$dataFile', '$fieldID')) { ?>" . $edit->parent()->parent()->parent()->outertext . "<?php } ?>";
                 }
             } else {
                 if ($level === 0) {
@@ -58,6 +60,8 @@ class Data {
                     $edit->parent()->outertext = "<?php if (has('$dataFile', '$fieldID', " . '$x' . ", '$repeatFieldID')) { ?>" . $edit->parent()->outertext . "<?php } ?>";
                 } else if ($level == 2) {
                     $edit->parent()->parent()->outertext = "<?php if (has('$dataFile', '$fieldID', " . '$x' . ", '$repeatFieldID')) { ?>" . $edit->parent()->parent()->outertext . "<?php } ?>";
+                } else if ($level == 3) {
+                    $edit->parent()->parent()->parent()->outertext = "<?php if (has('$dataFile', '$fieldID', " . '$x' . ", '$repeatFieldID')) { ?>" . $edit->parent()->parent()->parent()->outertext . "<?php } ?>";
                 }
             }
         }
@@ -75,6 +79,8 @@ class Data {
                     $edit->parent()->outertext = "<?php if (hasBlog('$fieldID', " . '$x' . ", '$dataFile')) { ?>" . $edit->parent()->outertext . "<?php } ?>";
                 } else if ($level == 2) {
                     $edit->parent()->parent()->outertext = "<?php if (hasBlog('$fieldID', " . '$x' . ", '$dataFile')) { ?>" . $edit->parent()->parent()->outertext . "<?php } ?>";
+                } else if ($level == 3) {
+                    $edit->parent()->parent()->parent()->outertext = "<?php if (hasBlog('$fieldID', " . '$x' . ", '$dataFile')) { ?>" . $edit->parent()->parent()->parent()->outertext . "<?php } ?>";
                 }
             } else {
                 file_put_contents('levels.txt', "not list: $level isnull:" . is_null($level) . " isnumeric: " . is_numeric($level) . "\n", FILE_APPEND);
@@ -85,6 +91,8 @@ class Data {
                     $edit->parent()->outertext = "<?php if (hasBlog('$fieldID')) { ?>" . $edit->parent()->outertext . "<?php } ?>";
                 } else if ($level == 2) {
                     $edit->parent()->parent()->outertext = "<?php if (hasBlog('$fieldID')) { ?>" . $edit->parent()->parent()->outertext . "<?php } ?>";
+                } else if ($level == 3) {
+                    $edit->parent()->parent()->parent()->outertext = "<?php if (hasBlog('$fieldID')) { ?>" . $edit->parent()->parent()->parent()->outertext . "<?php } ?>";
                 }
             }
             file_put_contents('levels.txt', "end $level\n", FILE_APPEND);
