@@ -42,7 +42,7 @@ class Data {
 
     function addHas(&$edit, $dataFile, $fieldID, $count = null, $repeatFieldID = null) {
         $level = $edit->getAttribute('data-autocms-has');
-        if (is_numeric($level)) {
+        if (is_numeric($level) || $level == 0) {
             if (is_null($count)) {
                 if ($level == 0) {
                     $edit->outertext = "<?php if (has('$dataFile', '$fieldID')) { ?>" . $edit->outertext . "<?php } ?>";
@@ -52,6 +52,12 @@ class Data {
                     $edit->parent()->parent()->outertext = "<?php if (has('$dataFile', '$fieldID')) { ?>" . $edit->parent()->parent()->outertext . "<?php } ?>";
                 } else if ($level == 3) {
                     $edit->parent()->parent()->parent()->outertext = "<?php if (has('$dataFile', '$fieldID')) { ?>" . $edit->parent()->parent()->parent()->outertext . "<?php } ?>";
+                } else if ($level == 4) {
+                    $edit->parent()->parent()->parent()->parent()->outertext = "<?php if (has('$dataFile', '$fieldID')) { ?>" . $edit->parent()->parent()->parent()->parent()->outertext . "<?php } ?>";
+                } else if ($level == 5) {
+                    $edit->parent()->parent()->parent()->parent()->parent()->outertext = "<?php if (has('$dataFile', '$fieldID')) { ?>" . $edit->parent()->parent()->parent()->parent()->parent()->outertext . "<?php } ?>";
+                } else if ($level == 6) {
+                    $edit->parent()->parent()->parent()->parent()->parent()->parent()->outertext = "<?php if (has('$dataFile', '$fieldID')) { ?>" . $edit->parent()->parent()->parent()->parent()->parent()->parent()->outertext . "<?php } ?>";
                 }
             } else {
                 if ($level === 0) {
@@ -62,6 +68,12 @@ class Data {
                     $edit->parent()->parent()->outertext = "<?php if (has('$dataFile', '$fieldID', " . '$x' . ", '$repeatFieldID')) { ?>" . $edit->parent()->parent()->outertext . "<?php } ?>";
                 } else if ($level == 3) {
                     $edit->parent()->parent()->parent()->outertext = "<?php if (has('$dataFile', '$fieldID', " . '$x' . ", '$repeatFieldID')) { ?>" . $edit->parent()->parent()->parent()->outertext . "<?php } ?>";
+                } else if ($level == 4) {
+                    $edit->parent()->parent()->parent()->parent()->outertext = "<?php if (has('$dataFile', '$fieldID', " . '$x' . ", '$repeatFieldID')) { ?>" . $edit->parent()->parent()->parent()->parent()->outertext . "<?php } ?>";
+                } else if ($level == 5) {
+                    $edit->parent()->parent()->parent()->parent()->parent()->outertext = "<?php if (has('$dataFile', '$fieldID', " . '$x' . ", '$repeatFieldID')) { ?>" . $edit->parent()->parent()->parent()->parent()->parent()->outertext . "<?php } ?>";
+                } else if ($level == 6) {
+                    $edit->parent()->parent()->parent()->parent()->parent()->parent()->outertext = "<?php if (has('$dataFile', '$fieldID', " . '$x' . ", '$repeatFieldID')) { ?>" . $edit->parent()->parent()->parent()->parent()->parent()->parent()->outertext . "<?php } ?>";
                 }
             }
         }
@@ -69,11 +81,9 @@ class Data {
     
     public function addHasBlog(&$edit, $fieldID, $list = false, $dataFile = null) {
         $level = $edit->getAttribute('data-autocms-has');
-        if (is_numeric($level)) {
+        if (is_numeric($level) || $level == 0) {
             if ($list) {
-                file_put_contents('levels.txt', "list: $level isnull:" . is_null($level) . " isnumeric: " . is_numeric($level) . "\n", FILE_APPEND);
                 if ($level == 0) {
-                    file_put_contents('levels.txt', "level zero $level\n", FILE_APPEND);
                     $edit->outertext = "<?php if (hasBlog('$fieldID', " . '$x' . ", '$dataFile')) { ?>" . $edit->outertext . "<?php } ?>";
                 } else if ($level == 1) {
                     $edit->parent()->outertext = "<?php if (hasBlog('$fieldID', " . '$x' . ", '$dataFile')) { ?>" . $edit->parent()->outertext . "<?php } ?>";
@@ -81,11 +91,11 @@ class Data {
                     $edit->parent()->parent()->outertext = "<?php if (hasBlog('$fieldID', " . '$x' . ", '$dataFile')) { ?>" . $edit->parent()->parent()->outertext . "<?php } ?>";
                 } else if ($level == 3) {
                     $edit->parent()->parent()->parent()->outertext = "<?php if (hasBlog('$fieldID', " . '$x' . ", '$dataFile')) { ?>" . $edit->parent()->parent()->parent()->outertext . "<?php } ?>";
+                } else if ($level == 4) {
+                    $edit->parent()->parent()->parent()->parent()->outertext = "<?php if (hasBlog('$fieldID', " . '$x' . ", '$dataFile')) { ?>" . $edit->parent()->parent()->parent()->parent()->outertext . "<?php } ?>";
                 }
             } else {
-                file_put_contents('levels.txt', "not list: $level isnull:" . is_null($level) . " isnumeric: " . is_numeric($level) . "\n", FILE_APPEND);
                 if ($level == 0) {
-                    file_put_contents('levels.txt', "level zero $level\n", FILE_APPEND);
                     $edit->outertext = "<?php if (hasBlog('$fieldID')) { ?>" . $edit->outertext . "<?php } ?>";
                 } else if ($level == 1) {
                     $edit->parent()->outertext = "<?php if (hasBlog('$fieldID')) { ?>" . $edit->parent()->outertext . "<?php } ?>";
@@ -93,6 +103,8 @@ class Data {
                     $edit->parent()->parent()->outertext = "<?php if (hasBlog('$fieldID')) { ?>" . $edit->parent()->parent()->outertext . "<?php } ?>";
                 } else if ($level == 3) {
                     $edit->parent()->parent()->parent()->outertext = "<?php if (hasBlog('$fieldID')) { ?>" . $edit->parent()->parent()->parent()->outertext . "<?php } ?>";
+                } else if ($level == 4) {
+                    $edit->parent()->parent()->parent()->parent()->outertext = "<?php if (hasBlog('$fieldID')) { ?>" . $edit->parent()->parent()->parent()->parent()->outertext . "<?php } ?>";
                 }
             }
             file_put_contents('levels.txt', "end $level\n", FILE_APPEND);
@@ -235,12 +247,14 @@ class DataBuild extends Data {
                 $altFieldID = uniqid();
                 if (!is_null($repeatFieldID)) {
                     $edit->src = "<?=get('$dataFile', '$fieldID', ".'$x'.", '$repeatFieldID')?>";
-                    $dataArr[$fieldID]['repeat'][$count][$altFieldID] = Array('text' => $altText, 'description' => 'image alt text', 'type' => 'text', 'parent' => $fieldID);
+                    $dataArr[$fieldID]['repeat'][$count][$altFieldID] = Array('text' => $altText, 'description' => 'image alt text', 'type' => 'text', 'parent' => $repeatFieldID);
+                    $edit->alt = "<?=get('$dataFile', '$fieldID', ".'$x'.", '$altFieldID')?>";
 
                     $this->addHas($edit, $dataFile, $fieldID, $count, $repeatFieldID);
                 } else {
                     $edit->src = "<?=get('$dataFile', '$fieldID')?>";
                     $dataArr[$altFieldID] = Array('text' => $altText, 'description' => 'image alt text', 'type' => 'text', 'parent' => $fieldID);
+                    $edit->alt = "<?=get('$dataFile', '$altFieldID')?>";
 
                     $this->addHas($edit, $dataFile, $fieldID);
                 }

@@ -50,8 +50,6 @@ include_once('header.php');
                                 <button type="button" class="btn btn-info btn-block upload-button dirtyOK" data-trigger="<?=$key?>">Upload Image</button>
                                 <br>
                                 <button type="button" class="btn btn-success btn-block upload-button dirtyOK" data-toggle="modal" data-target="#imageSelectModal" data-key="<?=$key?>">Select Media</button>
-                                <!--br>
-                                <button type="button" class="btn btn-danger btn-block upload-button dirtyOK" data-key="<?=$key?>">Make Blank</button-->
                             </div>
                         <?php } else if ($datum['type'] == 'repeat') { ?>
                             <div class="col-lg-9 col-sm-10">

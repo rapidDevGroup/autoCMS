@@ -165,7 +165,7 @@ class PagesData extends DataBuild {
                     $data[$fieldID]['repeat'][$count] = Array();
 
                     foreach($html->find('.auto-repeat .auto-repeat-color, .auto-repeat .auto-repeat-edit, .auto-repeat .auto-repeat-edit-text, .auto-repeat .auto-repeat-link, .auto-repeat .auto-repeat-edit-img, .auto-repeat .auto-repeat-edit-bg-img, .auto-repeat .auto-repeat-data') as $repeat) {
-                        $desc = ($edit->getAttribute('data-autocms') ? $edit->getAttribute('data-autocms') : '');
+                        $desc = ($repeat->getAttribute('data-autocms') ? $repeat->getAttribute('data-autocms') : '');
 
                         $repeatFieldID = uniqid();
                         if (stripos($repeat->class, 'auto-repeat-edit-img') !== false) {
@@ -186,7 +186,11 @@ class PagesData extends DataBuild {
                     }
                     $edit->outertext = '<?php for ($x = 0; $x ' . "< repeatCount('$dataFile', '$fieldID');" . ' $x++) { ?>' . $edit->outertext . "<?php } ?>";
 
-                } else if (stripos($edit->class, 'auto-data') !== false) {
+                    foreach($html->find('.auto-repeat .auto-repeat-color, .auto-repeat .auto-repeat-edit, .auto-repeat .auto-repeat-edit-text, .auto-repeat .auto-repeat-link, .auto-repeat .auto-repeat-edit-img, .auto-repeat .auto-repeat-edit-bg-img, .auto-repeat .auto-repeat-data') as $repeat) {
+                        $this->addHas($edit, $dataFile, $fieldID, $count, $repeatFieldID);
+                    }
+
+                    } else if (stripos($edit->class, 'auto-data') !== false) {
                     $this->makeDataText($edit, $data, $dataFile, $fieldID);
                 } else if (stripos($edit->class, 'auto-edit-img') !== false) {
                     $this->makeImageBGImage($edit, $data, $dataFile, $fieldID, $desc);
@@ -275,9 +279,9 @@ class PagesData extends DataBuild {
                     $json[$key][$json[$key]['type']] = trim($datum);
                 }
             } else {
-                list($repeatKey, $iteration, $itemKey) = explode("-", $key);
-                if (isset($json[$repeatKey]['repeat'][$iteration][$itemKey]) && $json[$repeatKey]['repeat'][$iteration][$itemKey][$json[$repeatKey]['repeat'][$iteration][$itemKey]['type']] != trim($datum)) {
-                    if (DashboardUtils::endsWith($key, '-loaded') && trim($datum) != '') {
+                list($repeatKey, $iteration, $itemKey, $loaded) = explode("-", $key);
+                if (isset($json[$repeatKey]['repeat'][$iteration][$itemKey]) && $json[$repeatKey]['repeat'][$iteration][$itemKey][$json[$repeatKey]['repeat'][$iteration][$itemKey]['type']] != trim($datum) && trim($datum) != '') {
+                    if ($loaded == '-loaded') {
                         $key = str_ireplace('-loaded', '', $key);
                         $changeLog[] = Array('key' => $key, 'change' => Array('original' => $json[$repeatKey]['repeat'][$iteration][$itemKey][$json[$repeatKey]['repeat'][$iteration][$itemKey]['type']], 'new' => trim($datum)));
                         $json[$repeatKey]['repeat'][$iteration][$itemKey][$json[$repeatKey]['repeat'][$iteration][$itemKey]['type']] = trim($datum);

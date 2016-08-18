@@ -88,13 +88,13 @@ class GetDataFromFiles {
         if ($this->loadFile($dataFile)) {
             if (!is_null($secondary)
                     && !is_null($count)
-                    && $this->fileArray[$dataFile][$key]['type'] == 'repeat'
-                    && isset($this->fileArray[$dataFile][$key]['repeat'][$count][$secondary][$this->fileArray[$dataFile][$key]['repeat'][$count][$secondary]['type']])
-                    && trim($this->fileArray[$dataFile][$key]['repeat'][$count][$secondary][$this->fileArray[$dataFile][$key]['repeat'][$count][$secondary]['type']]) != '') {
-                return true;
+                    && $this->fileArray[$dataFile][$key]['type'] == 'repeat') {
+                return isset($this->fileArray[$dataFile][$key]['repeat'][$count][$secondary][$this->fileArray[$dataFile][$key]['repeat'][$count][$secondary]['type']])
+                    && trim($this->fileArray[$dataFile][$key]['repeat'][$count][$secondary][$this->fileArray[$dataFile][$key]['repeat'][$count][$secondary]['type']]) != '';
+            } else {
+                return (isset($this->fileArray[$dataFile][$key][$this->fileArray[$dataFile][$key]['type']])
+                    && trim($this->fileArray[$dataFile][$key][$this->fileArray[$dataFile][$key]['type']]) != '');
             }
-            return (isset($this->fileArray[$dataFile][$key][$this->fileArray[$dataFile][$key]['type']])
-                && trim($this->fileArray[$dataFile][$key][$this->fileArray[$dataFile][$key]['type']]) != '');
         }
 
         return false;

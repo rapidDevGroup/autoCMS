@@ -23,7 +23,7 @@ class FooterData extends DataBuild {
                 foreach ($html->find('.auto-footer .auto-color, .auto-footer .auto-edit, .auto-footer .auto-edit-text, .auto-footer .auto-link, .auto-footer .auto-edit-img, .auto-footer .auto-edit-bg-img, .auto-footer .auto-data') as $edit) {
                     $footerFound = true;
                     $fieldID = uniqid();
-                    $desc = $edit->getAttribute('data-autocms');
+                    $desc = ($edit->getAttribute('data-autocms') ? $edit->getAttribute('data-autocms') : '');
 
                     if (stripos($edit->class, 'auto-edit-img') !== false) {
                         $this->makeImageBGImage($edit, $this->data, $this->dataFile, $fieldID, $desc);

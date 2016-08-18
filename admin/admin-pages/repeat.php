@@ -22,6 +22,10 @@ include_once('header.php');
                                 <div class="col-lg-9 col-sm-10 textarea">
                                     <textarea name="<?=$key?>-<?=$x?>-<?=$repeatItemKey?>" data-key="<?=$repeatItemKey?>" class="form-control editor"><?=$repeatDatum['html']?></textarea>
                                 </div>
+                            <?php } else if ($repeatDatum['type'] == 'link') { ?>
+                                <div class="col-lg-9 col-sm-10">
+                                    <input type="text" name="<?=$key?>" class="form-control" value="<?=$repeatDatum['link']?>" autocomplete="off">
+                                </div>
                             <?php } else if ($repeatDatum['type'] == 'text') { ?>
                                 <div class="col-lg-9 col-sm-10">
                                     <input name="<?=$key?>-<?=$x?>-<?=$repeatItemKey?>" data-key="<?=$repeatItemKey?>" class="form-control" value="<?=$repeatDatum['text']?>" autocomplete="off">
