@@ -137,6 +137,7 @@ class Dashboard {
 
             $pages = new PagesData();
             $pages->buildDataFile($_POST['files']);
+            $pages->addHasToPages($_POST['files']);
 
             DashboardUtils::renameFiles($_POST['files']);
             DashboardUtils::copyApacheConfig();

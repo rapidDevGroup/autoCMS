@@ -7,6 +7,21 @@ class PagesData extends DataBuild {
         array_push($this->data, $pageName);
     }
 
+    public function addHasToPages($files) {
+        foreach ($files as $file) {
+            $fileData = file_get_contents('../' . $file, true);
+            $html = str_get_html($fileData);
+
+            foreach ($html->find('.auto-add-has') as $has) {
+                $this->addHas($has);
+            }
+
+            $fp = fopen('../' . $file, 'w');
+            fwrite($fp, $html);
+            fclose($fp);
+        }
+    }
+
     public function buildDataFile($files) {
         foreach ($files as $file) {
             $this->addPage(str_ireplace(Array('.html', '.htm'), '', $file));
@@ -161,34 +176,29 @@ class PagesData extends DataBuild {
                 if (stripos($edit->class, 'auto-repeat') !== false) {
 
                     $data[$fieldID] = Array('repeat' => Array(), 'description' => $desc, 'type' => 'repeat');
-                    $count = 0;
-                    $data[$fieldID]['repeat'][$count] = Array();
+                    $data[$fieldID]['repeat'][0] = Array();
 
                     foreach($html->find('.auto-repeat .auto-repeat-color, .auto-repeat .auto-repeat-edit, .auto-repeat .auto-repeat-edit-text, .auto-repeat .auto-repeat-link, .auto-repeat .auto-repeat-edit-img, .auto-repeat .auto-repeat-edit-bg-img, .auto-repeat .auto-repeat-data') as $repeat) {
                         $desc = ($repeat->getAttribute('data-autocms') ? $repeat->getAttribute('data-autocms') : '');
 
                         $repeatFieldID = uniqid();
                         if (stripos($repeat->class, 'auto-repeat-edit-img') !== false) {
-                            $this->makeImageBGImage($repeat, $data, $dataFile, $fieldID, $desc, false, $count, $repeatFieldID);
+                            $this->makeImageBGImage($repeat, $data, $dataFile, $fieldID, $desc, false, $repeatFieldID);
                         } else if (stripos($repeat->class, 'auto-repeat-data') !== false) {
-                            $this->makeDataText($repeat, $data, $dataFile, $fieldID, $count);
+                            $this->makeDataText($repeat, $data, $dataFile, $fieldID, true);
                         } else if (stripos($repeat->class, 'auto-repeat-edit-bg-img') !== false) {
-                            $this->makeImageBGImage($repeat, $data, $dataFile, $fieldID, $desc, true, $count, $repeatFieldID);
+                            $this->makeImageBGImage($repeat, $data, $dataFile, $fieldID, $desc, true, $repeatFieldID);
                         } else if (stripos($repeat->class, 'auto-repeat-link') !== false) {
-                            $this->makeLink($repeat, $data, $dataFile, $fieldID, $desc, $count, $repeatFieldID);
+                            $this->makeLink($repeat, $data, $dataFile, $fieldID, $desc, $repeatFieldID);
                         } else if (stripos($repeat->class, 'auto-repeat-edit-text') !== false) {
-                            $this->makeHTMLText($repeat, $data, $dataFile, $fieldID, $desc, 'text', $count, $repeatFieldID);
+                            $this->makeHTMLText($repeat, $data, $dataFile, $fieldID, $desc, 'text', $repeatFieldID);
                         } else if (stripos($repeat->class, 'auto-repeat-edit') !== false) {
-                            $this->makeHTMLText($repeat, $data, $dataFile, $fieldID, $desc, 'html', $count, $repeatFieldID);
+                            $this->makeHTMLText($repeat, $data, $dataFile, $fieldID, $desc, 'html', $repeatFieldID);
                         } else if (stripos($repeat->class, 'auto-repeat-color') !== false) {
-                            $this->makeColor($repeat, $data, $dataFile, $fieldID, $desc, $count, $repeatFieldID);
+                            $this->makeColor($repeat, $data, $dataFile, $fieldID, $desc, $repeatFieldID);
                         }
                     }
                     $edit->outertext = '<?php for ($x = 0; $x ' . "< repeatCount('$dataFile', '$fieldID');" . ' $x++) { ?>' . $edit->outertext . "<?php } ?>";
-
-                    foreach($html->find('.auto-repeat .auto-repeat-color, .auto-repeat .auto-repeat-edit, .auto-repeat .auto-repeat-edit-text, .auto-repeat .auto-repeat-link, .auto-repeat .auto-repeat-edit-img, .auto-repeat .auto-repeat-edit-bg-img, .auto-repeat .auto-repeat-data') as $repeat) {
-                        $this->addHas($edit, $dataFile, $fieldID, $count, $repeatFieldID);
-                    }
 
                     } else if (stripos($edit->class, 'auto-data') !== false) {
                     $this->makeDataText($edit, $data, $dataFile, $fieldID);
@@ -279,13 +289,15 @@ class PagesData extends DataBuild {
                     $json[$key][$json[$key]['type']] = trim($datum);
                 }
             } else {
-                list($repeatKey, $iteration, $itemKey, $loaded) = explode("-", $key);
-                if (isset($json[$repeatKey]['repeat'][$iteration][$itemKey]) && $json[$repeatKey]['repeat'][$iteration][$itemKey][$json[$repeatKey]['repeat'][$iteration][$itemKey]['type']] != trim($datum) && trim($datum) != '') {
-                    if ($loaded == '-loaded') {
+                list($repeatKey, $iteration, $itemKey) = explode("-", $key);
+                $loaded = '';
+                if (DashboardUtils::endsWith($key, '-loaded')) $loaded = '-loaded';
+                if (isset($json[$repeatKey]['repeat'][$iteration][$itemKey]) && $json[$repeatKey]['repeat'][$iteration][$itemKey][$json[$repeatKey]['repeat'][$iteration][$itemKey]['type']] != trim($datum)) {
+                    if ($loaded == '-loaded' && trim($datum) != '') {
                         $key = str_ireplace('-loaded', '', $key);
                         $changeLog[] = Array('key' => $key, 'change' => Array('original' => $json[$repeatKey]['repeat'][$iteration][$itemKey][$json[$repeatKey]['repeat'][$iteration][$itemKey]['type']], 'new' => trim($datum)));
                         $json[$repeatKey]['repeat'][$iteration][$itemKey][$json[$repeatKey]['repeat'][$iteration][$itemKey]['type']] = trim($datum);
-                    } else if ($json[$repeatKey]['repeat'][$iteration][$itemKey][$json[$repeatKey]['repeat'][$iteration][$itemKey]['type']] != trim($datum)) {
+                    } else if ($loaded == '' && $json[$repeatKey]['repeat'][$iteration][$itemKey][$json[$repeatKey]['repeat'][$iteration][$itemKey]['type']] != trim($datum)) {
                         $changeLog[] = Array('key' => $key, 'change' => Array('original' => $json[$repeatKey]['repeat'][$iteration][$itemKey][$json[$repeatKey]['repeat'][$iteration][$itemKey]['type']], 'new' => trim($datum)));
                         $json[$repeatKey]['repeat'][$iteration][$itemKey][$json[$repeatKey]['repeat'][$iteration][$itemKey]['type']] = trim($datum);
                     }

@@ -24,7 +24,7 @@ include_once('header.php');
                                 </div>
                             <?php } else if ($repeatDatum['type'] == 'link') { ?>
                                 <div class="col-lg-9 col-sm-10">
-                                    <input type="text" name="<?=$key?>" class="form-control" value="<?=$repeatDatum['link']?>" autocomplete="off">
+                                    <input type="text" name="<?=$key?>-<?=$x?>-<?=$repeatItemKey?>" class="form-control" value="<?=$repeatDatum['link']?>" autocomplete="off">
                                 </div>
                             <?php } else if ($repeatDatum['type'] == 'text') { ?>
                                 <div class="col-lg-9 col-sm-10">
