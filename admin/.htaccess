@@ -1,0 +1,25 @@
+AddDefaultCharset UTF-8
+DirectoryIndex index.php
+
+Options -Indexes
+
+<Files .htaccess>
+    order allow,deny
+    deny from all
+</Files>
+
+Options +FollowSymlinks
+RewriteBase /admin
+RewriteEngine On
+
+RewriteCond %{HTTP:Accept-Language} ^.*(de|es|fr|it|ja|ru|en).*$ [NC]
+RewriteRule ^(.*)$ - [env=prefer-language:%1]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond $1 !^(index\.php)
+RewriteRule ^(.*)$ index.php?/$1 [L]
+
+ErrorDocument 401 /admin/401.html
+ErrorDocument 403 /admin/403.html
+ErrorDocument 404 /admin/404.html
