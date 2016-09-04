@@ -129,7 +129,7 @@ class BlogData extends Data {
                         } else if (stripos($list->class, 'auto-blog-bg-img') !== false) {
                             $list->style = "background-image: url('<?=getBlog(" . '"image", $x' . ", '$file')?>');";
                             $this->data['types']['image'] = true;
-                            $this->addHasBlog($list, 'image', true, $file);
+                            //$this->addHasBlog($list, 'image', true, $file);
                         } else if (stripos($list->class, 'auto-blog-img') !== false) {
                             $list->src = '<?=getBlog("image", $x,"' . $file . '")?>';
                             $list->alt = '<?=getBlog("image-alt-text", $x,"' . $file . '")?>';
